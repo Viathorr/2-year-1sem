@@ -22,10 +22,40 @@ class Priority_queue_linked_list : public Priority_queue<T> {
   Priority_queue_linked_list(
       std::function<bool(const T&, const T&)> ncomparator)
       : comparator(ncomparator){};
-  void Enqueue(T data) override {}
-  void Dequeue() override {}
-  T Peek() override {}
-  int GetSize() override {}
+  void Enqueue(T data) override {
+    std::unique_ptr<Priority_queue_linked_list<T>::Node> newNode =
+        std::make_unique<Priority_queue_linked_list<T>::Node>(data);
+
+    if (!head || comparator(data, head->data)) {
+      newNode->next = std::move(head);
+      head = std::move(newNode);
+    } else {
+      Priority_queue_linked_list<T>::Node* current = head.get();
+      while (current->next && comparator(current->next->data, data)) {
+        current = current->next.get();
+      }
+      newNode->next = std::move(current->next);
+      current->next = std::move(newNode);
+    }
+  }
+  void Dequeue() override {
+    if (head) {
+      head = std::move(head->next);
+      --size;
+    }
+  }
+  T Peek() override {
+    if (head != nullptr)
+      return head->data;
+    else
+      throw std::runtime_error("The queue is empty.");
+  }
+  int GetSize() override {
+    if (size > 0)
+      return size;
+    else
+      return 0;
+  }
 
  private:
   std::function<bool(const T&, const T&)> comparator;
