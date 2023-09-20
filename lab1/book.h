@@ -10,7 +10,7 @@ std::string RoleToString(Role role);
 
 class Book {
  public:
-  Book(){};  // default ctor
+  Book(){};
   Book(std::string title, std::string author, int year, int amount,
        std::string annotation);
   void SetTitle(std::string title);

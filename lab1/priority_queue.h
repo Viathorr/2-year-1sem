@@ -14,6 +14,7 @@ class Priority_queue  // priority queue interface
   virtual void Dequeue() = 0;
   virtual T Peek() = 0;
   virtual int GetSize() = 0;
+  virtual Print() = 0;
 };
 
 template <class T>
@@ -56,6 +57,18 @@ class Priority_queue_linked_list : public Priority_queue<T> {
     else
       return 0;
   }
+  void Print() override {
+    if (!head)
+      return;
+    else {
+      Node* currentNode = head.get();
+      while (currentNode) {
+        std::cout << currentNode->data << " \n";
+        currentNode = currentNode->next.get();
+      }
+    }
+    std::cout << std::endl;
+  }
 
  private:
   std::function<bool(const T&, const T&)> comparator;
@@ -75,10 +88,39 @@ class Priority_queue_array : public Priority_queue<T> {
  public:
   Priority_queue_array(std::function<bool(const T&, const T&)> ncomparator)
       : comparator(ncomparator){};
-  void Enqueue(T data) override {}
-  void Dequeue() override {}
-  T Peek() override {}
-  int GetSize() override {}
+  void Enqueue(T data) override {
+    if (!queue.size() || comparator(data, queue.back()))
+      queue.push_back(data);
+    else {
+      for (int i = 0; i < queue.size(); i++) {
+        if (comparator(queue[i], data)) {
+          queue.insert(queue.begin() + i, data);
+          return;
+        }
+      }
+    }
+  }
+  void Dequeue() override {
+    if (!queue.size()) {
+      throw std::runtime_error("The queue is empty.");
+    } else {
+      queue.pop_back();
+    }
+  }
+  T Peek() override {
+    if (!queue.empty()) {
+      return queue.back();
+    } else {
+      throw std::runtime_error("The queue is empty.");
+    }
+  }
+  int GetSize() override { return queue.size(); }
+  void Print() override {
+    for (int i = 0; i < queue.size(); i++) {
+      std::cout << queue[i] << " \n";
+    }
+    std::cout << std::endl;
+  }
 
  private:
   std::function<bool(const T&, const T&)> comparator;
@@ -92,10 +134,11 @@ class Priority_queue_binary_tree : public Priority_queue<T> {
       std::function<bool(const T&, const T&)> ncomparator)
       : comparator(ncomparator){};
 
-  void Enqueue(T data) override;
-  void Dequeue() override;
-  T Peek() override;
-  int GetSize() override;
+  void Enqueue(T data) override {}
+  void Dequeue() override {}
+  T Peek() override {}
+  int GetSize() override {}
+  void Print() override {}
 
  private:
   std::function<bool(const T&, const T&)> comparator;
@@ -150,18 +193,71 @@ class Priority_queue_binary_heap : public Priority_queue<T> {
   Priority_queue_binary_heap(
       std::function<bool(const T&, const T&)> ncomparator)
       : comparator(ncomparator){};
-  void Enqueue(T data) override {}
-  void Dequeue() override {}
-  T Peek() override {}
-  int GetSize() override {}
+  void Enqueue(T data) override {
+    queue.push_back(data);
+    Bubble_up(queue.size() - 1);
+  }
+  void Dequeue() override {
+    if (queue.empty()) {
+      throw std::runtime_error("The queue is empty.");
+    } else {
+      std::swap(queue.front(), queue.back());
+      queue.pop_back();
+      Bubble_down(0);
+    }
+  }
+  T Peek() override {
+    if (!queue.empty()) {
+      return queue.front();
+    } else {
+      throw std::runtime_error("The queue is empty.");
+    }
+  }
+  int GetSize() override { return queue.size(); }
+  void Print() override {
+    if (!queue.size()) {
+      std::cout << "Queue is empty.\n";
+    } else {
+      int level = 0, levelSize = 1;
+      while (level < queue.size()) {
+        for (int i = level; i < level + levelSize && i < queue.size(); i++) {
+          std::cout << queue[i] << " \n";
+        }
+        level += levelSize;
+        levelSize *= 2;
+      }
+    }
+  }
 
  private:
   std::function<bool(const T&, const T&)> comparator;
   vector<T> queue;
-  void Bubble_up(int index) {}
-  void Bubble_down(int index) {}
-  int FindParent(int index) {}
-  int FindLeftChild(int index) {}
+  void Bubble_up(int index) {
+    if (FindParent(index) == -1) return;
+    if (comparator(queue[index], queue[FindParent(index)])) {
+      std::swap(queue[index], queue[FindParent(index)]);
+      Bubble_up(FindParent(index));
+    }
+  }
+  void Bubble_down(int index) {
+    int higherPriorityElementIndex = index;
+    int leftChild = FindLeftChild(index);
+
+    for (int i = 0; i < 2; i++) {
+      if (leftChild + i < queue.size()) {
+        if (comparator(queue[leftChild + i],
+                       queue[higherPriorityElementIndex])) {
+          higherPriorityElementIndex = leftChild + i;
+        }
+      }
+    }
+    if (higherPriorityElementIndex != index) {
+      std::swap(queue[index], queue[higherPriorityElementIndex]);
+      Bubble_down(higherPriorityElementIndex);
+    }
+  }
+  int FindParent(int index) { return !index ? (-1) : (index / 2); }
+  int FindLeftChild(int index) { return (2 * index) + 1; }
 };
 }  // namespace mypriorityqueue
 
