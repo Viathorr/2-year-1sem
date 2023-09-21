@@ -134,11 +134,74 @@ class Priority_queue_binary_tree : public Priority_queue<T> {
       std::function<bool(const T&, const T&)> ncomparator)
       : comparator(ncomparator){};
 
-  void Enqueue(T data) override {}
-  void Dequeue() override {}
-  T Peek() override {}
-  int GetSize() override {}
-  void Print() override {}
+  void Enqueue(T data) override {
+    if (!root) {
+      root = std::make_shared<TreeNode>(data);
+      the_highest_priority_node = root;
+    } else {
+      std::shared_ptr<TreeNode> new_node = std::make_shared<TreeNode>(data);
+      if (comparator(data, the_highest_priority_node->data)) {
+        the_highest_priority_node = new_node;
+      }
+      std::shared_ptr<TreeNode> temp_ptr = root;
+      std::shared_ptr<TreeNode> previous_node = temp_ptr;
+      while (temp_ptr) {
+        previous_node = temp_ptr;
+        if (comparator(data, temp_ptr->data)) {
+          temp_ptr = temp_ptr->right;
+        } else {
+          temp_ptr = temp_ptr->left;
+        }
+      }
+      if (comparator(previous_node->data, data)) {
+        previous_node->left = new_node;
+      } else {
+        previous_node->right = new_node;
+      }
+    }
+  }
+  void Dequeue() override {
+    if (!root) {
+      throw std::runtime_error("The queue is empty.");
+    } else {
+      std::shared_ptr<TreeNode> temp_ptr = root;
+      std::shared_ptr<TreeNode> previous_node = nullptr;
+      while (temp_ptr->right) {
+        previous_node = temp_ptr;
+        temp_ptr = temp_ptr->right;
+      }
+      if (previous_node) {
+        previous_node->right = temp_ptr->left;
+      } else {
+        root = temp_ptr->left;
+      }
+      if (root) {
+        previous_node = root;
+        while (previous_node->right) {
+          previous_node = previous_node->right;
+        }
+        the_highest_priority_node = previous_node;
+      }
+    }
+  }
+  T Peek() override {
+    if (the_highest_priority_node) {
+      return the_highest_priority_node->data;
+    } else {
+      throw std::runtime_error("The queue is empty.");
+    }
+  }
+  int GetSize() override {
+    if (!root) {
+      return 0;
+    } else {
+      return size;
+    }
+  }
+  void Print() override {
+    inOrderTraversal(root);
+    std::cout << std::endl;
+  }
 
  private:
   std::function<bool(const T&, const T&)> comparator;
@@ -153,9 +216,15 @@ class Priority_queue_binary_tree : public Priority_queue<T> {
     std::shared_ptr<TreeNode> parent;
   };
   std::shared_ptr<TreeNode> root;
+  std::shared_ptr<TreeNode> the_highest_priority_node;
   int size;
-  void Bubble_up(std::shared_ptr<TreeNode> root);
-  void Bubble_down(std::shared_ptr<TreeNode> root);
+  void inOrderTraversal(const std::shared_ptr<TreeNode>& node) const {
+    if (node) {
+      inOrderTraversal(node->left);
+      std::cout << node->data << " \n";
+      inOrderTraversal(node->right);
+    }
+  }
 };
 
 template <class T>
