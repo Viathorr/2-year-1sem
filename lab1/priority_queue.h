@@ -38,6 +38,7 @@ class Priority_queue_linked_list : public Priority_queue<T> {
       newNode->next = std::move(current->next);
       current->next = std::move(newNode);
     }
+    size++;
   }
   void Dequeue() override {
     if (head) {
@@ -159,6 +160,7 @@ class Priority_queue_binary_tree : public Priority_queue<T> {
         previous_node->right = new_node;
       }
     }
+    size++;
   }
   void Dequeue() override {
     if (!root) {
@@ -183,6 +185,7 @@ class Priority_queue_binary_tree : public Priority_queue<T> {
         the_highest_priority_node = previous_node;
       }
     }
+    size--;
   }
   T Peek() override {
     if (the_highest_priority_node) {
@@ -232,17 +235,45 @@ class Priority_queue_AVL_tree : public Priority_queue<T> {
  public:
   Priority_queue_AVL_tree(std::function<bool(const T&, const T&)> ncomparator)
       : comparator(ncomparator) {}
-  void Enqueue(T data) override {}
-  void Dequeue() override {}
-  T Peek() override {}
-  int GetSize() override {}
+  void Enqueue(T data) override {
+    root = Insert(root, data);
+    the_highest_priority_node = FindTheHighestPriorityNode(root);
+    size++;
+  }
+  void Dequeue() override {
+    if (!root) {
+      throw std::runtime_error("The queue is empty.");
+    } else {
+      root = DeleteTheHighestPriorityNode(root);
+      the_highest_priority_node = FindTheHighestPriorityNode(root);
+      size--;
+    }
+  }
+  T Peek() override {
+    if (the_highest_priority_node) {
+      return the_highest_priority_node->data;
+    } else {
+      throw std::runtime_error("The queue is empty.");
+    }
+  }
+  int GetSize() override {
+    if (!root) {
+      return 0;
+    } else {
+      return size;
+    }
+  }
+  void Print() override {
+    inOrderTraversal(root);
+    std::cout << std::endl;
+  }
 
  private:
   std::function<bool(const T&, const T&)> comparator;
   class TreeNode {
    public:
     TreeNode();
-    TreeNode(T value) : data(value), left(nullptr), right(nullptr){};
+    TreeNode(T value) : data(value), height(1), left(nullptr), right(nullptr){};
     T data;
     std::shared_ptr<TreeNode> left;
     std::shared_ptr<TreeNode> right;
@@ -250,10 +281,107 @@ class Priority_queue_AVL_tree : public Priority_queue<T> {
   };
   std::shared_ptr<TreeNode> root;
   int size;
-  int H(std::shared_ptr<TreeNode> root) {}
-  int GetBalance(std::shared_ptr<TreeNode> root) {}
-  std::shared_ptr<TreeNode> RotateLeft(std::shared_ptr<TreeNode> root) {}
-  std::shared_ptr<TreeNode> RotateRight(std::shared_ptr<TreeNode> root) {}
+  int Height(std::shared_ptr<TreeNode> root) { return root ? root->height : 0; }
+  int GetBalance(std::shared_ptr<TreeNode> root) {
+    return root ? (Height(root->left) - Height(root->right)) : 0;
+  }
+  std::shared_ptr<TreeNode> RotateLeft(std::shared_ptr<TreeNode> root) {
+    std::shared_ptr<TreeNode> right_child = root->right;
+    std::shared_ptr<TreeNode> left_child_of_right_child = right_child->left;
+
+    root->right = left_child_of_right_child;
+    right_child->left = root;
+    root->height = std::max(Height(root->left), Height(root->right)) + 1;
+    right_child->height =
+        std::max(Height(right_child->left), Height(right_child->right)) + 1;
+
+    return right_child;
+  }
+  std::shared_ptr<TreeNode> RotateRight(std::shared_ptr<TreeNode> root) {
+    std::shared_ptr<TreeNode> left_child = root->left;
+    std::shared_ptr<TreeNode> right_child_of_left_child = left_child->right;
+
+    root->left = right_child_of_left_child;
+    left_child->right = root;
+    root->height = std::max(Height(root->left), Height(root->right)) + 1;
+    left_child->height =
+        std::max(Height(left_child->left), Height(left_child->right)) + 1;
+
+    return left_child;
+  }
+  std::shared_ptr<TreeNode> Insert(std::shared_ptr<TreeNode> root, T data) {
+    if (!root) {
+      return std::make_shared<TreeNode>(data);
+    }
+    if (comparator(data, root->data)) {
+      root->right = Insert(root->right, data);
+    } else {
+      root->left = Insert(root->left, data);
+    }
+    root->height = std::max(Height(root->left), Height(root->right)) + 1;
+    int balance = GetBalance(root);
+    if (balance > 1) {
+      if (comparator(data, root->left->data)) {
+        root->left = RotateLeft(root->left);
+        return RotateRight(root);
+      } else {
+        return RotateRight(root);
+      }
+    }
+    if (balance < -1) {
+      if (comparator(data, root->right->data)) {
+        return RotateLeft(root);
+      } else {
+        root->right = RotateRight(root->right);
+        return RotateLeft(root);
+      }
+    }
+    return root;
+  }
+  std::shared_ptr<TreeNode> DeleteTheHighestPriorityNode(
+      std::shared_ptr<TreeNode> root) {
+    if (!root) {
+      return root;
+    }
+    if (root->right) {
+      root->right = DeleteTheHighestPriorityNode(root->right);
+    } else {
+      return root->left;
+    }
+    root->height = std::max(Height(root->left), Height(root->right)) + 1;
+    int balance = GetBalance(root);
+    if (balance > 1) {
+      if (GetBalance(root->left) < 0) {
+        root->left = RotateLeft(root->left);
+        return RotateRight(root);
+      } else {
+        return RotateRight(root);
+      }
+    }
+    if (balance < -1) {
+      if (GetBalance(root->right) > 0) {
+        root->right = RotateRight(root->right);
+        return RotateLeft(root);
+      } else {
+        return RotateLeft(root);
+      }
+    }
+    return root;
+  }
+  std::shared_ptr<TreeNode> FindTheHighestPriorityNode(
+      std::shared_ptr<TreeNode> root) {
+    if (root && root->right) {
+      return FindTheHighestPriorityNode(root->right);
+    }
+    return root;
+  }
+  void inOrderTraversal(const std::shared_ptr<TreeNode>& node) const {
+    if (node) {
+      inOrderTraversal(node->left);
+      std::cout << node->data << " \n";
+      inOrderTraversal(node->right);
+    }
+  }
 };
 
 template <class T>
