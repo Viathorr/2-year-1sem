@@ -5,6 +5,8 @@
 #include <memory>
 #include <stdexcept>
 
+#include "randomDataGenerator.h"
+
 namespace mypriorityqueue {
 template <class T>
 class Priority_queue  // priority queue interface

@@ -1,0 +1,32 @@
+"The Little Prince",Antoine de Saint-Exupery,A whimsical tale of a young prince's interstellar travels.
+"To Kill a Mockingbird",Harper Lee,A powerful story of racial injustice and moral growth in the American South.
+"1984",George Orwell,A dystopian novel exploring the dangers of totalitarianism and surveillance.
+"Pride and Prejudice",Jane Austen,A classic romance novel featuring the spirited Elizabeth Bennet and the enigmatic Mr. Darcy.
+"The Great Gatsby",F. Scott Fitzgerald,A tale of wealth, obsession, and unfulfilled dreams in the Roaring Twenties.
+"The Hobbit",J.R.R. Tolkien,An epic fantasy adventure about a hobbit named Bilbo Baggins on a quest to reclaim treasure guarded,a dragon.
+"Harry Potter and the Sorcerer's Stone",J.K. Rowling,The first book in the beloved series about a young wizard, Harry Potter.
+"The Catcher in the Rye",J.D. Salinger,A novel following the experiences of a disenchanted teenager named Holden Caulfield.
+"The Lord of the Rings",J.R.R. Tolkien,A classic fantasy trilogy featuring a grand battle between good and evil.
+"The Da Vinci Code",Dan Brown,A gripping thriller that combines art, history, and religion in a quest for a hidden secret.
+"The Alchemist",Paulo Coelho,A philosophical novel about a shepherd named Santiago on a journey to find his personal legend.
+"The Hunger Games",Suzanne Collins,A dystopian tale of survival and rebellion in a harsh future society.
+"Moby-Dick",Herman Melville,An epic adventure centered around Captain Ahab's obsession with the white whale.
+"The Road",Cormac McCarthy,A post-apocalyptic novel exploring the journey of a father and son in a devastated world.
+"The Girl with the Dragon Tattoo",Stieg Larsson,A mystery thriller featuring investigative journalist Mikael Blomkvist and hacker Lisbeth Salander.
+"Brave New World",Aldous Huxley,A satirical vision of a future society controlled by technology and pleasure.
+"The Odyssey",Homer,An ancient Greek epic that tells the adventures of Odysseus on his journey home from the Trojan War.
+"Frankenstein",Mary Shelley,The classic novel about the scientist Victor Frankenstein and his creation.
+"The Catch-22",Joseph Heller,A darkly comedic novel set during World War II, exploring the absurdity of war.
+"The Shining",Stephen King,A chilling horror novel about a family's terrifying experiences at the Overlook Hotel.
+"Wuthering Heights",Emily Bronte,A Gothic romance novel set on the stormy moors of Yorkshire.
+"War and Peace",Leo Tolstoy,An epic historical novel set during the Napoleonic Wars.
+"The Count of Monte Cristo",Alexandre Dumas,An adventure novel of revenge and redemption.
+"One Hundred Years of Solitude",Gabriel Garcia Marquez,A magical realist tale of the Buendía family in Macondo.
+"Crime and Punishment",Fyodor Dostoevsky,A psychological novel that delves into guilt, morality, and justice.
+"The Picture of Dorian Gray",Oscar Wilde,A Gothic novel exploring the consequences of eternal youth.
+"Dracula",Bram Stoker,The classic vampire novel that introduced Count Dracula to the world.
+"The Handmaid's Tale",Margaret Atwood,A dystopian novel about the oppression of women in the Republic of Gilead.
+"The Wind-Up Bird Chronicle",Haruki Murakami,A surreal journey through dreams, memories, and reality.
+"Sapiens: A Brief History of Humankind",Yuval Noah Harari,A non-fiction book that explores the history of our species.
+"The Road Less Traveled",M. Scott Peck,A self-help book on personal growth and spiritual development.
+"The Name of the Wind",Patrick Rothfuss,A fantasy novel chronicling the life of the legendary figure Kvothe.
