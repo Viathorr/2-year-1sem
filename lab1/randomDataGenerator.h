@@ -70,7 +70,7 @@ class Random_data_generator {
   static mybook::Character GetRandomCharacterData() {
     mybook::Character randCharacter;
     int aliasesNum = 45;
-    int aliasNum = std::rand() % 45;
+    int randNumOfAliases = std::rand() % 5 + 1;
     std::ifstream file("aliases.txt");
     if (!file.is_open()) {
       std::cerr << "File is not opened!";
@@ -82,7 +82,10 @@ class Random_data_generator {
       aliases.push_back(alias);
     }
     file.close();
-    randCharacter.AddAlias(aliases[aliasNum]);
+    for (int i = 0; i < randNumOfAliases; i++) {
+      int aliasNum = std::rand() % aliasesNum;
+      randCharacter.AddAlias(aliases[aliasNum]);
+    }
     int numOfBooks = std::rand() % 10 + 1;
     for (int i = 0; i < numOfBooks; i++) {
       randCharacter.AddBookAndRole(GetRandomBookData(), generateRandomRole());
