@@ -8,16 +8,26 @@
 #include "randomDataGenerator.h"
 
 namespace mypriorityqueue {
-template <class T>
+template <typename T>  // overloading operator << for vector
+std::ostream& operator<<(std::ostream& os, std::vector<T>& arr) {
+  os << "VECTOR:\n[";
+  for (typename std::vector<T>::const_iterator i = arr.begin(); i != arr.end();
+       i++) {
+    os << " " << *i;
+  }
+  os << "]";
+  return os;
+}
+template <typename T>
 class Priority_queue {
  public:
   virtual void Enqueue(T data) = 0;
   virtual void Dequeue() = 0;
   virtual T Peek() = 0;
   virtual int GetSize() = 0;
-  virtual Print() = 0;
+  virtual void Print() = 0;
   virtual void GenerateRandomData() {
-    int numOfElements = std::rand() % 15 + 1;
+    int numOfElements = std::rand() % 20 + 1;
     if constexpr (std::is_same_v<T, int>) {
       for (int i = 1; i <= numOfElements; i++) {
         Enqueue(
@@ -52,12 +62,12 @@ class Priority_queue {
   }
 };
 
-template <class T>
+template <typename T>
 class Priority_queue_linked_list : public Priority_queue<T> {
  public:
   Priority_queue_linked_list(
       std::function<bool(const T&, const T&)> ncomparator)
-      : comparator(ncomparator){};
+      : comparator(ncomparator), size(0){};
   void Enqueue(T data) override {
     std::unique_ptr<Priority_queue_linked_list<T>::Node> newNode =
         std::make_unique<Priority_queue_linked_list<T>::Node>(data);
@@ -119,7 +129,7 @@ class Priority_queue_linked_list : public Priority_queue<T> {
   int size;
 };
 
-template <class T>
+template <typename T>
 class Priority_queue_array : public Priority_queue<T> {
  public:
   Priority_queue_array(std::function<bool(const T&, const T&)> ncomparator)
@@ -134,6 +144,7 @@ class Priority_queue_array : public Priority_queue<T> {
           return;
         }
       }
+      queue.insert(queue.begin(), data);
     }
   }
   void Dequeue() override {
@@ -163,24 +174,26 @@ class Priority_queue_array : public Priority_queue<T> {
   std::vector<T> queue;
 };
 
-template <class T>
+template <typename T>
 class Priority_queue_binary_tree : public Priority_queue<T> {
  public:
   Priority_queue_binary_tree(
       std::function<bool(const T&, const T&)> ncomparator)
-      : comparator(ncomparator){};
+      : comparator(ncomparator), size(0){};
 
   void Enqueue(T data) override {
     if (!root) {
+      // std::cout << "If(!root) +1\n";
       root = std::make_shared<TreeNode>(data);
       the_highest_priority_node = root;
     } else {
+      // std::cout << "Else if(root)\n";
       std::shared_ptr<TreeNode> new_node = std::make_shared<TreeNode>(data);
       if (comparator(data, the_highest_priority_node->data)) {
         the_highest_priority_node = new_node;
       }
       std::shared_ptr<TreeNode> temp_ptr = root;
-      std::shared_ptr<TreeNode> previous_node = temp_ptr;
+      std::shared_ptr<TreeNode> previous_node = nullptr;
       while (temp_ptr) {
         previous_node = temp_ptr;
         if (comparator(data, temp_ptr->data)) {
@@ -190,11 +203,14 @@ class Priority_queue_binary_tree : public Priority_queue<T> {
         }
       }
       if (comparator(previous_node->data, data)) {
+        // std::cout << "+1\n";
         previous_node->left = new_node;
       } else {
+        // std::cout << "+1\n";
         previous_node->right = new_node;
       }
     }
+    // std::cout << "data: " << data << std::endl;
     size++;
   }
   void Dequeue() override {
@@ -256,20 +272,20 @@ class Priority_queue_binary_tree : public Priority_queue<T> {
   std::shared_ptr<TreeNode> root;
   std::shared_ptr<TreeNode> the_highest_priority_node;
   int size;
-  void inOrderTraversal(const std::shared_ptr<TreeNode>& node) const {
-    if (node) {
-      inOrderTraversal(node->left);
-      std::cout << node->data << " \n";
-      inOrderTraversal(node->right);
+  void inOrderTraversal(const std::shared_ptr<TreeNode>& root) const {
+    if (root) {
+      inOrderTraversal(root->left);
+      std::cout << root->data << " \n";
+      inOrderTraversal(root->right);
     }
   }
 };
 
-template <class T>
+template <typename T>
 class Priority_queue_AVL_tree : public Priority_queue<T> {
  public:
   Priority_queue_AVL_tree(std::function<bool(const T&, const T&)> ncomparator)
-      : comparator(ncomparator) {}
+      : comparator(ncomparator), size(0) {}
   void Enqueue(T data) override {
     root = Insert(root, data);
     the_highest_priority_node = FindTheHighestPriorityNode(root);
@@ -315,6 +331,7 @@ class Priority_queue_AVL_tree : public Priority_queue<T> {
     int height;
   };
   std::shared_ptr<TreeNode> root;
+  std::shared_ptr<TreeNode> the_highest_priority_node;
   int size;
   int Height(std::shared_ptr<TreeNode> root) { return root ? root->height : 0; }
   int GetBalance(std::shared_ptr<TreeNode> root) {
@@ -419,7 +436,7 @@ class Priority_queue_AVL_tree : public Priority_queue<T> {
   }
 };
 
-template <class T>
+template <typename T>
 class Priority_queue_binary_heap : public Priority_queue<T> {
  public:
   Priority_queue_binary_heap(
@@ -463,7 +480,7 @@ class Priority_queue_binary_heap : public Priority_queue<T> {
 
  private:
   std::function<bool(const T&, const T&)> comparator;
-  vector<T> queue;
+  std::vector<T> queue;
   void Bubble_up(int index) {
     if (FindParent(index) == -1) return;
     if (comparator(queue[index], queue[FindParent(index)])) {
