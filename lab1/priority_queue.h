@@ -9,14 +9,47 @@
 
 namespace mypriorityqueue {
 template <class T>
-class Priority_queue  // priority queue interface
-{
+class Priority_queue {
  public:
   virtual void Enqueue(T data) = 0;
   virtual void Dequeue() = 0;
   virtual T Peek() = 0;
   virtual int GetSize() = 0;
   virtual Print() = 0;
+  virtual void GenerateRandomData() {
+    int numOfElements = std::rand() % 15 + 1;
+    if constexpr (std::is_same_v<T, int>) {
+      for (int i = 1; i <= numOfElements; i++) {
+        Enqueue(
+            myrandomdatagenerator::Random_data_generator::GetRandomIntData());
+      }
+    } else if constexpr (std::is_same_v<T, double>) {
+      for (int i = 0; i < numOfElements; i++) {
+        Enqueue(myrandomdatagenerator::Random_data_generator::
+                    GetRandomDoubleData());
+      }
+    } else if constexpr (std::is_same_v<T, char>) {
+      for (int i = 0; i < numOfElements; i++) {
+        Enqueue(
+            myrandomdatagenerator::Random_data_generator::GetRandomCharData());
+      }
+    } else if constexpr (std::is_same_v<T, std::string>) {
+      for (int i = 0; i < numOfElements; i++) {
+        Enqueue(myrandomdatagenerator::Random_data_generator::
+                    GetRandomStringData());
+      }
+    } else if constexpr (std::is_same_v<T, mybook::Book>) {
+      for (int i = 0; i < numOfElements; i++) {
+        Enqueue(
+            myrandomdatagenerator::Random_data_generator::GetRandomBookData());
+      }
+    } else if constexpr (std::is_same_v<T, mybook::Character>) {
+      for (int i = 0; i < numOfElements; i++) {
+        Enqueue(myrandomdatagenerator::Random_data_generator::
+                    GetRandomCharacterData());
+      }
+    }
+  }
 };
 
 template <class T>
