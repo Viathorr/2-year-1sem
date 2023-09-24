@@ -35,6 +35,33 @@ class Random_data_generator {
     }
     return randString;
   }
+  template <typename T>
+  static std::vector<T> GetRandomVectorData() {
+    int numOfElements = rand() % 20 + 1;
+    std::vector<T> randVector;
+    if constexpr (std::is_same_v<T, int>) {
+      for (int i = 1; i <= numOfElements; i++) {
+        randVector.push_back(
+            myrandomdatagenerator::Random_data_generator::GetRandomIntData());
+      }
+    } else if constexpr (std::is_same_v<T, double>) {
+      for (int i = 0; i < numOfElements; i++) {
+        randVector.push_back(myrandomdatagenerator::Random_data_generator::
+                                 GetRandomDoubleData());
+      }
+    } else if constexpr (std::is_same_v<T, char>) {
+      for (int i = 0; i < numOfElements; i++) {
+        randVector.push_back(
+            myrandomdatagenerator::Random_data_generator::GetRandomCharData());
+      }
+    } else if constexpr (std::is_same_v<T, std::string>) {
+      for (int i = 0; i < numOfElements; i++) {
+        randVector.push_back(myrandomdatagenerator::Random_data_generator::
+                                 GetRandomStringData());
+      }
+    }
+    return randVector;
+  }
   static mybook::Book GetRandomBookData() {
     mybook::Book randBook;
     int booksNum = 32;

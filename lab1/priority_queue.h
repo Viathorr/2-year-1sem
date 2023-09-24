@@ -15,7 +15,7 @@ std::ostream& operator<<(std::ostream& os, std::vector<T>& arr) {
        i++) {
     os << " " << *i;
   }
-  os << "]";
+  os << " ]";
   return os;
 }
 template <typename T>
@@ -58,8 +58,39 @@ class Priority_queue {
         Enqueue(myrandomdatagenerator::Random_data_generator::
                     GetRandomCharacterData());
       }
+    } else if constexpr (is_vector<T, int>::value) {
+      for (int i = 0; i < numOfElements; i++) {
+        Enqueue(
+            myrandomdatagenerator::Random_data_generator::GetRandomVectorData<
+                int>());
+      }
+    } else if constexpr (is_vector<T, double>::value) {
+      for (int i = 0; i < numOfElements; i++) {
+        Enqueue(
+            myrandomdatagenerator::Random_data_generator::GetRandomVectorData<
+                double>());
+      }
+    } else if constexpr (is_vector<T, char>::value) {
+      for (int i = 0; i < numOfElements; i++) {
+        Enqueue(
+            myrandomdatagenerator::Random_data_generator::GetRandomVectorData<
+                char>());
+      }
+    } else if constexpr (is_vector<T, std::string>::value) {
+      for (int i = 0; i < numOfElements; i++) {
+        Enqueue(
+            myrandomdatagenerator::Random_data_generator::GetRandomVectorData<
+                std::string>());
+      }
     }
   }
+
+ private:
+  template <typename V, typename Type>
+  struct is_vector : std::false_type {};
+
+  template <typename Type>
+  struct is_vector<std::vector<Type>, Type> : std::true_type {};
 };
 
 template <typename T>
@@ -183,11 +214,9 @@ class Priority_queue_binary_tree : public Priority_queue<T> {
 
   void Enqueue(T data) override {
     if (!root) {
-      // std::cout << "If(!root) +1\n";
       root = std::make_shared<TreeNode>(data);
       the_highest_priority_node = root;
     } else {
-      // std::cout << "Else if(root)\n";
       std::shared_ptr<TreeNode> new_node = std::make_shared<TreeNode>(data);
       if (comparator(data, the_highest_priority_node->data)) {
         the_highest_priority_node = new_node;
@@ -202,15 +231,12 @@ class Priority_queue_binary_tree : public Priority_queue<T> {
           temp_ptr = temp_ptr->left;
         }
       }
-      if (comparator(previous_node->data, data)) {
-        // std::cout << "+1\n";
-        previous_node->left = new_node;
-      } else {
-        // std::cout << "+1\n";
+      if (comparator(data, previous_node->data)) {
         previous_node->right = new_node;
+      } else {
+        previous_node->left = new_node;
       }
     }
-    // std::cout << "data: " << data << std::endl;
     size++;
   }
   void Dequeue() override {
@@ -262,12 +288,10 @@ class Priority_queue_binary_tree : public Priority_queue<T> {
   class TreeNode {
    public:
     TreeNode();
-    TreeNode(T value)
-        : data(value), left(nullptr), right(nullptr), parent(nullptr){};
+    TreeNode(T value) : data(value), left(nullptr), right(nullptr){};
     T data;
     std::shared_ptr<TreeNode> left;
     std::shared_ptr<TreeNode> right;
-    std::shared_ptr<TreeNode> parent;
   };
   std::shared_ptr<TreeNode> root;
   std::shared_ptr<TreeNode> the_highest_priority_node;
