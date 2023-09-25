@@ -35,7 +35,7 @@ int Book::GetAmountOfPages() const { return amountOfPages; }
 std::string Book::GetAnnotation() const { return annotation; }
 
 std::ostream& operator<<(std::ostream& os, const Book& book) {
-  os << "BOOK:\n";
+  os << "\nBOOK:\n";
   os << "Title: \"" << book.GetTitle() << "\", author: " << book.GetAuthor()
      << ", year: " << book.GetYear() << ", " << book.GetAmountOfPages()
      << " pages, annotation: \"" << book.GetAnnotation() << "\".\n";
@@ -56,7 +56,7 @@ Character::GetSetOfBooksWhereCharacterIsPresent() const {
   return appearsIn;
 }
 std::ostream& operator<<(std::ostream& os, const Series& series) {
-  os << "SERIES:\n"
+  os << "\nSERIES:\n"
      << "Books: ";
   for (const Book& book : series.listOfBooks) {
     os << "\"" << book.GetTitle() << "\" \n";
@@ -86,7 +86,7 @@ Series Character::CreateSeries() {
   return series;
 }
 std::ostream& operator<<(std::ostream& os, const Character& character) {
-  os << "CHARACTER:\n"
+  os << "\nCHARACTER:\n"
      << "Character aliases: ";
   for (const std::string& alias : character.aliases) {
     os << alias << ", ";

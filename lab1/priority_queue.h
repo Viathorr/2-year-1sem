@@ -10,7 +10,7 @@
 namespace mypriorityqueue {
 template <typename T>  // overloading operator << for vector
 std::ostream& operator<<(std::ostream& os, std::vector<T>& arr) {
-  os << "VECTOR:\n[";
+  os << "\nVECTOR:\n[";
   for (typename std::vector<T>::const_iterator i = arr.begin(); i != arr.end();
        i++) {
     os << " " << *i;
@@ -27,7 +27,7 @@ class Priority_queue {
   virtual int GetSize() = 0;
   virtual void Print() = 0;
   virtual void GenerateRandomData() {
-    int numOfElements = std::rand() % 20 + 1;
+    int numOfElements = std::rand() % 20 + 10;
     if constexpr (std::is_same_v<T, int>) {
       for (int i = 1; i <= numOfElements; i++) {
         Enqueue(
@@ -140,7 +140,7 @@ class Priority_queue_linked_list : public Priority_queue<T> {
     else {
       Node* currentNode = head.get();
       while (currentNode) {
-        std::cout << currentNode->data << " \n";
+        std::cout << currentNode->data << " ";
         currentNode = currentNode->next.get();
       }
     }
@@ -195,7 +195,7 @@ class Priority_queue_array : public Priority_queue<T> {
   int GetSize() override { return queue.size(); }
   void Print() override {
     for (int i = 0; i < queue.size(); i++) {
-      std::cout << queue[i] << " \n";
+      std::cout << queue[i] << " ";
     }
     std::cout << std::endl;
   }
@@ -299,7 +299,7 @@ class Priority_queue_binary_tree : public Priority_queue<T> {
   void inOrderTraversal(const std::shared_ptr<TreeNode>& root) const {
     if (root) {
       inOrderTraversal(root->left);
-      std::cout << root->data << " \n";
+      std::cout << root->data << " ";
       inOrderTraversal(root->right);
     }
   }
@@ -454,7 +454,7 @@ class Priority_queue_AVL_tree : public Priority_queue<T> {
   void inOrderTraversal(const std::shared_ptr<TreeNode>& node) const {
     if (node) {
       inOrderTraversal(node->left);
-      std::cout << node->data << " \n";
+      std::cout << node->data << " ";
       inOrderTraversal(node->right);
     }
   }
@@ -494,12 +494,13 @@ class Priority_queue_binary_heap : public Priority_queue<T> {
       int level = 0, levelSize = 1;
       while (level < queue.size()) {
         for (int i = level; i < level + levelSize && i < queue.size(); i++) {
-          std::cout << queue[i] << " \n";
+          std::cout << queue[i] << " ";
         }
         level += levelSize;
         levelSize *= 2;
       }
     }
+    std::cout << std::endl;
   }
 
  private:
