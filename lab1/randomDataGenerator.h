@@ -5,6 +5,7 @@
 #include <ctime>
 #include <fstream>
 #include <iostream>
+#include <random>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -14,15 +15,28 @@
 namespace myrandomdatagenerator {
 class Random_data_generator {
  public:
-  static int GetRandomIntData() { return std::rand() % 1000 + 1; }
-  static double GetRandomDoubleData() { return std::rand() % 1000 + 1.001; }
+  static int GetRandomIntData() {
+    std::random_device rd;
+    int randInt;
+    std::uniform_int_distribution<int> distribution(-1000, 1000);
+    std::default_random_engine engine(rd());
+    randInt = distribution(engine);
+    return randInt;
+  }
+  static double GetRandomDoubleData() {
+    std::random_device rd;
+    double randDouble;
+    std::uniform_real_distribution<double> distribution(-1000.0, 1000.0);
+    std::default_random_engine engine(rd());
+    randDouble = distribution(engine);
+    return randDouble;
+  }
   static char GetRandomCharData() {
     char randChar = 'a' + std::rand() % 26;
     return randChar;
   }
   static std::string GetRandomStringData() {
     const char charSet[] =
-        "0123456789"
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         "abcdefghijklmnopqrstuvwxyz";
 
@@ -113,11 +127,17 @@ class Random_data_generator {
       int aliasNum = std::rand() % aliasesNum;
       randCharacter.AddAlias(aliases[aliasNum]);
     }
-    int numOfBooks = std::rand() % 10 + 1;
+    int numOfBooks = std::rand() % 7 + 3;
     for (int i = 0; i < numOfBooks; i++) {
       randCharacter.AddBookAndRole(GetRandomBookData(), generateRandomRole());
     }
     return randCharacter;
+  }
+  static mybook::Series GetRandomSeriesData() {
+    mybook::Series randSeries;
+    mybook::Character randCharacter = GetRandomCharacterData();
+    randSeries = randCharacter.CreateSeries();
+    return randSeries;
   }
 
  private:

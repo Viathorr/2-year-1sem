@@ -7,9 +7,8 @@
 
 #include "randomDataGenerator.h"
 
-namespace mypriorityqueue {
 template <typename T>  // overloading operator << for vector
-std::ostream& operator<<(std::ostream& os, std::vector<T>& arr) {
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& arr) {
   os << "\nVECTOR:\n[";
   for (typename std::vector<T>::const_iterator i = arr.begin(); i != arr.end();
        i++) {
@@ -18,6 +17,8 @@ std::ostream& operator<<(std::ostream& os, std::vector<T>& arr) {
   os << " ]";
   return os;
 }
+
+namespace mypriorityqueue {
 template <typename T>
 class Priority_queue {
  public:
@@ -27,7 +28,7 @@ class Priority_queue {
   virtual int GetSize() = 0;
   virtual void Print() = 0;
   virtual void GenerateRandomData() {
-    int numOfElements = std::rand() % 20 + 10;
+    int numOfElements = std::rand() % 10 + 5;
     if constexpr (std::is_same_v<T, int>) {
       for (int i = 1; i <= numOfElements; i++) {
         Enqueue(
@@ -57,6 +58,11 @@ class Priority_queue {
       for (int i = 0; i < numOfElements; i++) {
         Enqueue(myrandomdatagenerator::Random_data_generator::
                     GetRandomCharacterData());
+      }
+    } else if constexpr (std::is_same_v<T, mybook::Series>) {
+      for (int i = 0; i < numOfElements; i++) {
+        Enqueue(myrandomdatagenerator::Random_data_generator::
+                    GetRandomSeriesData());
       }
     } else if constexpr (is_vector<T, int>::value) {
       for (int i = 0; i < numOfElements; i++) {

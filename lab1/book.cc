@@ -36,7 +36,7 @@ std::string Book::GetAnnotation() const { return annotation; }
 
 std::ostream& operator<<(std::ostream& os, const Book& book) {
   os << "\nBOOK:\n";
-  os << "Title: \"" << book.GetTitle() << "\", author: " << book.GetAuthor()
+  os << "Title: " << book.GetTitle() << ", author: " << book.GetAuthor()
      << ", year: " << book.GetYear() << ", " << book.GetAmountOfPages()
      << " pages, annotation: \"" << book.GetAnnotation() << "\".\n";
   return os;
@@ -59,7 +59,7 @@ std::ostream& operator<<(std::ostream& os, const Series& series) {
   os << "\nSERIES:\n"
      << "Books: ";
   for (const Book& book : series.listOfBooks) {
-    os << "\"" << book.GetTitle() << "\" \n";
+    os << book.GetTitle() << "\n";
   }
   return os;
 }
@@ -93,8 +93,8 @@ std::ostream& operator<<(std::ostream& os, const Character& character) {
   }
   os << "appears in such books:\n";
   for (const auto& bookRolePair : character.appearsIn) {
-    os << "book title: \"" << bookRolePair.first.GetTitle()
-       << "\", role: " << RoleToString(bookRolePair.second) << "\n";
+    os << "book title: " << bookRolePair.first.GetTitle()
+       << ", role: " << RoleToString(bookRolePair.second) << "\n";
   }
   return os;
 }

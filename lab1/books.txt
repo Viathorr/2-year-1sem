@@ -21,7 +21,7 @@
 "Wuthering Heights",Emily Bronte,A Gothic romance novel set on the stormy moors of Yorkshire.
 "War and Peace",Leo Tolstoy,An epic historical novel set during the Napoleonic Wars.
 "The Count of Monte Cristo",Alexandre Dumas,An adventure novel of revenge and redemption.
-"One Hundred Years of Solitude",Gabriel Garcia Marquez,A magical realist tale of the Buendía family in Macondo.
+"One Hundred Years of Solitude",Gabriel Garcia Marquez,A magical realist tale of the Buendia family in Macondo.
 "Crime and Punishment",Fyodor Dostoevsky,A psychological novel that delves into guilt, morality, and justice.
 "The Picture of Dorian Gray",Oscar Wilde,A Gothic novel exploring the consequences of eternal youth.
 "Dracula",Bram Stoker,The classic vampire novel that introduced Count Dracula to the world.

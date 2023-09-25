@@ -9,7 +9,7 @@
 namespace mycomparator {
 bool comparatorInt(const int& a, const int& b) { return a > b; }
 bool comparatorDouble(const double& a, const double& b) { return a > b; }
-bool comparatorChar(const char& a, const char& b) { return a > b; }
+bool comparatorChar(const char& a, const char& b) { return a < b; }
 bool comparatorString(const std::string& a, const std::string& b) {
   return a.length() > b.length();
 }

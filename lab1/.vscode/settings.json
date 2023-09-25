@@ -59,6 +59,9 @@
         "xhash": "cpp",
         "fstream": "cpp",
         "sstream": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "algorithm": "cpp",
+        "optional": "cpp",
+        "random": "cpp"
     }
 }
