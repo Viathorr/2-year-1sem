@@ -64,10 +64,14 @@ std::ostream& operator<<(std::ostream& os, const Series& series) {
   return os;
 }
 void Series::AddBook(Book title) {
-  if (!listOfBooks.size())
+  if (!listOfBooks.size()) {
     listOfBooks.push_back(title);
-  else {
-    for (int i = 0; i < listOfBooks.size(); i++) {
+  } else {
+    for (int i = 0; i < listOfBooks.size() + 1; i++) {
+      if (i == listOfBooks.size()) {
+        listOfBooks.push_back(title);
+        break;
+      }
       if (title.GetYear() < listOfBooks[i].GetYear()) {
         listOfBooks.insert(listOfBooks.begin() + i, title);
         break;
@@ -80,8 +84,9 @@ const std::vector<Book>& Series::GetListOfBooks() const { return listOfBooks; }
 Series Character::CreateSeries() {
   Series series;
   for (const auto& pair : appearsIn) {
-    if (pair.second == Role::kMain || pair.second == Role::kSupporting)
+    if (pair.second == Role::kMain || pair.second == Role::kSupporting) {
       series.AddBook(pair.first);
+    }
   }
   return series;
 }
