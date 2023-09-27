@@ -33,7 +33,6 @@ std::string Book::GetAuthor() const { return author; }
 int Book::GetYear() const { return year; }
 int Book::GetAmountOfPages() const { return amountOfPages; }
 std::string Book::GetAnnotation() const { return annotation; }
-
 std::ostream& operator<<(std::ostream& os, const Book& book) {
   os << "\nBOOK:\n";
   os << "Title: " << book.GetTitle() << ", author: " << book.GetAuthor()
@@ -41,6 +40,7 @@ std::ostream& operator<<(std::ostream& os, const Book& book) {
      << " pages, annotation: \"" << book.GetAnnotation() << "\".\n";
   return os;
 }
+
 void Character::AddAlias(std::string name) { aliases.push_back(name); }
 void Character::AddBookAndRole(Book book, Role role) {
   appearsIn.push_back({book, role});
@@ -63,6 +63,7 @@ std::ostream& operator<<(std::ostream& os, const Series& series) {
   }
   return os;
 }
+
 void Series::AddBook(Book title) {
   if (!listOfBooks.size()) {
     listOfBooks.push_back(title);
@@ -81,6 +82,7 @@ void Series::AddBook(Book title) {
 }
 int Series::AmountOfBooks() const { return listOfBooks.size(); }
 const std::vector<Book>& Series::GetListOfBooks() const { return listOfBooks; }
+
 Series Character::CreateSeries() {
   Series series;
   for (const auto& pair : appearsIn) {
