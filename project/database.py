@@ -31,7 +31,7 @@ class DatabaseUserTable:
 
     # if email is present in table check password matching
     def check_password_matching(self, email, password):
-        query = f'SELECT password WHERE email = {email}'
+        query = f"SELECT password FROM user WHERE email = '{email}'"
         self.cursor.execute(query)
         real_password = self.cursor.fetchone()[0]
         bin_password = base64.b64decode(real_password)
@@ -43,13 +43,13 @@ class DatabaseUserTable:
     def add_user(self, name, email, password):
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         str_hashed_password = base64.b64encode(hashed_password).decode('utf-8')
-        query = f'INSERT INTO user (name, email, password) VALUES ({name}, {email}, {str_hashed_password})'
+        query = f"INSERT INTO user (name, email, password) VALUES ('{name}', '{email}', '{str_hashed_password}')"
         self.cursor.execute(query)
         self.connection.commit()
 
     # for settings
     def get_name_by_email(self, email):
-        query = f'SELECT name FROM user WHERE email = {email}'
+        query = f"SELECT name FROM user WHERE email = '{email}'"
         self.cursor.execute(query)
         name = self.cursor.fetchone()[0]
         return name
