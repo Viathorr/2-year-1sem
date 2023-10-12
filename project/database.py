@@ -54,6 +54,10 @@ class DatabaseUserTable:
         name = self.cursor.fetchone()[0]
         return name
 
+    def change_user_name(self, name, email):
+        query = f"UPDATE user SET '{name}' WHERE email = '{email}'"
+        self.cursor.execute(query)
+
     def close_connection(self):
         self.connection.commit()
         self.connection.close()

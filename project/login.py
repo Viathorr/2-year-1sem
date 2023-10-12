@@ -3,14 +3,15 @@ from ttkbootstrap.constants import *
 import ttkbootstrap as ttk
 from tkinter import messagebox
 from database import *
+from signup import SignUp
 
 
-class Login:
+class LogIn:
     def __init__(self):
         self.db_table = DatabaseUserTable()
 
         self.root = ttk.Window(themename='morph')
-        self.root.title("Login")
+        self.root.title("Log in")
         self.root.geometry('450x550')
         self.root.minsize(450, 400)
 
@@ -32,7 +33,7 @@ class Login:
         self.password_entry.bind('<FocusIn>', lambda event: self._delete_default_text(2))
         self.password_entry.bind('<FocusOut>', lambda event: self._set_default_text(2))
 
-        # checkbox
+        # checkbutton
         self.check_var = BooleanVar(value=True)
         self.check_button = ttk.Checkbutton(self.root, text='Show password', variable=self.check_var,
                                             command=self.show_password, bootstyle='info')
@@ -42,7 +43,7 @@ class Login:
         self.login_button = ttk.Button(self.root, text='Log in', bootstyle='info', width=14, command=self.login)
         self.login_button.place(relx=0.315, rely=0.73, anchor='w')
 
-    def begin(self):
+    def run(self):
         self.root.mainloop()
 
     def show_password(self):
@@ -76,10 +77,12 @@ class Login:
         password = self.password_entry.get()
         self.db_table.connect()
         if self.db_table.check_email_existence(email):
-            if self.db_table.check_password_matching(password):
+            if self.db_table.check_password_matching(email, password):
+                print('yes')
                 messagebox.showinfo('Success', 'You successfully logged in!')
                 self.clean_entries()
             else:
+                print('no')
                 messagebox.showwarning('Oops... something went wrong!', 'Invalid email or password. Please try again.')
                 self.clean_entries(2)
         else:
@@ -96,22 +99,29 @@ class Login:
             self.password_entry.config(foreground='gray')
             self.password_entry.insert(0, 'Enter your password')
 
+    def close(self):
+        self.root.destroy()
 
-class Login2(Login):
+
+class LogIn2(LogIn):
     def __init__(self):
         super().__init__()
 
         # link to sign up form
-        self.label_under = ttk.Label(self.root, text='Already have an account?', font=('Ebrima', 9))
+        self.label_under = ttk.Label(self.root, text='Don\'t have an account?', font=('Ebrima', 9))
         self.label_under.place(relx=0.165, rely=0.775)
 
         self.label_signup = ttk.Label(self.root, text='Sign up now', font=('Ebrima', 9), bootstyle='primary',
                                       cursor='hand2')
-        self.label_signup.place(relx=0.625, rely=0.775)
-        self.label_signup.bind('<Button-1>', lambda event: self.open_new_window())
+        self.label_signup.place(relx=0.59, rely=0.775)
+        self.label_signup.bind('<Button-1>', lambda event: self._open_signup_window())
 
     @staticmethod
-    def open_new_window():
-        messagebox.showinfo('Sign up', message='Imagine this is a sign up form)')
+    def _open_signup_window():
+        signup_window = SignUp()
+        signup_window.root.mainloop()
 
+
+c = LogIn2()
+c.run()
 
