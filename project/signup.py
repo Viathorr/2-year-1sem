@@ -140,20 +140,3 @@ class SignUp:
             self.clean_entries()
 
 
-class SignUp2(SignUp):
-    def __init__(self):
-        super().__init__()
-
-        # link to log in
-        self.label_under = ttk.Label(self.root, text='Already have an account?', font=('Ebrima', 9))
-        self.label_under.place(relx=0.165, rely=0.88, anchor='w')
-
-        self.label_login = ttk.Label(self.root, text='Log in now', font=('Ebrima', 9), bootstyle='primary',
-                                     cursor='hand2')
-        self.label_login.place(relx=0.627, rely=0.858)
-    #     self.bind('<Button-1>', lambda event: self.open_login_window())
-    #
-    # def _open_login_window(self):
-    #      login_window = LogIn()
-    #      login_window.run()
-

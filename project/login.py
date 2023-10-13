@@ -3,14 +3,13 @@ from ttkbootstrap.constants import *
 import ttkbootstrap as ttk
 from tkinter import messagebox
 from database import *
-from signup import SignUp
 
 
 class LogIn:
     def __init__(self):
         self.db_table = DatabaseUserTable()
 
-        self.root = ttk.Window(themename='morph')
+        self.root = ttk.Toplevel()
         self.root.title("Log in")
         self.root.geometry('450x550')
         self.root.minsize(450, 400)
@@ -101,27 +100,3 @@ class LogIn:
 
     def close(self):
         self.root.destroy()
-
-
-class LogIn2(LogIn):
-    def __init__(self):
-        super().__init__()
-
-        # link to sign up form
-        self.label_under = ttk.Label(self.root, text='Don\'t have an account?', font=('Ebrima', 9))
-        self.label_under.place(relx=0.165, rely=0.775)
-
-        self.label_signup = ttk.Label(self.root, text='Sign up now', font=('Ebrima', 9), bootstyle='primary',
-                                      cursor='hand2')
-        self.label_signup.place(relx=0.59, rely=0.775)
-        self.label_signup.bind('<Button-1>', lambda event: self._open_signup_window())
-
-    @staticmethod
-    def _open_signup_window():
-        signup_window = SignUp()
-        signup_window.root.mainloop()
-
-
-c = LogIn2()
-c.run()
-
