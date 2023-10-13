@@ -11,7 +11,16 @@ class SignUp:
 
         self.root = ttk.Toplevel()
         self.root.title('Sign up')
-        self.root.geometry('450x600')
+
+        # Get the screen width and height
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+
+        # Calculate the center position
+        x_position = (screen_width - 450) // 2  # Adjust the width of the window
+        y_position = (screen_height - 600) // 2
+
+        self.root.geometry(f'450x600+{x_position}+{y_position}')
         self.root.minsize(450, 650)
 
         # Main label
@@ -138,5 +147,3 @@ class SignUp:
             self.db_table.add_user(name, email, password)
             messagebox.showinfo('Success', 'Registration completed successfully!')
             self.clean_entries()
-
-

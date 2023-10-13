@@ -11,7 +11,16 @@ class LogIn:
 
         self.root = ttk.Toplevel()
         self.root.title("Log in")
-        self.root.geometry('450x550')
+
+        # Get the screen width and height
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+
+        # Calculate the center position
+        x_position = (screen_width - 450) // 2  # Adjust the width of the window
+        y_position = (screen_height - 550) // 2
+
+        self.root.geometry(f'450x550+{x_position}+{y_position}')
         self.root.minsize(450, 400)
 
         self.label = ttk.Label(self.root, text='Welcome back!', font=('Ebrima', 16),
@@ -77,11 +86,9 @@ class LogIn:
         self.db_table.connect()
         if self.db_table.check_email_existence(email):
             if self.db_table.check_password_matching(email, password):
-                print('yes')
                 messagebox.showinfo('Success', 'You successfully logged in!')
                 self.clean_entries()
             else:
-                print('no')
                 messagebox.showwarning('Oops... something went wrong!', 'Invalid email or password. Please try again.')
                 self.clean_entries(2)
         else:
