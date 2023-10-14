@@ -11,6 +11,7 @@ class LogIn:
 
         self.root = ttk.Toplevel()
         self.root.title("Log in")
+        self.root.iconbitmap('rsrc/chat.ico')
 
         # Get the screen width and height
         screen_width = self.root.winfo_screenwidth()
@@ -23,7 +24,7 @@ class LogIn:
         self.root.geometry(f'450x550+{x_position}+{y_position}')
         self.root.minsize(450, 400)
 
-        self.label = ttk.Label(self.root, text='Welcome back!', font=('Ebrima', 16),
+        self.label = ttk.Label(self.root, text='Welcome back', font=('Ebrima', 17),
                           bootstyle='info')  # modify the font if you find
         self.label.place(relx=0.253, rely=0.15)
 
@@ -49,7 +50,7 @@ class LogIn:
 
         # login button
         self.login_button = ttk.Button(self.root, text='Log in', bootstyle='info', width=14, command=self.login)
-        self.login_button.place(relx=0.315, rely=0.73, anchor='w')
+        self.login_button.place(relx=0.29, rely=0.73, anchor='w')
 
     def run(self):
         self.root.mainloop()

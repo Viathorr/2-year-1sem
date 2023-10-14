@@ -11,6 +11,7 @@ class SignUp:
 
         self.root = ttk.Toplevel()
         self.root.title('Sign up')
+        self.root.iconbitmap('rsrc/chat.ico')
 
         # Get the screen width and height
         screen_width = self.root.winfo_screenwidth()
@@ -64,7 +65,7 @@ class SignUp:
 
         # Sign up button
         self.signup_button = ttk.Button(self.root, text='Sign up', bootstyle='info', width=15, command=self.signup)
-        self.signup_button.place(relx=0.3, rely=0.825, anchor='w')
+        self.signup_button.place(relx=0.275, rely=0.825, anchor='w')
 
     def run(self):
         self.root.mainloop()

@@ -4,13 +4,15 @@ import ttkbootstrap as ttk
 # from PIL import ImageTk, Image
 from signup import SignUp
 from login import LogIn
+from settings import Settings
 
 
 class MainWindow:
     def __init__(self):
         # Main Window
-        self.root = ttk.Window(themename='morph')
-        self.root.title('Main')
+        self.root = ttk.Window(themename='superhero')
+        self.root.title('Chat')
+        self.root.iconbitmap('rsrc/chat.ico')
 
         # Get the screen width and height
         screen_width = self.root.winfo_screenwidth()
@@ -29,14 +31,16 @@ class MainWindow:
         self.root.columnconfigure(1, weight=4)
 
         # Main label
-        self.label = ttk.Label(text='Online Chat', font=('Microsoft JhengHei Light', 20), bootstyle='info')
+        self.label = ttk.Label(text='Online Chat', font=('Microsoft JhengHei Light', 25, 'bold'), bootstyle='info')
         self.label.grid(row=0, column=1)
 
         # buttons style
         outline_btn_style = ttk.Style()
-        outline_btn_style.configure('info.Outline.TButton', font=('Microsoft JhengHei Light', 10))
+        outline_btn_style.configure('info.Outline.TButton', font=('Microsoft JhengHei Light', 10, 'bold'))
         btn_style = ttk.Style()
-        btn_style.configure('info.TButton', font=('Microsoft JhengHei Light', 10))
+        btn_style.configure('info.TButton', font=('Microsoft JhengHei Light', 10, 'bold'))
+        secondary_btn_style = ttk.Style()
+        secondary_btn_style.configure('secondary.TButton', font=('Microsoft JhengHei Light', 8, 'bold'))
 
         # Open button
         self.open_btn = ttk.Button(text='Open', bootstyle='info', width=18)
@@ -53,21 +57,23 @@ class MainWindow:
         self.signup_btn.grid(row=3, column=1, ipady=10)
 
         # Settings button (implement)
+        self.settings_btn = ttk.Button(text='Settings', bootstyle='secondary', command=self.open_settings)
+        self.settings_btn.grid(row=4, column=0, ipady=5, padx=20, pady=20, sticky='sw', columnspan=3)
 
     def run(self):
         self.root.mainloop()
 
-    @staticmethod
-    def open_login_window():
+    def open_login_window(self):
         login = LogIn()
         login.run()
 
-    @staticmethod
-    def open_signup_window():
+    def open_signup_window(self):
         signup = SignUp()
         signup.run()
 
+    def open_settings(self):
+        settings = Settings()
+        settings.run()
 
 instance = MainWindow()
 instance.run()
-
