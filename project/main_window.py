@@ -10,7 +10,7 @@ from settings import Settings
 class MainWindow:
     def __init__(self):
         # Main Window
-        self.root = ttk.Window(themename='superhero')
+        self.root = ttk.Window(themename='morph')
         self.root.title('Chat')
         self.root.iconbitmap('rsrc/chat.ico')
 
@@ -40,7 +40,7 @@ class MainWindow:
         btn_style = ttk.Style()
         btn_style.configure('info.TButton', font=('Microsoft JhengHei Light', 10, 'bold'))
         secondary_btn_style = ttk.Style()
-        secondary_btn_style.configure('secondary.TButton', font=('Microsoft JhengHei Light', 8, 'bold'))
+        secondary_btn_style.configure('dark.TButton', font=('Microsoft JhengHei Light', 8, 'bold'))
 
         # Open button
         self.open_btn = ttk.Button(text='Open', bootstyle='info', width=18)
@@ -57,7 +57,7 @@ class MainWindow:
         self.signup_btn.grid(row=3, column=1, ipady=10)
 
         # Settings button (implement)
-        self.settings_btn = ttk.Button(text='Settings', bootstyle='secondary', command=self.open_settings)
+        self.settings_btn = ttk.Button(text='Settings', bootstyle='dark', command=self.open_settings)
         self.settings_btn.grid(row=4, column=0, ipady=5, padx=20, pady=20, sticky='sw', columnspan=3)
 
     def run(self):
@@ -74,6 +74,7 @@ class MainWindow:
     def open_settings(self):
         settings = Settings()
         settings.run()
+
 
 instance = MainWindow()
 instance.run()
