@@ -7,8 +7,8 @@ from ttkbootstrap.constants import *
 
 
 class Settings:
-    def __init__(self):
-        # self.root = ttk.Window(themename='morph')
+    def __init__(self, parent):
+        self.master = parent.master  # main window's master
         self.root = ttk.Toplevel()
         self.root.title('Settings')
         self.root.iconbitmap('rsrc/chat.ico')
@@ -30,13 +30,17 @@ class Settings:
         self.name_entry_text = tk.StringVar(value='None')
         self.email_entry_text = tk.StringVar(value='None')
 
+        if self.master.user:
+            self.name_entry_text.set(value=self.master.user.name)
+            self.email_entry_text.set(value=self.master.user.email)
+
         # User name
         self.name_label = ttk.Label(self.root, text='Name', font=('Microsoft JhengHei Light', 16, 'bold'), bootstyle='info')
         self.name_label.grid(row=0, column=0, padx=10, pady=30, sticky='e')
-        self.name_entry = ttk.Entry(self.root, textvariable=self.name_entry_text, state='readonly', width=24,
+        self.name_entry = ttk.Entry(self.root, textvariable=self.name_entry_text, width=24,
                                     font=('Microsoft JhengHei Light', 9), bootstyle='info')
         self.name_entry.grid(row=0, column=1, ipady=4)
-        self.name_entry.bind('<FocusIn>', lambda event: self.name_entry_config())
+        # self.name_entry.bind('<FocusIn>', lambda event: self.name_entry_config())
 
         # User email
         self.email_label = ttk.Label(self.root, text='Email', font=('Microsoft JhengHei Light', 16, 'bold'), bootstyle='info')
@@ -60,22 +64,28 @@ class Settings:
     def run(self):
         self.root.mainloop()
 
-    def name_entry_config(self):
-        # if ...
-        # self.name_entry.config(state='normal')
-        # else ...
-        ToastNotification('You must be logged in', "You can't change name if you are not logged in.", duration=4000,
-                          bootstyle='info', position=(10, 20, 'ne')).show_toast()
+    # def name_entry_config(self):
+    #     # if ...
+    #     # self.name_entry.config(state='normal')
+    #     # else ...
+    #     ToastNotification('You must be logged in', "You can't change name if you are not logged in.", duration=4000,
+    #                       bootstyle='info', position=(10, 20, 'ne')).show_toast()
 
     def save_changes(self):
-        # if ...
-        messagebox.showerror('You must be logged in', "Please log in or sign up first.")
-        # else ..
+        if not self.master.user:
+            messagebox.showerror('You must be logged in', "Please log in or sign up first.")
+        else:
+            self.master.user.change_name(new_name=self.name_entry.get())
 
     def logout(self):
-        # if ...
-        messagebox.showerror('You must be logged in', "Please log in or sign up first.")
-        # else ...
+        if not self.master.user:
+            messagebox.showerror('You must be logged in', "Please log in or sign up first.")
+        else:
+            yesno = messagebox.askyesno('Logging out', 'Are you sure you want to log out?')
+            if yesno:
+                self.master.user = None
+                self.name_entry_text.set(value='None')
+                self.email_entry_text.set(value='None')
 
 
 # settings = Settings()

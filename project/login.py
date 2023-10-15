@@ -2,13 +2,14 @@ from tkinter import *
 from ttkbootstrap.constants import *
 import ttkbootstrap as ttk
 from tkinter import messagebox
+from user import User
 from database import *
 
 
 class LogIn:
-    def __init__(self):
-        self.db_table = DatabaseUserTable()
-
+    def __init__(self, parent):
+        # self.db_table = DatabaseUserTable()
+        self.master = parent.master  # main window's master
         self.root = ttk.Toplevel()
         self.root.title("Log in")
         self.root.iconbitmap('rsrc/chat.ico')
@@ -84,9 +85,14 @@ class LogIn:
     def login(self):
         email = self.email_entry.get()
         password = self.password_entry.get()
-        self.db_table.connect()
-        if self.db_table.check_email_existence(email):
-            if self.db_table.check_password_matching(email, password):
+        self.master.db.connect()
+        if self.master.db.check_email_existence(email):
+            if self.master.db.check_password_matching(email, password):
+                # setting user
+                username = self.master.db.get_name_by_email(email)
+                user = User(username, email)
+                self.master.set_user(user)
+                # showing the result
                 messagebox.showinfo('Success', 'You successfully logged in!')
                 self.clean_entries()
             else:

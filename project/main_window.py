@@ -8,7 +8,9 @@ from settings import Settings
 
 
 class MainWindow:
-    def __init__(self):
+    def __init__(self, parent):
+        self.master = parent  # chat app
+
         # Main Window
         self.root = ttk.Window(themename='morph')
         self.root.title('Chat')
@@ -56,7 +58,7 @@ class MainWindow:
                                      command=self.open_signup_window)
         self.signup_btn.grid(row=3, column=1, ipady=10)
 
-        # Settings button (implement)
+        # Settings button
         self.settings_btn = ttk.Button(text='Settings', bootstyle='dark', command=self.open_settings)
         self.settings_btn.grid(row=4, column=0, ipady=5, padx=20, pady=20, sticky='sw', columnspan=3)
 
@@ -64,17 +66,17 @@ class MainWindow:
         self.root.mainloop()
 
     def open_login_window(self):
-        login = LogIn()
+        login = LogIn(self)
         login.run()
 
     def open_signup_window(self):
-        signup = SignUp()
+        signup = SignUp(self)
         signup.run()
 
     def open_settings(self):
-        settings = Settings()
+        settings = Settings(self)
         settings.run()
 
 
-instance = MainWindow()
-instance.run()
+# instance = MainWindow()
+# instance.run()
