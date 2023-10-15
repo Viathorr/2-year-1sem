@@ -3,30 +3,23 @@ from ttkbootstrap.constants import *
 import ttkbootstrap as ttk
 from tkinter import messagebox
 from user import User
-from database import *
 
 
 class LogIn:
     def __init__(self, parent):
-        # self.db_table = DatabaseUserTable()
         self.master = parent.master  # main window's master
         self.root = ttk.Toplevel()
         self.root.title("Log in")
         self.root.iconbitmap('rsrc/chat.ico')
 
-        # Get the screen width and height
-        screen_width = self.root.winfo_screenwidth()
-        screen_height = self.root.winfo_screenheight()
-
         # Calculate the center position
-        x_position = (screen_width - 450) // 2  # Adjust the width of the window
-        y_position = (screen_height - 550) // 2
+        x_position = (self.root.winfo_screenwidth() - 450) // 2  # Adjust the width of the window
+        y_position = (self.root.winfo_screenheight() - 550) // 2
 
         self.root.geometry(f'450x550+{x_position}+{y_position}')
         self.root.minsize(450, 400)
 
-        self.label = ttk.Label(self.root, text='Welcome back', font=('Ebrima', 17),
-                          bootstyle='info')  # modify the font if you find
+        self.label = ttk.Label(self.root, text='Welcome back', font=('Ebrima', 17), bootstyle='info')
         self.label.place(relx=0.253, rely=0.15)
 
         # email entry

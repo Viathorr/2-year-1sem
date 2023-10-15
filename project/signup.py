@@ -3,7 +3,6 @@ from ttkbootstrap.constants import *
 import ttkbootstrap as ttk
 from tkinter import messagebox
 from user import User
-from database import *
 
 
 class SignUp:
@@ -13,13 +12,9 @@ class SignUp:
         self.root.title('Sign up')
         self.root.iconbitmap('rsrc/chat.ico')
 
-        # Get the screen width and height
-        screen_width = self.root.winfo_screenwidth()
-        screen_height = self.root.winfo_screenheight()
-
         # Calculate the center position
-        x_position = (screen_width - 450) // 2  # Adjust the width of the window
-        y_position = (screen_height - 600) // 2
+        x_position = (self.root.winfo_screenwidth() - 450) // 2  # Adjust the width of the window
+        y_position = (self.root.winfo_screenheight() - 600) // 2
 
         self.root.geometry(f'450x600+{x_position}+{y_position}')
         self.root.minsize(450, 650)

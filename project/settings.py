@@ -13,13 +13,9 @@ class Settings:
         self.root.title('Settings')
         self.root.iconbitmap('rsrc/chat.ico')
 
-        # Get the screen width and height
-        screen_width = self.root.winfo_screenwidth()
-        screen_height = self.root.winfo_screenheight()
-
         # Calculate the center position
-        x_position = (screen_width - 500) // 2  # Adjust the width of the window
-        y_position = (screen_height - 400) // 2
+        x_position = (self.root.winfo_screenwidth() - 500) // 2  # Adjust the width of the window
+        y_position = (self.root.winfo_screenheight() - 400) // 2
 
         self.root.geometry(f'500x400+{x_position}+{y_position}')
         self.root.minsize(500, 400)
@@ -35,7 +31,8 @@ class Settings:
             self.email_entry_text.set(value=self.master.user.email)
 
         # User name
-        self.name_label = ttk.Label(self.root, text='Name', font=('Microsoft JhengHei Light', 16, 'bold'), bootstyle='info')
+        self.name_label = ttk.Label(self.root, text='Name', font=('Microsoft JhengHei Light', 16, 'bold'),
+                                    bootstyle='info')
         self.name_label.grid(row=0, column=0, padx=10, pady=30, sticky='e')
         self.name_entry = ttk.Entry(self.root, textvariable=self.name_entry_text, width=24,
                                     font=('Microsoft JhengHei Light', 9), bootstyle='info')
@@ -43,7 +40,8 @@ class Settings:
         # self.name_entry.bind('<FocusIn>', lambda event: self.name_entry_config())
 
         # User email
-        self.email_label = ttk.Label(self.root, text='Email', font=('Microsoft JhengHei Light', 16, 'bold'), bootstyle='info')
+        self.email_label = ttk.Label(self.root, text='Email', font=('Microsoft JhengHei Light', 16, 'bold'),
+                                     bootstyle='info')
         self.email_label.grid(row=1, column=0, padx=10, pady=20, sticky='e')
         self.email_entry = ttk.Entry(self.root, state='readonly', textvariable=self.email_entry_text, width=24,
                                      font=('Microsoft JhengHei Light', 9), bootstyle='info')
@@ -64,13 +62,6 @@ class Settings:
     def run(self):
         self.root.mainloop()
 
-    # def name_entry_config(self):
-    #     # if ...
-    #     # self.name_entry.config(state='normal')
-    #     # else ...
-    #     ToastNotification('You must be logged in', "You can't change name if you are not logged in.", duration=4000,
-    #                       bootstyle='info', position=(10, 20, 'ne')).show_toast()
-
     def save_changes(self):
         if not self.master.user:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
@@ -86,7 +77,3 @@ class Settings:
                 self.master.user = None
                 self.name_entry_text.set(value='None')
                 self.email_entry_text.set(value='None')
-
-
-# settings = Settings()
-# settings.run()

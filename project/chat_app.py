@@ -1,6 +1,6 @@
 from main_window import *
 from database import DatabaseUserTable
-from user import User
+# from user import User
 
 
 class ChatApp:

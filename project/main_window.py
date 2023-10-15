@@ -1,7 +1,6 @@
-from tkinter import *
+from tkinter import messagebox
 from ttkbootstrap.constants import *
 import ttkbootstrap as ttk
-# from PIL import ImageTk, Image
 from signup import SignUp
 from login import LogIn
 from settings import Settings
@@ -16,13 +15,9 @@ class MainWindow:
         self.root.title('Chat')
         self.root.iconbitmap('rsrc/chat.ico')
 
-        # Get the screen width and height
-        screen_width = self.root.winfo_screenwidth()
-        screen_height = self.root.winfo_screenheight()
-
         # Calculate the center position
-        x_position = (screen_width - 600) // 2  # Adjust the width of the window
-        y_position = (screen_height - 650) // 2
+        x_position = (self.root.winfo_screenwidth() - 600) // 2  # Adjust the width of the window
+        y_position = (self.root.winfo_screenheight() - 650) // 2
 
         self.root.geometry(f'600x650+{x_position}+{y_position}')
         self.root.minsize(500, 550)
@@ -45,7 +40,7 @@ class MainWindow:
         secondary_btn_style.configure('dark.TButton', font=('Microsoft JhengHei Light', 8, 'bold'))
 
         # Open button
-        self.open_btn = ttk.Button(text='Open', bootstyle='info', width=18)
+        self.open_btn = ttk.Button(text='Open', bootstyle='info', width=18, command=self.open_chat_window)
         self.open_btn.grid(row=1, column=1, ipady=10)
 
         # Log in button
@@ -65,6 +60,12 @@ class MainWindow:
     def run(self):
         self.root.mainloop()
 
+    def open_chat_window(self):
+        if not self.master.user:
+            messagebox.showerror('You must be logged in', "Please log in or sign up first.")
+        else:
+            return
+
     def open_login_window(self):
         login = LogIn(self)
         login.run()
@@ -76,7 +77,3 @@ class MainWindow:
     def open_settings(self):
         settings = Settings(self)
         settings.run()
-
-
-# instance = MainWindow()
-# instance.run()
