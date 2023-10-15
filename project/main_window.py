@@ -40,40 +40,40 @@ class MainWindow:
         secondary_btn_style.configure('dark.TButton', font=('Microsoft JhengHei Light', 8, 'bold'))
 
         # Open button
-        self.open_btn = ttk.Button(text='Open', bootstyle='info', width=18, command=self.open_chat_window)
+        self.open_btn = ttk.Button(text='Open', bootstyle='info', width=18, command=self._open_chat_window)
         self.open_btn.grid(row=1, column=1, ipady=10)
 
         # Log in button
         self.login_btn = ttk.Button(text='Log in', bootstyle='info-outline', width=18,
-                                    command=self.open_login_window)
+                                    command=self._open_login_window)
         self.login_btn.grid(row=2, column=1, ipady=10)
 
         # Sign up button
         self.signup_btn = ttk.Button(text='Sign up', bootstyle='info-outline', width=18,
-                                     command=self.open_signup_window)
+                                     command=self._open_signup_window)
         self.signup_btn.grid(row=3, column=1, ipady=10)
 
         # Settings button
-        self.settings_btn = ttk.Button(text='Settings', bootstyle='dark', command=self.open_settings)
+        self.settings_btn = ttk.Button(text='Settings', bootstyle='dark', command=self._open_settings)
         self.settings_btn.grid(row=4, column=0, ipady=5, padx=20, pady=20, sticky='sw', columnspan=3)
 
-    def run(self):
+    def open(self):
         self.root.mainloop()
 
-    def open_chat_window(self):
+    def _open_chat_window(self):
         if not self.master.user:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
         else:
             return
 
-    def open_login_window(self):
+    def _open_login_window(self):
         login = LogIn(self)
         login.run()
 
-    def open_signup_window(self):
+    def _open_signup_window(self):
         signup = SignUp(self)
         signup.run()
 
-    def open_settings(self):
+    def _open_settings(self):
         settings = Settings(self)
         settings.run()

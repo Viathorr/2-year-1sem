@@ -55,14 +55,14 @@ class SignUp:
         # Show password checkbutton
         self.check_var = BooleanVar(value=True)
         self.show_password_check = ttk.Checkbutton(self.root, text='Show password', variable=self.check_var,
-                                                   bootstyle='info', command=self.show_password)
+                                                   bootstyle='info', command=self._show_password)
         self.show_password_check.place(relx=0.5, rely=0.67)
 
         # Sign up button
-        self.signup_button = ttk.Button(self.root, text='Sign up', bootstyle='info', width=15, command=self.signup)
+        self.signup_button = ttk.Button(self.root, text='Sign up', bootstyle='info', width=15, command=self._signup)
         self.signup_button.place(relx=0.275, rely=0.825, anchor='w')
 
-    def run(self):
+    def open(self):
         self.root.mainloop()
 
     def _delete_default_text(self, num):
@@ -86,18 +86,18 @@ class SignUp:
     def _set_default_text(self, num):
         if num == 1:
             if self.name_entry.get() == '':
-                self.clean_entries(1)
+                self._clean_entries(1)
         elif num == 2:
             if self.email_entry.get() == '':
-                self.clean_entries(2)
+                self._clean_entries(2)
         elif num == 3:
             if self.password_entry.get() == '':
-                self.clean_entries(3)
+                self._clean_entries(3)
         elif num == 4:
             if self.confirm_password_entry.get() == '':
-                self.clean_entries(4)
+                self._clean_entries(4)
 
-    def show_password(self):
+    def _show_password(self):
         if self.check_var.get():
             self.confirm_password_entry.config(show='')
             self.password_entry.config(show='')
@@ -105,7 +105,7 @@ class SignUp:
             self.confirm_password_entry.config(show='*')
             self.password_entry.config(show='*')
 
-    def clean_entries(self, num=0):
+    def _clean_entries(self, num=0):
         if not num or num == 1:
             self.name_entry.delete(0, END)
             self.name_entry.config(foreground='gray')
@@ -123,7 +123,7 @@ class SignUp:
             self.confirm_password_entry.config(foreground='gray')
             self.confirm_password_entry.insert(0, 'Confirm your password')
 
-    def signup(self):
+    def _signup(self):
         name = self.name_entry.get()
         email = self.email_entry.get()
         password = self.password_entry.get()
@@ -132,8 +132,8 @@ class SignUp:
 
         if password != confirm_password:
             messagebox.showerror('Error', 'Passwords do not match. Please try again.')
-            self.clean_entries(2)
-            self.clean_entries(3)
+            self._clean_entries(2)
+            self._clean_entries(3)
             return
         if self.master.db.check_email_existence(email):
             messagebox.showwarning('Warning', '''An account with this email already exists. 
@@ -145,4 +145,4 @@ class SignUp:
             self.master.set_user(user)
 
             messagebox.showinfo('Success', 'Registration completed successfully!')
-            self.clean_entries()
+            self._clean_entries()

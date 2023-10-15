@@ -16,5 +16,4 @@ class ChatWindow:
         self.root.minsize(500, 550)
 
 
-# chat = ChatWindow()
-# chat.root.mainloop()
+

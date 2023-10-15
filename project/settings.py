@@ -53,22 +53,22 @@ class Settings:
         btn_style.configure('info.TButton', font=('Microsoft JhengHei Light', 10, 'bold'))
 
         self.save_changes_btn = ttk.Button(self.root, text='Save changes', bootstyle='info', width=13,
-                                           command=self.save_changes)
+                                           command=self._save_changes)
         self.save_changes_btn.grid(row=2, column=1, padx=51, pady=20, ipady=7, ipadx=10, columnspan=2, sticky='se')
 
-        self.logout_btn = ttk.Button(self.root, text='Log out', bootstyle='info-outline', width=10, command=self.logout)
+        self.logout_btn = ttk.Button(self.root, text='Log out', bootstyle='info-outline', width=10, command=self._logout)
         self.logout_btn.grid(row=3, column=1, padx=51, pady=10, ipady=4, columnspan=2, sticky='se')
 
-    def run(self):
+    def open(self):
         self.root.mainloop()
 
-    def save_changes(self):
+    def _save_changes(self):
         if not self.master.user:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
         else:
             self.master.user.change_name(new_name=self.name_entry.get())
 
-    def logout(self):
+    def _logout(self):
         if not self.master.user:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
         else:
