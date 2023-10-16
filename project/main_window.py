@@ -68,12 +68,12 @@ class MainWindow:
 
     def _open_login_window(self):
         login = LogIn(self)
-        login.run()
+        login.open()
 
     def _open_signup_window(self):
         signup = SignUp(self)
-        signup.run()
+        signup.open()
 
     def _open_settings(self):
         settings = Settings(self)
-        settings.run()
+        settings.open()

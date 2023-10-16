@@ -17,7 +17,7 @@ class Settings:
         x_position = (self.root.winfo_screenwidth() - 500) // 2  # Adjust the width of the window
         y_position = (self.root.winfo_screenheight() - 400) // 2
 
-        self.root.geometry(f'500x400+{x_position}+{y_position}')
+        self.root.geometry(f'500x400+{x_position-500}+{y_position}')
         self.root.minsize(500, 400)
 
         self.root.columnconfigure(0, weight=1)

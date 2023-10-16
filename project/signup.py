@@ -11,12 +11,13 @@ class SignUp:
         self.root = ttk.Toplevel()
         self.root.title('Sign up')
         self.root.iconbitmap('rsrc/chat.ico')
+        self.root.attributes('-topmost', True)
 
         # Calculate the center position
         x_position = (self.root.winfo_screenwidth() - 450) // 2  # Adjust the width of the window
         y_position = (self.root.winfo_screenheight() - 600) // 2
 
-        self.root.geometry(f'450x600+{x_position}+{y_position}')
+        self.root.geometry(f'450x600+{x_position+550}+{y_position-26}')
         self.root.minsize(450, 650)
 
         # Main label
@@ -61,6 +62,9 @@ class SignUp:
         # Sign up button
         self.signup_button = ttk.Button(self.root, text='Sign up', bootstyle='info', width=15, command=self._signup)
         self.signup_button.place(relx=0.275, rely=0.825, anchor='w')
+
+
+        # self.root.lift()
 
     def open(self):
         self.root.mainloop()
