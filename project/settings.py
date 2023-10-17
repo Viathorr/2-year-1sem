@@ -17,7 +17,7 @@ class Settings:
         x_position = (self.root.winfo_screenwidth() - 500) // 2  # Adjust the width of the window
         y_position = (self.root.winfo_screenheight() - 400) // 2
 
-        self.root.geometry(f'500x400+{x_position-500}+{y_position}')
+        self.root.geometry(f'500x400+{x_position-555}+{y_position}')
         self.root.minsize(500, 400)
 
         self.root.columnconfigure(0, weight=1)
@@ -31,33 +31,32 @@ class Settings:
             self.email_entry_text.set(value=self.master.user.email)
 
         # User name
-        self.name_label = ttk.Label(self.root, text='Name', font=('Microsoft JhengHei Light', 16, 'bold'),
+        name_label = ttk.Label(self.root, text='Name', font=('Microsoft JhengHei Light', 16, 'bold'),
                                     bootstyle='info')
-        self.name_label.grid(row=0, column=0, padx=10, pady=30, sticky='e')
-        self.name_entry = ttk.Entry(self.root, textvariable=self.name_entry_text, width=24,
-                                    font=('Microsoft JhengHei Light', 9), bootstyle='info')
-        self.name_entry.grid(row=0, column=1, ipady=4)
-        # self.name_entry.bind('<FocusIn>', lambda event: self.name_entry_config())
+        name_label.grid(row=0, column=0, padx=10, pady=30, sticky='e')
+        name_entry = ttk.Entry(self.root, textvariable=self.name_entry_text, width=24,
+                               font=('Microsoft JhengHei Light', 9), bootstyle='info')
+        name_entry.grid(row=0, column=1, ipady=4)
 
         # User email
-        self.email_label = ttk.Label(self.root, text='Email', font=('Microsoft JhengHei Light', 16, 'bold'),
+        email_label = ttk.Label(self.root, text='Email', font=('Microsoft JhengHei Light', 16, 'bold'),
                                      bootstyle='info')
-        self.email_label.grid(row=1, column=0, padx=10, pady=20, sticky='e')
-        self.email_entry = ttk.Entry(self.root, state='readonly', textvariable=self.email_entry_text, width=24,
+        email_label.grid(row=1, column=0, padx=10, pady=20, sticky='e')
+        email_entry = ttk.Entry(self.root, state='readonly', textvariable=self.email_entry_text, width=24,
                                      font=('Microsoft JhengHei Light', 9), bootstyle='info')
-        self.email_entry.grid(row=1, column=1, ipady=4)
-        ToolTip(self.email_entry, "You can't change an email", bootstyle='secondary-inverse')
+        email_entry.grid(row=1, column=1, ipady=4)
+        ToolTip(email_entry, "You can't change an email", bootstyle='secondary-inverse')
 
         # Save changes button
         btn_style = ttk.Style()
         btn_style.configure('info.TButton', font=('Microsoft JhengHei Light', 10, 'bold'))
 
-        self.save_changes_btn = ttk.Button(self.root, text='Save changes', bootstyle='info', width=13,
+        save_changes_btn = ttk.Button(self.root, text='Save changes', bootstyle='info', width=13,
                                            command=self._save_changes)
-        self.save_changes_btn.grid(row=2, column=1, padx=51, pady=20, ipady=7, ipadx=10, columnspan=2, sticky='se')
+        save_changes_btn.grid(row=2, column=1, padx=51, pady=20, ipady=7, ipadx=10, columnspan=2, sticky='se')
 
-        self.logout_btn = ttk.Button(self.root, text='Log out', bootstyle='info-outline', width=10, command=self._logout)
-        self.logout_btn.grid(row=3, column=1, padx=51, pady=10, ipady=4, columnspan=2, sticky='se')
+        logout_btn = ttk.Button(self.root, text='Log out', bootstyle='info-outline', width=10, command=self._logout)
+        logout_btn.grid(row=3, column=1, padx=51, pady=10, ipady=4, columnspan=2, sticky='se')
 
     def open(self):
         self.root.mainloop()
@@ -66,7 +65,7 @@ class Settings:
         if not self.master.user:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
         else:
-            self.master.user.change_name(new_name=self.name_entry.get())
+            self.master.user.change_name(new_name=self.name_entry_text.get())
 
     def _logout(self):
         if not self.master.user:

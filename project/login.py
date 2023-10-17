@@ -20,8 +20,8 @@ class LogIn:
         self.root.geometry(f'450x550+{x_position+550}+{y_position}')
         self.root.minsize(450, 400)
 
-        self.label = ttk.Label(self.root, text='Welcome back', font=('Ebrima', 17), bootstyle='info')
-        self.label.place(relx=0.253, rely=0.15)
+        label = ttk.Label(self.root, text='Welcome back', font=('Ebrima', 17), bootstyle='info')
+        label.place(relx=0.253, rely=0.15)
 
         # email entry
         self.email_entry = ttk.Entry(self.root, width=25, font=('Ebrima', 10), foreground='gray')
@@ -39,16 +39,13 @@ class LogIn:
 
         # checkbutton
         self.check_var = BooleanVar(value=True)
-        self.check_button = ttk.Checkbutton(self.root, text='Show password', variable=self.check_var,
+        check_button = ttk.Checkbutton(self.root, text='Show password', variable=self.check_var,
                                             command=self._show_password, bootstyle='info')
-        self.check_button.place(relx=0.5, rely=0.54)
+        check_button.place(relx=0.5, rely=0.54)
 
         # login button
-        self.login_button = ttk.Button(self.root, text='Log in', bootstyle='info', width=14, command=self._login)
-        self.login_button.place(relx=0.29, rely=0.73, anchor='w')
-
-
-        # self.root.lift()
+        login_button = ttk.Button(self.root, text='Log in', bootstyle='info', width=14, command=self._login)
+        login_button.place(relx=0.29, rely=0.73, anchor='w')
 
     def open(self):
         self.root.mainloop()
@@ -93,10 +90,10 @@ class LogIn:
                 messagebox.showinfo('Success', 'You successfully logged in!')
                 self._clean_entries()
             else:
-                messagebox.showwarning('Oops... something went wrong!', 'Invalid email or password. Please try again.')
+                messagebox.showerror('Oops... something went wrong!', 'Invalid email or password. Please try again.')
                 self._clean_entries(2)
         else:
-            messagebox.showwarning('Oops... something went wrong!', 'Invalid email or password. Please try again.')
+            messagebox.showerror('Oops... something went wrong!', 'Invalid email or password. Please try again.')
             self._clean_entries()
 
     def _clean_entries(self, num=0):

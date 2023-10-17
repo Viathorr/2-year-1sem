@@ -21,9 +21,9 @@ class SignUp:
         self.root.minsize(450, 650)
 
         # Main label
-        self.label = ttk.Label(self.root, text='Create an account', font=('Ebrima', 17),
+        label = ttk.Label(self.root, text='Create an account', font=('Ebrima', 17),
                                bootstyle='info')
-        self.label.place(relx=0.195, rely=0.13)
+        label.place(relx=0.195, rely=0.13)
 
         # Name entry
         self.name_entry = ttk.Entry(self.root, width=25, font=('Ebrima', 10), foreground='gray')
@@ -55,16 +55,13 @@ class SignUp:
 
         # Show password checkbutton
         self.check_var = BooleanVar(value=True)
-        self.show_password_check = ttk.Checkbutton(self.root, text='Show password', variable=self.check_var,
+        show_password_check = ttk.Checkbutton(self.root, text='Show password', variable=self.check_var,
                                                    bootstyle='info', command=self._show_password)
-        self.show_password_check.place(relx=0.5, rely=0.67)
+        show_password_check.place(relx=0.5, rely=0.67)
 
         # Sign up button
-        self.signup_button = ttk.Button(self.root, text='Sign up', bootstyle='info', width=15, command=self._signup)
-        self.signup_button.place(relx=0.275, rely=0.825, anchor='w')
-
-
-        # self.root.lift()
+        signup_button = ttk.Button(self.root, text='Sign up', bootstyle='info', width=15, command=self._signup)
+        signup_button.place(relx=0.275, rely=0.825, anchor='w')
 
     def open(self):
         self.root.mainloop()

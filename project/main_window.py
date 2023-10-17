@@ -4,6 +4,7 @@ import ttkbootstrap as ttk
 from signup import SignUp
 from login import LogIn
 from settings import Settings
+from chat_window import ChatWindow
 
 
 class MainWindow:
@@ -28,8 +29,8 @@ class MainWindow:
         self.root.columnconfigure(1, weight=4)
 
         # Main label
-        self.label = ttk.Label(text='Online Chat', font=('Microsoft JhengHei Light', 25, 'bold'), bootstyle='info')
-        self.label.grid(row=0, column=1)
+        label = ttk.Label(text='Online Chat', font=('Microsoft JhengHei Light', 25, 'bold'), bootstyle='info')
+        label.grid(row=0, column=1)
 
         # buttons style
         outline_btn_style = ttk.Style()
@@ -40,31 +41,32 @@ class MainWindow:
         secondary_btn_style.configure('dark.TButton', font=('Microsoft JhengHei Light', 8, 'bold'))
 
         # Open button
-        self.open_btn = ttk.Button(text='Open', bootstyle='info', width=18, command=self._open_chat_window)
-        self.open_btn.grid(row=1, column=1, ipady=10)
+        open_btn = ttk.Button(text='Open', bootstyle='info', width=18, command=self._open_chat_window)
+        open_btn.grid(row=1, column=1, ipady=10)
 
         # Log in button
-        self.login_btn = ttk.Button(text='Log in', bootstyle='info-outline', width=18,
+        login_btn = ttk.Button(text='Log in', bootstyle='info-outline', width=18,
                                     command=self._open_login_window)
-        self.login_btn.grid(row=2, column=1, ipady=10)
+        login_btn.grid(row=2, column=1, ipady=10)
 
         # Sign up button
-        self.signup_btn = ttk.Button(text='Sign up', bootstyle='info-outline', width=18,
+        signup_btn = ttk.Button(text='Sign up', bootstyle='info-outline', width=18,
                                      command=self._open_signup_window)
-        self.signup_btn.grid(row=3, column=1, ipady=10)
+        signup_btn.grid(row=3, column=1, ipady=10)
 
         # Settings button
-        self.settings_btn = ttk.Button(text='Settings', bootstyle='dark', command=self._open_settings)
-        self.settings_btn.grid(row=4, column=0, ipady=5, padx=20, pady=20, sticky='sw', columnspan=3)
+        settings_btn = ttk.Button(text='Settings', bootstyle='dark', command=self._open_settings)
+        settings_btn.grid(row=4, column=0, ipady=5, padx=20, pady=20, sticky='sw', columnspan=3)
 
     def open(self):
         self.root.mainloop()
 
     def _open_chat_window(self):
-        if not self.master.user:
-            messagebox.showerror('You must be logged in', "Please log in or sign up first.")
-        else:
-            return
+        # if not self.master.user:
+        #     messagebox.showerror('You must be logged in', "Please log in or sign up first.")
+        # else:
+        chat_window = ChatWindow(self)
+        chat_window.open()
 
     def _open_login_window(self):
         login = LogIn(self)
