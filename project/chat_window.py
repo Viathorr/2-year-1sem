@@ -1,6 +1,7 @@
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from ttkbootstrap.tooltip import ToolTip
+from datetime import datetime
 
 
 class ChatWindow:
@@ -8,13 +9,13 @@ class ChatWindow:
         self.master = parent.master
 
         self.root = ttk.Toplevel()
-        # self.root = ttk.Window(themename='morph')
+        self.root.iconbitmap('rsrc/chat.ico')
 
         # Calculate the center position
         x_position = (self.root.winfo_screenwidth() - 650) // 2  # Adjust the width of the window
         y_position = (self.root.winfo_screenheight() - 650) // 2
 
-        self.root.geometry(f'650x650+{x_position}+{y_position}')
+        self.root.geometry(f'650x650+{x_position}+{y_position-30}')
         self.root.minsize(650, 650)
 
         self.root.rowconfigure(0, weight=2)
@@ -38,12 +39,10 @@ class ChatWindow:
         self.text_widget = ttk.Text(self.root, state=DISABLED, height=20, font=('Microsoft JhengHei Light', 10, 'bold'),
                                     foreground='black')
         self.text_widget.grid(row=1, columnspan=2, padx=4)
-
-        # Scrollbar
-        scrollbar = ttk.Scrollbar(self.text_widget, bootstyle='secondary-round', command=self.text_widget.yview)
-        scrollbar.place(relheight=1, relx=0.975)
-
-        self.text_widget.config(yscrollcommand=scrollbar.set)
+        self.text_widget.bind('<Enter>', lambda event: self._scrollbar_appearing())
+        self.text_widget.bind('<Leave>', lambda event: self._scrollbar_disappearing())
+        # Scrollbar for text widget
+        self.scrollbar = None
 
         # Message entry
         self.msg_entry = ttk.Entry(self.root, width=45, foreground='black', font=('Microsoft JhengHei Light', 10))
@@ -58,13 +57,28 @@ class ChatWindow:
     def open(self):
         self.root.mainloop()
 
+    def _scrollbar_appearing(self):
+        self.scrollbar = ttk.Scrollbar(self.text_widget, bootstyle='secondary-round', command=self.text_widget.yview)
+        self.scrollbar.place(relheight=1, relx=0.975)
+
+        self.text_widget.config(yscrollcommand=self.scrollbar.set)
+
+    def _scrollbar_disappearing(self):
+        self.scrollbar.place_forget()
+
     def _send_message(self):
         if not self.msg_entry.get():
             return
         else:
-            message = f'{self.master.user.name}: {self.msg_entry.get()}\n\n'
+            curr_time = datetime.now().time()
+            time = curr_time.strftime('%H:%M')
+            if self.master.user:
+                message = f'{self.master.user.name}: {self.msg_entry.get()}\n{time}\n\n'
+            else:
+                message = f'Guest: {self.msg_entry.get()}\n{time}\n\n'
             self.text_widget.config(state=NORMAL)
             self.text_widget.insert(END, message)
+            self.text_widget.see(END)
             self.text_widget.config(state=DISABLED)
             self.msg_entry.delete(0, END)
 
