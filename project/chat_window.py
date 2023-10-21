@@ -1,14 +1,21 @@
 import ttkbootstrap as ttk
+import tkinter as tk
 from ttkbootstrap.constants import *
 from ttkbootstrap.tooltip import ToolTip
 from datetime import datetime
 
+# TODO
+#  1. Instead of using Text widget, use canvas (frame inside it, scrollbar in root window) and add there messages using
+#  LabelFrame (maybe create a separate class)
+#  2. Implement 'show participants' window +
+
 
 class ChatWindow:
     def __init__(self, parent=None):
-        self.master = parent.master
-
-        self.root = ttk.Toplevel()
+        # self.master = parent.master
+        #
+        # self.root = ttk.Toplevel()
+        self.root = ttk.Window(title='Chat')
         self.root.iconbitmap('rsrc/chat.ico')
 
         # Calculate the center position
@@ -31,7 +38,7 @@ class ChatWindow:
         self.num_of_participants = ttk.StringVar(value='Number of participants: 1')
         participants_label = ttk.Label(self.root, textvariable=self.num_of_participants, cursor='hand2',
                                        font=('Microsoft JhengHei Light', 13, 'bold'), bootstyle='info')
-        participants_label.bind('<FocusIn>', lambda event: self.open_list_of_participants())
+        participants_label.bind('<Button-1>', lambda event: self.open_list_of_participants())
         participants_label.grid(row=0, column=0, columnspan=2, pady=7, padx=7, sticky='nw')
         ToolTip(participants_label, 'Show all participants', bootstyle='secondary-inverse')
 
@@ -45,9 +52,12 @@ class ChatWindow:
         self.scrollbar = None
 
         # Message entry
-        self.msg_entry = ttk.Entry(self.root, width=45, foreground='black', font=('Microsoft JhengHei Light', 10))
-        self.msg_entry.grid(row=2, column=0, sticky='w', padx=4, pady=14, ipady=5)
+        self.msg_entry = ttk.Entry(self.root, width=45, foreground='gray', font=('Microsoft JhengHei Light', 10))
+        self.msg_entry.insert(0, 'Message')
+        self.msg_entry.grid(row=2, column=0, sticky='w', padx=10, pady=14, ipady=5)
         self.msg_entry.bind('<Return>', lambda event: self._send_message())
+        self.msg_entry.bind('<FocusIn>', lambda event: self._delete_default_text())
+        self.msg_entry.bind('<FocusOut>', lambda event: self._set_default_text())
 
         # Enter button
         send_msg_btn = ttk.Button(self.root, text='Send', command=lambda: self._send_message(), width=10,
@@ -72,18 +82,45 @@ class ChatWindow:
         else:
             curr_time = datetime.now().time()
             time = curr_time.strftime('%H:%M')
-            if self.master.user:
-                message = f'{self.master.user.name}: {self.msg_entry.get()}\n{time}\n\n'
-            else:
-                message = f'Guest: {self.msg_entry.get()}\n{time}\n\n'
+            # if self.master.user:
+            #     message = f'{self.master.user.name}: {self.msg_entry.get()}\n{time}\n\n'
+            # else:
+            message = f'Guest: {self.msg_entry.get()}\n{time}\n\n'
             self.text_widget.config(state=NORMAL)
             self.text_widget.insert(END, message)
             self.text_widget.see(END)
             self.text_widget.config(state=DISABLED)
             self.msg_entry.delete(0, END)
+            self.root.focus_set()
+            self._set_default_text()
+
+    def _set_default_text(self):
+        if self.msg_entry.get() == '':
+            self.msg_entry.config(foreground='gray')
+            self.msg_entry.insert(0, 'Message')
+
+    def _delete_default_text(self):
+        if self.msg_entry.get() == 'Message':
+            self.msg_entry.delete(0, END)
+            self.msg_entry.config(foreground='black')
 
     def open_list_of_participants(self):
-        pass
+        participants_list = ttk.Toplevel(title='Participants')
+        participants_list.iconbitmap('rsrc/chat.ico')
+
+        x_position = (self.root.winfo_screenwidth() - 350) // 2
+        y_position = (self.root.winfo_screenheight() - 400) // 2
+
+        participants_list.geometry(f'350x400+{x_position}+{y_position - 30}')
+        participants_list.minsize(350, 400)
+
+        my_list = tk.Listbox(participants_list, font=('Microsoft JhengHei Light', 10), foreground='black',
+                             selectborderwidth=1)
+        my_list.pack(padx=5, pady=5, fill='both', expand=True)
+        my_list.insert(END, "Guest")
+        participants_list.mainloop()
+
+
 
 
 if __name__ == '__main__':

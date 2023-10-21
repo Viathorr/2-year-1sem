@@ -23,14 +23,14 @@ class MainWindow:
         self.root.geometry(f'550x600+{x_position}+{y_position-30}')
         self.root.minsize(500, 550)
 
-        self.root.rowconfigure((0, 4), weight=3)
+        self.root.rowconfigure((0, 4), weight=2)
         self.root.rowconfigure((1, 2, 3), weight=1)
         self.root.columnconfigure((0, 2), weight=1)
         self.root.columnconfigure(1, weight=4)
 
         # Main label
         label = ttk.Label(text='Online Chat', font=('Microsoft JhengHei Light', 25, 'bold'), bootstyle='info')
-        label.grid(row=0, column=1)
+        label.grid(row=0, column=1, pady=20)
 
         # buttons style
         outline_btn_style = ttk.Style()

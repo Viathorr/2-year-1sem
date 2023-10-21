@@ -2,11 +2,6 @@ from main_window import MainWindow
 from chat_window import ChatWindow
 from database import DatabaseUserTable
 
-# TODO
-# 1. Modify main window appearance
-# 2. If you want, modify the name entry in settings window, so that when the focus is on it, font color changes to black
-# and vice versa
-
 
 class ChatApp:
     def __init__(self):
