@@ -4,9 +4,6 @@ import ttkbootstrap as ttk
 from tkinter import messagebox
 from user import User
 
-# TODO
-#  fix the problem with 'show password' and default text
-
 
 class SignUp:
     def __init__(self, parent):
@@ -57,7 +54,7 @@ class SignUp:
         self.confirm_password_entry.bind('<FocusOut>', lambda event: self._set_default_text(4))
 
         # Show password checkbutton
-        self.check_var = BooleanVar(value=True)
+        self.check_var = BooleanVar(value=False)
         show_password_check = ttk.Checkbutton(self.root, text='Show password', variable=self.check_var,
                                                    bootstyle='info', command=self._show_password)
         show_password_check.place(relx=0.5, rely=0.67)
@@ -82,10 +79,14 @@ class SignUp:
             self.password_entry.config(foreground='black')
             if self.password_entry.get() == 'Enter your password':
                 self.password_entry.delete(0, END)
+                if not self.check_var.get():
+                    self.password_entry.config(show='•')
         elif num == 4:
             self.confirm_password_entry.config(foreground='black')
             if self.confirm_password_entry.get() == 'Confirm your password':
                 self.confirm_password_entry.delete(0, END)
+                if not self.check_var.get():
+                    self.confirm_password_entry.config(show='•')
 
     def _set_default_text(self, num):
         if num == 1:
@@ -106,8 +107,10 @@ class SignUp:
             self.confirm_password_entry.config(show='')
             self.password_entry.config(show='')
         else:
-            self.confirm_password_entry.config(show='*')
-            self.password_entry.config(show='*')
+            if self.confirm_password_entry.get() != 'Confirm your password':
+                self.confirm_password_entry.config(show='•')
+            if self.password_entry.get() != 'Enter your password':
+                self.password_entry.config(show='•')
 
     def _clean_entries(self, num=0):
         if not num or num == 1:
@@ -120,10 +123,14 @@ class SignUp:
             self.email_entry.insert(0, 'Enter your email')
         if not num or num == 3:
             self.password_entry.delete(0, END)
+            if not self.check_var.get():
+                self.password_entry.config(show='')
             self.password_entry.config(foreground='gray')
             self.password_entry.insert(0, 'Enter your password')
         if not num or num == 4:
             self.confirm_password_entry.delete(0, END)
+            if not self.check_var.get():
+                self.confirm_password_entry.config(show='')
             self.confirm_password_entry.config(foreground='gray')
             self.confirm_password_entry.insert(0, 'Confirm your password')
 

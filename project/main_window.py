@@ -47,16 +47,16 @@ class MainWindow:
         self.chat_window = None
 
         # Log in button
-        login_btn = ttk.Button(text='Log in', bootstyle='info-outline', width=18,
+        self.login_btn = ttk.Button(text='Log in', bootstyle='info-outline', width=18,
                                     command=self._open_login_window)
-        login_btn.grid(row=2, column=1, ipady=10)
+        self.login_btn.grid(row=2, column=1, ipady=10)
 
         self.login_window = None
 
         # Sign up button
-        signup_btn = ttk.Button(text='Sign up', bootstyle='info-outline', width=18,
+        self.signup_btn = ttk.Button(text='Sign up', bootstyle='info-outline', width=18,
                                      command=self._open_signup_window)
-        signup_btn.grid(row=3, column=1, ipady=10)
+        self.signup_btn.grid(row=3, column=1, ipady=10)
 
         self.signup_window = None
 
@@ -70,13 +70,13 @@ class MainWindow:
         self.root.mainloop()
 
     def _open_chat_window(self):
-        # if not self.master.user:
-        #     messagebox.showerror('You must be logged in', "Please log in or sign up first.")
-        # else:
-        self.root.withdraw()
-        self.chat_window = ChatWindow(self)
-        self.chat_window.root.protocol('WM_DELETE_WINDOW', self._close_chat_window)
-        self.chat_window.open()
+        if not self.master.user:
+            messagebox.showwarning('You must be logged in', "Please log in or sign up first.")
+        else:
+            self.root.withdraw()
+            self.chat_window = ChatWindow(self)
+            self.chat_window.root.protocol('WM_DELETE_WINDOW', self._close_chat_window)
+            self.chat_window.open()
 
     def _close_chat_window(self):
         self.chat_window.root.destroy()
@@ -91,6 +91,9 @@ class MainWindow:
     def _close_login_window(self):
         self.login_window.root.destroy()
         self.root.deiconify()
+        if self.master.user:
+            self.login_btn.config(state=DISABLED)
+            self.signup_btn.config(state=DISABLED)
 
     def _open_signup_window(self):
         self.root.withdraw()
@@ -101,6 +104,9 @@ class MainWindow:
     def _close_signup_window(self):
         self.signup_window.root.destroy()
         self.root.deiconify()
+        if self.master.user:
+            self.login_btn.config(state=DISABLED)
+            self.signup_btn.config(state=DISABLED)
 
     def _open_settings(self):
         self.root.withdraw()

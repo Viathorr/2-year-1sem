@@ -9,6 +9,7 @@ from ttkbootstrap.constants import *
 class Settings:
     def __init__(self, parent):
         self.master = parent.master  # main window's master
+        self.parent = parent
         self.root = ttk.Toplevel()
         self.root.title('Settings')
         self.root.iconbitmap('rsrc/chat.ico')
@@ -74,5 +75,7 @@ class Settings:
             yesno = messagebox.askyesno('Logging out', 'Are you sure you want to log out?')
             if yesno:
                 self.master.user = None
+                self.parent.login_btn.config(state=NORMAL)
+                self.parent.signup_btn.config(state=NORMAL)
                 self.name_entry_text.set(value='None')
                 self.email_entry_text.set(value='None')

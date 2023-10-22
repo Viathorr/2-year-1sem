@@ -14,7 +14,6 @@ class LogIn:
         self.root = ttk.Toplevel()
         self.root.title("Log in")
         self.root.iconbitmap('rsrc/chat.ico')
-        # self.root.attributes('-topmost', True)
 
         # Calculate the center position
         x_position = (self.root.winfo_screenwidth() - 450) // 2  # Adjust the width of the window
@@ -41,7 +40,7 @@ class LogIn:
         self.password_entry.bind('<FocusOut>', lambda event: self._set_default_text(2))
 
         # checkbutton
-        self.check_var = BooleanVar(value=True)
+        self.check_var = BooleanVar(value=False)
         check_button = ttk.Checkbutton(self.root, text='Show password', variable=self.check_var,
                                             command=self._show_password, bootstyle='info')
         check_button.place(relx=0.5, rely=0.54)
@@ -56,8 +55,8 @@ class LogIn:
     def _show_password(self):
         if self.check_var.get():
             self.password_entry.config(show='')
-        else:
-            self.password_entry.config(show='*')
+        elif self.password_entry != 'Enter your password':
+            self.password_entry.config(show='•')
 
     def _delete_default_text(self, num):
         if num == 1:
@@ -68,6 +67,8 @@ class LogIn:
             self.password_entry.config(foreground='black')
             if self.password_entry.get() == 'Enter your password':
                 self.password_entry.delete(0, END)
+                if not self.check_var.get():
+                    self.password_entry.config(show='•')
 
     def _set_default_text(self, num):
         if num == 1:
@@ -76,6 +77,8 @@ class LogIn:
                 self.email_entry.config(foreground='gray')
         elif num == 2:
             if self.password_entry.get() == '':
+                if not self.check_var.get():
+                    self.password_entry.config(show='')
                 self.password_entry.insert(0, 'Enter your password')
                 self.password_entry.config(foreground='gray')
 

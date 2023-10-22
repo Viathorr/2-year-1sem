@@ -1,5 +1,4 @@
 from main_window import MainWindow
-from chat_window import ChatWindow
 from database import DatabaseUserTable
 
 
@@ -14,13 +13,6 @@ class ChatApp:
 
     def run(self):
         self.main_window.open()
-
-    def _open_chat_window(self):
-        # if not self.master.user:
-        #     messagebox.showerror('You must be logged in', "Please log in or sign up first.")
-        # else:
-        chat_window = ChatWindow(self)
-        chat_window.open()
 
     def _close_window(self):
         self.db.close_connection()

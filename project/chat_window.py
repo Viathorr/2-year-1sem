@@ -4,18 +4,13 @@ from ttkbootstrap.constants import *
 from ttkbootstrap.tooltip import ToolTip
 from datetime import datetime
 
-# TODO
-#  1. Instead of using Text widget, use canvas (frame inside it, scrollbar in root window) and add there messages using
-#  LabelFrame (maybe create a separate class)
-#  2. Implement 'show participants' window +
-
 
 class ChatWindow:
-    def __init__(self, parent=None):
-        # self.master = parent.master
-        #
-        # self.root = ttk.Toplevel()
-        self.root = ttk.Window(title='Chat')
+    def __init__(self, parent):
+        self.master = parent.master
+
+        self.root = ttk.Toplevel()
+        # self.root = ttk.Window(title='Chat')
         self.root.iconbitmap('rsrc/chat.ico')
 
         # Calculate the center position
@@ -82,10 +77,7 @@ class ChatWindow:
         else:
             curr_time = datetime.now().time()
             time = curr_time.strftime('%H:%M')
-            # if self.master.user:
-            #     message = f'{self.master.user.name}: {self.msg_entry.get()}\n{time}\n\n'
-            # else:
-            message = f'Guest: {self.msg_entry.get()}\n{time}\n\n'
+            message = f'{self.master.user.name}: {self.msg_entry.get()}\n{time}\n\n'
             self.text_widget.config(state=NORMAL)
             self.text_widget.insert(END, message)
             self.text_widget.see(END)
@@ -117,10 +109,8 @@ class ChatWindow:
         my_list = tk.Listbox(participants_list, font=('Microsoft JhengHei Light', 10), foreground='black',
                              selectborderwidth=1)
         my_list.pack(padx=5, pady=5, fill='both', expand=True)
-        my_list.insert(END, "Guest")
+        my_list.insert(END, self.master.user.name)
         participants_list.mainloop()
-
-
 
 
 if __name__ == '__main__':
