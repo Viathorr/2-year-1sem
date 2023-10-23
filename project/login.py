@@ -110,4 +110,6 @@ class LogIn:
         if not num or num == 2:
             self.password_entry.delete(0, END)
             self.password_entry.config(foreground='gray')
+            if not self.check_var.get():
+                self.password_entry.config(show='')
             self.password_entry.insert(0, 'Enter your password')
