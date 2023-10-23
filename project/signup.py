@@ -143,8 +143,8 @@ class SignUp:
 
         if password != confirm_password:
             messagebox.showerror('Error', 'Passwords do not match. Please try again.')
-            self._clean_entries(2)
             self._clean_entries(3)
+            self._clean_entries(4)
             return
         if self.master.db.check_email_existence(email):
             messagebox.showwarning('Warning', '''An account with this email already exists. 

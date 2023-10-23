@@ -4,9 +4,6 @@ import ttkbootstrap as ttk
 from tkinter import messagebox
 from user import User
 
-# TODO
-#  fix the problem with 'show password' and default text
-
 
 class LogIn:
     def __init__(self, parent):
