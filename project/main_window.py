@@ -62,7 +62,7 @@ class MainWindow:
 
         # Settings button
         settings_btn = ttk.Button(text='Settings', bootstyle='dark', command=self._open_settings)
-        settings_btn.grid(row=4, column=0, ipady=5, padx=20, pady=20, sticky='sw', columnspan=3)
+        settings_btn.grid(row=4, column=1, ipady=5, padx=20, pady=15, sticky='n')
 
         self.settings_window = None
 
