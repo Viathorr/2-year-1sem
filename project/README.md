@@ -12,5 +12,5 @@ GUI elements (approximately):
 - 5 windows
 - 30 control elements
 - 1 listbox
-- ~25 event handlers
+- 34 event handlers
 

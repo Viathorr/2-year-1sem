@@ -12,14 +12,6 @@ class DatabaseUserTable:
         self.connection = sqlite3.connect('users.db')
         self.cursor = self.connection.cursor()
 
-    # def create_table(self):
-    #     query = '''CREATE TABLE user (
-    #             id INTEGER PRIMARY KEY AUTOINCREMENT,
-    #             name TEXT NOT NULL,
-    #             email TEXT NOT NULL,
-    #             password TEXT NOT NULL)'''
-    #     self.cursor.execute(query)
-
     # for logging in
     def check_email_existence(self, email):
         query = f"SELECT COUNT(*) FROM user WHERE email = '{email}'"

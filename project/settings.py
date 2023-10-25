@@ -53,7 +53,7 @@ class Settings:
         btn_style.configure('info.TButton', font=('Microsoft JhengHei Light', 10, 'bold'))
 
         save_changes_btn = ttk.Button(self.root, text='Save changes', bootstyle='info', width=13,
-                                           command=self._save_changes)
+                                      command=self._save_changes)
         save_changes_btn.grid(row=2, column=1, padx=51, pady=20, ipady=7, ipadx=10, columnspan=2, sticky='se')
 
         logout_btn = ttk.Button(self.root, text='Log out', bootstyle='info-outline', width=10, command=self._logout)

@@ -74,6 +74,8 @@ class ChatWindow:
     def _send_message(self):
         if not self.msg_entry.get():
             return
+        elif self.msg_entry.get() == "Message":
+            return
         else:
             curr_time = datetime.now().time()
             time = curr_time.strftime('%H:%M')
