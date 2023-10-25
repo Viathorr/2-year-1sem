@@ -3,6 +3,9 @@ from ttkbootstrap.constants import *
 import ttkbootstrap as ttk
 from tkinter import messagebox
 from user import User
+import re
+
+# Implement email address verification
 
 
 class SignUp:
@@ -133,9 +136,16 @@ class SignUp:
             self.confirm_password_entry.config(foreground='gray')
             self.confirm_password_entry.insert(0, 'Confirm your password')
 
+    def _is_valid_email(self, email):
+        email_regex = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', re.VERBOSE)
+        return bool(email_regex.match(email))
+
     def _signup(self):
         name = self.name_entry.get()
         email = self.email_entry.get()
+        if not self._is_valid_email(email):
+            messagebox.showerror('Invalid email', 'Invalid email. Try again.')
+            return
         password = self.password_entry.get()
         confirm_password = self.confirm_password_entry.get()
         self.master.db.connect()
