@@ -6,7 +6,7 @@ Framework/libraries: tkinter for GUI (+ ttkbootstrap extension)
 
 Code style: PEP8
 
-Database: SQLite3
+Database: SQLite
 
 GUI elements (approximately):
 - 5 windows
