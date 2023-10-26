@@ -5,8 +5,6 @@ from tkinter import messagebox
 from user import User
 import re
 
-# Implement email address verification
-
 
 class SignUp:
     def __init__(self, parent):

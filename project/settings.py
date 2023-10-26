@@ -34,16 +34,16 @@ class Settings:
         # User name
         name_label = ttk.Label(self.root, text='Name', font=('Microsoft JhengHei Light', 16, 'bold'),
                                     bootstyle='info')
-        name_label.grid(row=0, column=0, padx=10, pady=30, sticky='e')
-        name_entry = ttk.Entry(self.root, textvariable=self.name_entry_text, width=24,
+        name_label.grid(row=0, column=0, padx=15, pady=30, sticky='e')
+        name_entry = ttk.Entry(self.root, textvariable=self.name_entry_text, width=26,
                                font=('Microsoft JhengHei Light', 9), bootstyle='info', foreground='gray')
         name_entry.grid(row=0, column=1, ipady=4)
 
         # User email
         email_label = ttk.Label(self.root, text='Email', font=('Microsoft JhengHei Light', 16, 'bold'),
                                      bootstyle='info')
-        email_label.grid(row=1, column=0, padx=10, pady=20, sticky='e')
-        email_entry = ttk.Entry(self.root, state='readonly', textvariable=self.email_entry_text, width=24,
+        email_label.grid(row=1, column=0, padx=15, pady=20, sticky='e')
+        email_entry = ttk.Entry(self.root, state='readonly', textvariable=self.email_entry_text, width=26,
                                      font=('Microsoft JhengHei Light', 9), bootstyle='info', foreground='gray')
         email_entry.grid(row=1, column=1, ipady=4)
         ToolTip(email_entry, "You can't change an email", bootstyle='secondary-inverse')

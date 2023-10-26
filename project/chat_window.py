@@ -113,8 +113,3 @@ class ChatWindow:
         my_list.pack(padx=5, pady=5, fill='both', expand=True)
         my_list.insert(END, self.master.user.name)
         participants_list.mainloop()
-
-
-if __name__ == '__main__':
-    check = ChatWindow()
-    check.open()
