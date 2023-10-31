@@ -9,8 +9,7 @@ class ChatWindow:
     def __init__(self, parent):
         self.master = parent.master
 
-        self.root = ttk.Toplevel()
-        # self.root = ttk.Window(title='Chat')
+        self.root = ttk.Toplevel(title='Chat')
         self.root.iconbitmap('rsrc/chat.ico')
 
         # Calculate the center position

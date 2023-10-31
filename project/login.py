@@ -39,7 +39,7 @@ class LogIn:
         # checkbutton
         self.check_var = BooleanVar(value=False)
         check_button = ttk.Checkbutton(self.root, text='Show password', variable=self.check_var,
-                                            command=self._show_password, bootstyle='info')
+                                       command=self._show_password, bootstyle='info')
         check_button.place(relx=0.5, rely=0.54)
 
         # login button
@@ -52,7 +52,8 @@ class LogIn:
     def _show_password(self):
         if self.check_var.get():
             self.password_entry.config(show='')
-        elif self.password_entry != 'Enter your password':
+        elif self.password_entry.get() != 'Enter your password':
+            print("elif statement")
             self.password_entry.config(show='•')
 
     def _delete_default_text(self, num):

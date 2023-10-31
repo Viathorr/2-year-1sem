@@ -2,7 +2,6 @@ import tkinter as tk
 import ttkbootstrap as ttk
 from tkinter import messagebox
 from ttkbootstrap.tooltip import ToolTip
-from ttkbootstrap.toast import ToastNotification
 from ttkbootstrap.constants import *
 
 
