@@ -53,7 +53,6 @@ class LogIn:
         if self.check_var.get():
             self.password_entry.config(show='')
         elif self.password_entry.get() != 'Enter your password':
-            print("elif statement")
             self.password_entry.config(show='•')
 
     def _delete_default_text(self, num):
@@ -91,7 +90,7 @@ class LogIn:
                 user = User(username, email)
                 self.master.set_user(user)
                 # showing the result
-                messagebox.showinfo('Success', 'You successfully logged in!')
+                messagebox.showinfo('Success', 'You\'ve successfully logged in!')
                 self._clean_entries()
             else:
                 messagebox.showerror('Oops... something went wrong!', 'Invalid email or password. Please try again.')

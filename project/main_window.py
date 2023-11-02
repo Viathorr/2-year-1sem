@@ -47,14 +47,14 @@ class MainWindow:
         self.chat_window = None
 
         # Log in button
-        self.login_btn = ttk.Button(text='Log in', bootstyle='info-outline', width=18,
+        self.login_btn = ttk.Button(text='Log in', bootstyle='info', width=18,
                                     command=self._open_login_window)
         self.login_btn.grid(row=2, column=1, ipady=10)
 
         self.login_window = None
 
         # Sign up button
-        self.signup_btn = ttk.Button(text='Sign up', bootstyle='info-outline', width=18,
+        self.signup_btn = ttk.Button(text='Sign up', bootstyle='info', width=18,
                                      command=self._open_signup_window)
         self.signup_btn.grid(row=3, column=1, ipady=10)
 

@@ -15,10 +15,10 @@ class Settings:
 
         # Calculate the center position
         x_position = (self.root.winfo_screenwidth() - 500) // 2  # Adjust the width of the window
-        y_position = (self.root.winfo_screenheight() - 400) // 2
+        y_position = (self.root.winfo_screenheight() - 350) // 2
 
-        self.root.geometry(f'500x400+{x_position}+{y_position-50}')
-        self.root.minsize(500, 400)
+        self.root.geometry(f'500x350+{x_position}+{y_position-50}')
+        self.root.minsize(500, 350)
 
         self.root.columnconfigure(0, weight=1)
         self.root.columnconfigure(1, weight=2)
@@ -33,15 +33,15 @@ class Settings:
         # User name
         name_label = ttk.Label(self.root, text='Name', font=('Microsoft JhengHei Light', 16, 'bold'),
                                     bootstyle='info')
-        name_label.grid(row=0, column=0, padx=15, pady=30, sticky='e')
+        name_label.grid(row=0, column=0, padx=10, pady=17, sticky='se')
         name_entry = ttk.Entry(self.root, textvariable=self.name_entry_text, width=26,
                                font=('Microsoft JhengHei Light', 9), bootstyle='info', foreground='gray')
-        name_entry.grid(row=0, column=1, ipady=4)
+        name_entry.grid(row=0, column=1, ipady=4, pady=15, sticky='s')
 
         # User email
         email_label = ttk.Label(self.root, text='Email', font=('Microsoft JhengHei Light', 16, 'bold'),
                                      bootstyle='info')
-        email_label.grid(row=1, column=0, padx=15, pady=20, sticky='e')
+        email_label.grid(row=1, column=0, padx=10, pady=15, sticky='e')
         email_entry = ttk.Entry(self.root, state='readonly', textvariable=self.email_entry_text, width=26,
                                      font=('Microsoft JhengHei Light', 9), bootstyle='info', foreground='gray')
         email_entry.grid(row=1, column=1, ipady=4)
