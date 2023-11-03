@@ -66,6 +66,7 @@ class Settings:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
         else:
             self.master.user.change_name(new_name=self.name_entry_text.get())
+            self.master.db.change_user_name(self.name_entry_text.get(), self.master.user.email)
 
     def _logout(self):
         if not self.master.user:
