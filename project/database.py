@@ -1,4 +1,5 @@
-import sqlite3
+import mysql.connector
+import config
 import bcrypt
 import base64
 
@@ -9,7 +10,11 @@ class DatabaseUserTable:
         self.cursor = None
 
     def connect(self):
-        self.connection = sqlite3.connect('users.db')
+        self.connection = mysql.connector.connect(user=config.DB_USER,
+                                                  password=config.DB_PASSWORD,
+                                                  host=config.DB_HOST,
+                                                  port=config.DB_PORT,
+                                                  database=config.DB_NAME)
         self.cursor = self.connection.cursor()
 
     # for logging in

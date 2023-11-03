@@ -162,5 +162,5 @@ class SignUp:
             user = User(name, email)
             self.master.set_user(user)
 
-            messagebox.showinfo('Success', 'Registration completed successfully!')
+            messagebox.showinfo('Success', 'Registration has completed successfully!')
             self._clean_entries()
