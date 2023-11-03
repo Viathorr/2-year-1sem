@@ -11,12 +11,6 @@ class ChatWindow:
 
         self.root = ttk.Toplevel(title='Chat')
         self.root.iconbitmap('rsrc/chat.ico')
-
-        # Calculate the center position
-        x_position = (self.root.winfo_screenwidth() - 650) // 2  # Adjust the width of the window
-        y_position = (self.root.winfo_screenheight() - 650) // 2
-
-        self.root.geometry(f'650x650+{x_position}+{y_position-30}')
         self.root.minsize(650, 650)
 
         self.root.rowconfigure(0, weight=2)
@@ -59,6 +53,11 @@ class ChatWindow:
         send_msg_btn.grid(row=2, column=1, padx=10, pady=5, sticky='w', ipady=4)
 
     def open(self):
+        # Calculate the center position
+        x_position = (self.root.winfo_screenwidth() - 650) // 2  # Adjust the width of the window
+        y_position = (self.root.winfo_screenheight() - 650) // 2
+
+        self.root.geometry(f'650x650+{x_position}+{y_position - 30}')
         self.root.mainloop()
 
     def _scrollbar_appearing(self):

@@ -12,12 +12,6 @@ class Settings:
         self.root = ttk.Toplevel()
         self.root.title('Settings')
         self.root.iconbitmap('rsrc/chat.ico')
-
-        # Calculate the center position
-        x_position = (self.root.winfo_screenwidth() - 500) // 2  # Adjust the width of the window
-        y_position = (self.root.winfo_screenheight() - 350) // 2
-
-        self.root.geometry(f'500x350+{x_position}+{y_position-50}')
         self.root.minsize(500, 350)
 
         self.root.columnconfigure(0, weight=1)
@@ -59,6 +53,11 @@ class Settings:
         logout_btn.grid(row=3, column=1, padx=51, pady=10, ipady=4, columnspan=2, sticky='se')
 
     def open(self):
+        # Calculate the center position
+        x_position = (self.root.winfo_screenwidth() - 500) // 2  # Adjust the width of the window
+        y_position = (self.root.winfo_screenheight() - 350) // 2
+
+        self.root.geometry(f'500x350+{x_position}+{y_position - 50}')
         self.root.mainloop()
 
     def _save_changes(self):

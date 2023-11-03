@@ -11,12 +11,6 @@ class LogIn:
         self.root = ttk.Toplevel()
         self.root.title("Log in")
         self.root.iconbitmap('rsrc/chat.ico')
-
-        # Calculate the center position
-        x_position = (self.root.winfo_screenwidth() - 450) // 2  # Adjust the width of the window
-        y_position = (self.root.winfo_screenheight() - 550) // 2
-
-        self.root.geometry(f'450x550+{x_position}+{y_position-50}')
         self.root.minsize(450, 400)
 
         label = ttk.Label(self.root, text='Welcome back', font=('Ebrima', 17), bootstyle='info')
@@ -47,6 +41,11 @@ class LogIn:
         login_button.place(relx=0.29, rely=0.73, anchor='w')
 
     def open(self):
+        # Calculate the center position
+        x_position = (self.root.winfo_screenwidth() - 450) // 2  # Adjust the width of the window
+        y_position = (self.root.winfo_screenheight() - 550) // 2
+
+        self.root.geometry(f'450x550+{x_position}+{y_position - 50}')
         self.root.mainloop()
 
     def _show_password(self):
