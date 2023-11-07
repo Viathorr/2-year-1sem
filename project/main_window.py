@@ -8,7 +8,7 @@ from chat_window import ChatWindow
 
 
 class MainWindow:
-    def __init__(self, parent, theme='morph'):
+    def __init__(self, parent, theme='minty'):
         self.master = parent  # chat app
 
         # Main Window
@@ -29,40 +29,38 @@ class MainWindow:
         self.root.columnconfigure(1, weight=4)
 
         # Main label
-        label = ttk.Label(text='Online Chat', font=('Microsoft JhengHei Light', 25, 'bold'), bootstyle='info')
+        label = ttk.Label(text='Online Chat', font=('Microsoft JhengHei', 25, 'bold'), bootstyle='dark')
         label.grid(row=0, column=1, pady=20)
 
         # buttons style
-        outline_btn_style = ttk.Style()
-        outline_btn_style.configure('info.Outline.TButton', font=('Microsoft JhengHei Light', 10, 'bold'))
         btn_style = ttk.Style()
-        btn_style.configure('info.TButton', font=('Microsoft JhengHei Light', 10, 'bold'))
-        secondary_btn_style = ttk.Style()
-        secondary_btn_style.configure('dark.TButton', font=('Microsoft JhengHei Light', 8, 'bold'))
+        btn_style.configure('info.TButton', font=('Microsoft JhengHei', 10, 'bold'))
+        dark_btn_style = ttk.Style()
+        dark_btn_style.configure('dark.Outline.TButton', font=('Microsoft JhengHei', 10, 'bold'))
 
         # Open button
-        open_btn = ttk.Button(text='Open', bootstyle='info', width=18, command=self._open_chat_window)
+        open_btn = ttk.Button(text='Open', bootstyle='info', width=17, command=self._open_chat_window)
         open_btn.grid(row=1, column=1, ipady=10)
 
         self.chat_window = None
 
         # Log in button
-        self.login_btn = ttk.Button(text='Log in', bootstyle='info', width=18,
+        self.login_btn = ttk.Button(text='Log in', bootstyle='info', width=17,
                                     command=self._open_login_window)
         self.login_btn.grid(row=2, column=1, ipady=10)
 
         self.login_window = None
 
         # Sign up button
-        self.signup_btn = ttk.Button(text='Sign up', bootstyle='info', width=18,
+        self.signup_btn = ttk.Button(text='Sign up', bootstyle='info', width=17,
                                      command=self._open_signup_window)
         self.signup_btn.grid(row=3, column=1, ipady=10)
 
         self.signup_window = None
 
         # Settings button
-        settings_btn = ttk.Button(text='Settings', bootstyle='dark', command=self._open_settings)
-        settings_btn.grid(row=4, column=1, ipady=5, padx=20, pady=15, sticky='n')
+        settings_btn = ttk.Button(text='Settings', bootstyle='dark-outline', width=17, command=self._open_settings)
+        settings_btn.grid(row=4, column=1, ipady=3, pady=15, sticky='n')
 
         self.settings_window = None
 

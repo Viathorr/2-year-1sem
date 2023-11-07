@@ -23,9 +23,9 @@ class ChatWindow:
         btn_style.configure(style='TButton', font=('Microsoft JhengHei Light', 10, 'bold'))
 
         # Label that represents amount of participants in chat
-        self.num_of_participants = ttk.StringVar(value='Number of participants: 1')
+        self.num_of_participants = ttk.StringVar(value='Participants: 1')
         participants_label = ttk.Label(self.root, textvariable=self.num_of_participants, cursor='hand2',
-                                       font=('Microsoft JhengHei Light', 13, 'bold'), bootstyle='info')
+                                       font=('Microsoft JhengHei', 13, 'bold'), bootstyle='info')
         participants_label.bind('<Button-1>', lambda event: self.open_list_of_participants())
         participants_label.grid(row=0, column=0, columnspan=2, pady=7, padx=7, sticky='nw')
         ToolTip(participants_label, 'Show all participants', bootstyle='secondary-inverse')

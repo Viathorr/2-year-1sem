@@ -25,16 +25,16 @@ class Settings:
             self.email_entry_text.set(value=self.master.user.email)
 
         # User name
-        name_label = ttk.Label(self.root, text='Name', font=('Microsoft JhengHei Light', 16, 'bold'),
-                                    bootstyle='info')
+        name_label = ttk.Label(self.root, text='Name', font=('Microsoft JhengHei', 16),
+                                    bootstyle='dark')
         name_label.grid(row=0, column=0, padx=10, pady=17, sticky='se')
         name_entry = ttk.Entry(self.root, textvariable=self.name_entry_text, width=26,
                                font=('Microsoft JhengHei Light', 9), bootstyle='info', foreground='gray')
         name_entry.grid(row=0, column=1, ipady=4, pady=15, sticky='s')
 
         # User email
-        email_label = ttk.Label(self.root, text='Email', font=('Microsoft JhengHei Light', 16, 'bold'),
-                                     bootstyle='info')
+        email_label = ttk.Label(self.root, text='Email', font=('Microsoft JhengHei', 16),
+                                     bootstyle='dark')
         email_label.grid(row=1, column=0, padx=10, pady=15, sticky='e')
         email_entry = ttk.Entry(self.root, state='readonly', textvariable=self.email_entry_text, width=26,
                                      font=('Microsoft JhengHei Light', 9), bootstyle='info', foreground='gray')
@@ -43,13 +43,13 @@ class Settings:
 
         # Save changes button
         btn_style = ttk.Style()
-        btn_style.configure('info.TButton', font=('Microsoft JhengHei Light', 10, 'bold'))
+        btn_style.configure('info.TButton', font=('Microsoft JhengHei', 10, 'bold'))
 
         save_changes_btn = ttk.Button(self.root, text='Save changes', bootstyle='info', width=13,
                                       command=self._save_changes)
         save_changes_btn.grid(row=2, column=1, padx=51, pady=20, ipady=7, ipadx=10, columnspan=2, sticky='se')
 
-        logout_btn = ttk.Button(self.root, text='Log out', bootstyle='info-outline', width=10, command=self._logout)
+        logout_btn = ttk.Button(self.root, text='Log out', bootstyle='dark-outline', width=10, command=self._logout)
         logout_btn.grid(row=3, column=1, padx=51, pady=10, ipady=4, columnspan=2, sticky='se')
 
     def open(self):

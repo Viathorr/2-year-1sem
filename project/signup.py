@@ -15,9 +15,9 @@ class SignUp:
         self.root.minsize(450, 650)
 
         # Main label
-        label = ttk.Label(self.root, text='Create an account', font=('Ebrima', 17),
-                               bootstyle='info')
-        label.place(relx=0.195, rely=0.13)
+        label = ttk.Label(self.root, text='Create an account', font=('Microsoft JhengHei', 17, 'bold'),
+                               bootstyle='dark')
+        label.place(relx=0.17, rely=0.13)
 
         # Name entry
         self.name_entry = ttk.Entry(self.root, width=25, font=('Ebrima', 10), foreground='gray')

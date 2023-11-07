@@ -13,8 +13,8 @@ class LogIn:
         self.root.iconbitmap('rsrc/chat.ico')
         self.root.minsize(450, 400)
 
-        label = ttk.Label(self.root, text='Welcome back', font=('Ebrima', 17), bootstyle='info')
-        label.place(relx=0.253, rely=0.15)
+        label = ttk.Label(self.root, text='Welcome back', font=('Microsoft JhengHei', 17, 'bold'), bootstyle='dark')
+        label.place(relx=0.23, rely=0.15)
 
         # email entry
         self.email_entry = ttk.Entry(self.root, width=25, font=('Ebrima', 10), foreground='gray')
