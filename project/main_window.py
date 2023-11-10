@@ -4,7 +4,7 @@ import ttkbootstrap as ttk
 from signup import SignUp
 from login import LogIn
 from settings import Settings
-from chat_window import ChatWindow
+from chat_window import ClientChatWindow
 
 
 class MainWindow:
@@ -72,11 +72,17 @@ class MainWindow:
             messagebox.showwarning('You must be logged in', "Please log in or sign up first.")
         else:
             self.root.withdraw()
-            self.chat_window = ChatWindow(self)
+            self.chat_window = ClientChatWindow(self)
             self.chat_window.root.protocol('WM_DELETE_WINDOW', self._close_chat_window)
-            self.chat_window.open()
+            try:
+                self.chat_window.open()
+            except Exception as ex:
+                self.chat_window.root.destroy()
+                self.root.deiconify()
+                messagebox.showerror(title='Error', message=str(ex))
 
     def _close_chat_window(self):
+        self.chat_window.socket.close()
         self.chat_window.root.destroy()
         self.root.deiconify()
 

@@ -14,6 +14,12 @@ class SignUp:
         self.root.iconbitmap('rsrc/chat.ico')
         self.root.minsize(450, 650)
 
+        # Calculate the center position
+        x_position = (self.root.winfo_screenwidth() - 450) // 2  # Adjust the width of the window
+        y_position = (self.root.winfo_screenheight() - 600) // 2
+
+        self.root.geometry(f'450x600+{x_position}+{y_position - 50}')
+
         # Main label
         label = ttk.Label(self.root, text='Create an account', font=('Microsoft JhengHei', 17, 'bold'),
                                bootstyle='dark')
@@ -58,11 +64,6 @@ class SignUp:
         signup_button.place(relx=0.275, rely=0.825, anchor='w')
 
     def open(self):
-        # Calculate the center position
-        x_position = (self.root.winfo_screenwidth() - 450) // 2  # Adjust the width of the window
-        y_position = (self.root.winfo_screenheight() - 600) // 2
-
-        self.root.geometry(f'450x600+{x_position}+{y_position - 50}')
         self.root.mainloop()
 
     def _delete_default_text(self, num):
@@ -153,8 +154,8 @@ class SignUp:
             self._clean_entries(4)
             return
         if self.master.db.check_email_existence(email):
-            messagebox.showwarning('Warning', '''An account with this email already exists. 
-                                    Please use a different email or proceed to login.''')
+            messagebox.showwarning('Warning', '''An account with this email already exists.\n'''
+                                              '''Please use a different email or proceed to login.''')
             return
         else:
             self.master.db.add_user(name, email, password)

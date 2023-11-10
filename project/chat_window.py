@@ -1,17 +1,32 @@
+import socket
+import threading
 import ttkbootstrap as ttk
 import tkinter as tk
 from ttkbootstrap.constants import *
 from ttkbootstrap.tooltip import ToolTip
 from datetime import datetime
+from tkinter import messagebox
+
+PORT = 9090
+SERVER = '192.168.95.126'
+ADDR = (SERVER, PORT)
+FORMAT = 'utf-8'
 
 
 class ChatWindow:
     def __init__(self, parent):
         self.master = parent.master
+        self.parent = parent
 
         self.root = ttk.Toplevel(title='Chat')
         self.root.iconbitmap('rsrc/chat.ico')
         self.root.minsize(650, 650)
+
+        # Calculate the center position
+        x_position = (self.root.winfo_screenwidth() - 650) // 2  # Adjust the width of the window
+        y_position = (self.root.winfo_screenheight() - 650) // 2
+
+        self.root.geometry(f'650x650+{x_position}+{y_position - 30}')
 
         self.root.rowconfigure(0, weight=2)
         self.root.rowconfigure(1, weight=4)
@@ -24,11 +39,10 @@ class ChatWindow:
 
         # Label that represents amount of participants in chat
         self.num_of_participants = ttk.StringVar(value='Participants: 1')
-        participants_label = ttk.Label(self.root, textvariable=self.num_of_participants, cursor='hand2',
-                                       font=('Microsoft JhengHei', 13, 'bold'), bootstyle='info')
-        participants_label.bind('<Button-1>', lambda event: self.open_list_of_participants())
-        participants_label.grid(row=0, column=0, columnspan=2, pady=7, padx=7, sticky='nw')
-        ToolTip(participants_label, 'Show all participants', bootstyle='secondary-inverse')
+        self.participants_label = ttk.Label(self.root, textvariable=self.num_of_participants, cursor='hand2',
+                                            font=('Microsoft JhengHei', 13, 'bold'), bootstyle='info')
+        self.participants_label.grid(row=0, column=0, columnspan=2, pady=7, padx=7, sticky='nw')
+        ToolTip(self.participants_label, 'Show all participants', bootstyle='secondary-inverse')
 
         # Textbox to display messages (temporary)
         self.text_widget = ttk.Text(self.root, state=DISABLED, height=20, font=('Microsoft JhengHei Light', 10, 'bold'),
@@ -53,11 +67,6 @@ class ChatWindow:
         send_msg_btn.grid(row=2, column=1, padx=10, pady=5, sticky='w', ipady=4)
 
     def open(self):
-        # Calculate the center position
-        x_position = (self.root.winfo_screenwidth() - 650) // 2  # Adjust the width of the window
-        y_position = (self.root.winfo_screenheight() - 650) // 2
-
-        self.root.geometry(f'650x650+{x_position}+{y_position - 30}')
         self.root.mainloop()
 
     def _scrollbar_appearing(self):
@@ -96,7 +105,66 @@ class ChatWindow:
             self.msg_entry.delete(0, END)
             self.msg_entry.config(foreground='black')
 
-    def open_list_of_participants(self):
+
+class ClientChatWindow(ChatWindow):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._connected = False
+        self.participants = []
+
+        self.participants_label.bind('<Button-1>', lambda event: self.open_list_of_participants())
+
+    def open(self):
+        self._connect()
+
+    def _connect(self):
+        try:
+            self.socket.connect(ADDR)
+            self._connected = True
+            if self.socket.recv(1024).decode(FORMAT) == 'NICK':
+                self.socket.send(self.master.user.name.encode(FORMAT))
+            thread_receive = threading.Thread(target=self._receive)
+            thread_receive.start()
+            self.root.mainloop()
+        except socket.error:
+            raise Exception('Failed to connect to server! Try again.')
+
+    def _send_message(self):
+        if not self.msg_entry.get() or self.msg_entry.get() == "Message":
+            return
+        else:
+            curr_time = datetime.now().time()
+            time = curr_time.strftime('%H:%M')
+            message = f'{self.master.user.name}: {self.msg_entry.get()}\n{time}\n\n'
+            self.socket.send(message.encode(FORMAT))
+            self.msg_entry.delete(0, END)
+
+    def _receive(self):
+        while True:
+            try:
+                msg = self.socket.recv(1024).decode(FORMAT)
+                if msg.startswith('PARTICIPANTS'):
+                    self.participants.clear()
+                    lines = msg.split('\n')
+                    for i in range(1, len(lines)):
+                        nickname = lines[i]
+                        self.participants.append(nickname)
+                    self.num_of_participants.set(f'Participants: {len(self.participants)}')
+                else:
+                    self.text_widget.config(state=NORMAL)
+                    self.text_widget.insert(END, msg)
+                    self.text_widget.see(END)
+                    self.text_widget.config(state=DISABLED)
+            except socket.error:
+                # TODO
+                #  throw exception if server accidentally crashes
+                self.socket.close()
+                self.parent.root.deiconify()
+                self.root.destroy()
+                break
+
+    def _open_list_of_participants(self):
         participants_list = ttk.Toplevel(title='Participants')
         participants_list.iconbitmap('rsrc/chat.ico')
 
@@ -109,5 +177,11 @@ class ChatWindow:
         my_list = tk.Listbox(participants_list, font=('Microsoft JhengHei Light', 10), foreground='black',
                              selectborderwidth=1)
         my_list.pack(padx=5, pady=5, fill='both', expand=True)
-        my_list.insert(END, self.master.user.name)
+
+        for nick in self.participants:
+            my_list.insert(END, nick)
+
         participants_list.mainloop()
+
+    def close(self):
+        self.socket.close()
