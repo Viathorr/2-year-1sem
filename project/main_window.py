@@ -95,9 +95,6 @@ class MainWindow:
     def _close_login_window(self):
         self.login_window.root.destroy()
         self.root.deiconify()
-        if self.master.user:
-            self.login_btn.config(state=DISABLED)
-            self.signup_btn.config(state=DISABLED)
 
     def _open_signup_window(self):
         self.root.withdraw()
@@ -108,9 +105,6 @@ class MainWindow:
     def _close_signup_window(self):
         self.signup_window.root.destroy()
         self.root.deiconify()
-        if self.master.user:
-            self.login_btn.config(state=DISABLED)
-            self.signup_btn.config(state=DISABLED)
 
     def _open_settings(self):
         self.root.withdraw()

@@ -139,6 +139,10 @@ class SignUp:
         return bool(email_regex.match(email))
 
     def _signup(self):
+        if self.master.user:
+            messagebox.showinfo(title='Info', message='You\'ve already logged in.')
+            self._clean_entries()
+            return
         name = self.name_entry.get()
         email = self.email_entry.get()
         if not self._is_valid_email(email):

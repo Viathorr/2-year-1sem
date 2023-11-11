@@ -49,7 +49,11 @@ class Settings:
                                       command=self._save_changes)
         save_changes_btn.grid(row=2, column=1, padx=51, pady=20, ipady=7, ipadx=10, columnspan=2, sticky='se')
 
-        logout_btn = ttk.Button(self.root, text='Log out', bootstyle='dark-outline', width=10, command=self._logout)
+        logout_btn = ttk.Button(self.root, text='Log out', bootstyle='dark-outline', width=10)
+        if self.master.user:
+            logout_btn.config(state=NORMAL, command=self._logout)
+        else:
+            logout_btn.config(state=DISABLED)
         logout_btn.grid(row=3, column=1, padx=51, pady=10, ipady=4, columnspan=2, sticky='se')
 
     def open(self):
