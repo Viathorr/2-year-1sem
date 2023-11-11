@@ -113,7 +113,7 @@ class ClientChatWindow(ChatWindow):
         self._connected = False
         self.participants = []
 
-        self.participants_label.bind('<Button-1>', lambda event: self.open_list_of_participants())
+        self.participants_label.bind('<Button-1>', lambda event: self._open_list_of_participants())
 
     def open(self):
         self._connect()
@@ -157,11 +157,12 @@ class ClientChatWindow(ChatWindow):
                     self.text_widget.see(END)
                     self.text_widget.config(state=DISABLED)
             except socket.error:
-                # TODO
-                #  throw exception if server accidentally crashes
+                if self.socket.fileno() == -1:
+                    break
                 self.socket.close()
-                self.parent.root.deiconify()
                 self.root.destroy()
+                self.parent.root.deiconify()
+                messagebox.showerror(title='Error', message="Server doesn't answer. Please try again.")
                 break
 
     def _open_list_of_participants(self):
