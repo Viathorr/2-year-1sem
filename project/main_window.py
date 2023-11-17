@@ -15,6 +15,7 @@ class MainWindow:
         self.root = ttk.Window(themename=theme)
         self.root.title('Chat')
         self.root.iconbitmap('rsrc/chat.ico')
+        self.root.resizable(False, False)
 
         # Calculate the center position
         x_position = (self.root.winfo_screenwidth() - 550) // 2  # Adjust the width of the window

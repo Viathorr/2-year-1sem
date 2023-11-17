@@ -12,7 +12,7 @@ class SignUp:
         self.root = ttk.Toplevel()
         self.root.title('Sign up')
         self.root.iconbitmap('rsrc/chat.ico')
-        self.root.minsize(450, 650)
+        self.root.resizable(False, False)
 
         # Calculate the center position
         x_position = (self.root.winfo_screenwidth() - 450) // 2  # Adjust the width of the window

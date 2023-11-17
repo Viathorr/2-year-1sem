@@ -11,7 +11,7 @@ class LogIn:
         self.root = ttk.Toplevel()
         self.root.title("Log in")
         self.root.iconbitmap('rsrc/chat.ico')
-        self.root.minsize(450, 400)
+        self.root.resizable(False, False)
 
         label = ttk.Label(self.root, text='Welcome back', font=('Microsoft JhengHei', 17, 'bold'), bootstyle='dark')
         label.place(relx=0.23, rely=0.15)
