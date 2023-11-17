@@ -39,7 +39,7 @@ class Server:
                 self._broadcast(msg)
             except socket.error:
                 client_nickname = self.nicknames[self.clients.index(client)]
-                msg = f'{client_nickname} disconnected.\n'
+                msg = f'{client_nickname} disconnected.\n\n'
                 print(msg)
                 self.clients.remove(client)
                 self.nicknames.remove(client_nickname)

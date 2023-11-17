@@ -79,10 +79,6 @@ class LogIn:
                 self.password_entry.config(foreground='gray')
 
     def _login(self):
-        if self.master.user:
-            messagebox.showinfo(title='Info', message='You\'ve already logged in.')
-            self._clean_entries()
-            return
         email = self.email_entry.get()
         password = self.password_entry.get()
         self.master.db.connect()

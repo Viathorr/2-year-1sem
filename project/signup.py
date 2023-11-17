@@ -138,15 +138,17 @@ class SignUp:
         email_regex = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', re.VERBOSE)
         return bool(email_regex.match(email))
 
+    def _is_empty_string(self, str):
+        return all(char.isspace() for char in str)
+
     def _signup(self):
-        if self.master.user:
-            messagebox.showinfo(title='Info', message='You\'ve already logged in.')
-            self._clean_entries()
-            return
         name = self.name_entry.get()
         email = self.email_entry.get()
+        if name == 'Enter your name' or self._is_empty_string(name):
+            messagebox.showerror('Error', 'Please enter your name.')
+            return
         if not self._is_valid_email(email):
-            messagebox.showerror('Invalid email', 'Invalid email. Try again.')
+            messagebox.showerror('Error', 'Invalid email. Try again.')
             return
         password = self.password_entry.get()
         confirm_password = self.confirm_password_entry.get()
@@ -156,6 +158,9 @@ class SignUp:
             messagebox.showerror('Error', 'Passwords do not match. Please try again.')
             self._clean_entries(3)
             self._clean_entries(4)
+            return
+        elif self._is_empty_string(password):
+            messagebox.showerror('Error', 'Please enter valid password.')
             return
         if self.master.db.check_email_existence(email):
             messagebox.showwarning('Warning', '''An account with this email already exists.\n'''

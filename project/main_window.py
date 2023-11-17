@@ -48,14 +48,12 @@ class MainWindow:
         self.login_btn = ttk.Button(text='Log in', bootstyle='info', width=17,
                                     command=self._open_login_window)
         self.login_btn.grid(row=2, column=1, ipady=10)
-
         self.login_window = None
 
         # Sign up button
         self.signup_btn = ttk.Button(text='Sign up', bootstyle='info', width=17,
                                      command=self._open_signup_window)
         self.signup_btn.grid(row=3, column=1, ipady=10)
-
         self.signup_window = None
 
         # Settings button
@@ -93,6 +91,9 @@ class MainWindow:
         self.login_window.open()
 
     def _close_login_window(self):
+        if self.master.user:
+            self.login_btn.config(state=DISABLED)
+            self.signup_btn.config(state=DISABLED)
         self.login_window.root.destroy()
         self.root.deiconify()
 
@@ -103,6 +104,9 @@ class MainWindow:
         self.signup_window.open()
 
     def _close_signup_window(self):
+        if self.master.user:
+            self.login_btn.config(state=DISABLED)
+            self.signup_btn.config(state=DISABLED)
         self.signup_window.root.destroy()
         self.root.deiconify()
 
@@ -113,5 +117,8 @@ class MainWindow:
         self.settings_window.open()
 
     def _close_settings_window(self):
+        if self.master.user:
+            self.login_btn.config(state=NORMAL)
+            self.signup_btn.config(state=NORMAL)
         self.settings_window.root.destroy()
         self.root.deiconify()
