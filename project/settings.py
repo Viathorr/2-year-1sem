@@ -3,6 +3,7 @@ import ttkbootstrap as ttk
 from tkinter import messagebox
 from ttkbootstrap.tooltip import ToolTip
 from ttkbootstrap.constants import *
+from signup import SignUp
 
 
 class Settings:
@@ -68,8 +69,12 @@ class Settings:
         if not self.master.user:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
         else:
-            self.master.user.change_name(new_name=self.name_entry_text.get())
-            self.master.db.change_user_name(self.name_entry_text.get(), self.master.user.email)
+            if not SignUp.contains_newline_char(self.name_entry_text.get()):
+                self.master.user.change_name(new_name=self.name_entry_text.get())
+                self.master.db.change_user_name(self.name_entry_text.get(), self.master.user.email)
+            else:
+                messagebox.showerror('Error', 'The use of special characters, such as newline, is not allowed in names.'
+                                              ' Please enter a name without special characters.')
 
     def _logout(self):
         if not self.master.user:

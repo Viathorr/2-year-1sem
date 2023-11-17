@@ -117,7 +117,7 @@ class MainWindow:
         self.settings_window.open()
 
     def _close_settings_window(self):
-        if self.master.user:
+        if not self.master.user:
             self.login_btn.config(state=NORMAL)
             self.signup_btn.config(state=NORMAL)
         self.settings_window.root.destroy()

@@ -138,18 +138,31 @@ class SignUp:
         email_regex = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', re.VERBOSE)
         return bool(email_regex.match(email))
 
-    def _is_empty_string(self, str):
-        return all(char.isspace() for char in str)
+    @staticmethod
+    def is_empty_string(string):
+        return all(char.isspace() for char in string)
+
+    @staticmethod
+    def contains_newline_char(string):
+        if '\n' in string:
+            return True
+        return False
 
     def _signup(self):
         name = self.name_entry.get()
         email = self.email_entry.get()
-        if name == 'Enter your name' or self._is_empty_string(name):
+        if name == 'Enter your name' or self.is_empty_string(name):
             messagebox.showerror('Error', 'Please enter your name.')
             return
+        elif self.contains_newline_char(name):
+            messagebox.showerror('Error', 'The use of special characters, such as newline, is not allowed in names. '
+                                          'Please enter a name without special characters.')
+            return
+
         if not self._is_valid_email(email):
             messagebox.showerror('Error', 'Invalid email. Try again.')
             return
+
         password = self.password_entry.get()
         confirm_password = self.confirm_password_entry.get()
         self.master.db.connect()
@@ -159,7 +172,7 @@ class SignUp:
             self._clean_entries(3)
             self._clean_entries(4)
             return
-        elif self._is_empty_string(password):
+        elif self.is_empty_string(password):
             messagebox.showerror('Error', 'Please enter valid password.')
             return
         if self.master.db.check_email_existence(email):
