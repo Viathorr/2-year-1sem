@@ -1,2 +1,4 @@
 draft
 .env
+report.txt
+keys/server_private_key.pem

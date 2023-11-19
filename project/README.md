@@ -1,8 +1,9 @@
-Project theme: online chat
+Project theme: Chat
 
 Programming language: Python
 
-Framework/libraries: tkinter for GUI (+ ttkbootstrap extension)
+External libraries: tkinter for GUI (+ ttkbootstrap extension (https://ttkbootstrap.readthedocs.io/en/latest/)), 
+rsa (for encryption (https://stuvel.eu/python-rsa-doc/))
 
 Code style: PEP8
 
