@@ -127,6 +127,7 @@ class ClientChatWindow(ChatWindow):
         try:
             self.socket.connect(ADDR)
             self._connected = True
+            self._generate_keys()
             self._server_public_key = rsa.PublicKey.load_pkcs1(self.socket.recv(1024))
             print(self._server_public_key)
             self.socket.send(rsa.PublicKey.save_pkcs1(self._public_key))
