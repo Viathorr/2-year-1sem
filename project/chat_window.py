@@ -63,6 +63,7 @@ class ChatWindow:
         self.msg_entry.bind('<Return>', lambda event: self._send_message())
         self.msg_entry.bind('<FocusIn>', lambda event: self._delete_default_text())
         self.msg_entry.bind('<FocusOut>', lambda event: self._set_default_text())
+        ToolTip(self.msg_entry, 'Message limit: 95 characters', bootstyle='info-inverse')
 
         # Enter button
         self.send_msg_btn = ttk.Button(self.root, text='Send', command=lambda: self._send_message(), width=10,
