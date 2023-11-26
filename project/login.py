@@ -2,6 +2,7 @@ from tkinter import *
 from ttkbootstrap.constants import *
 import ttkbootstrap as ttk
 from tkinter import messagebox
+from ttkbootstrap.tooltip import ToolTip
 from user import User
 
 
@@ -22,6 +23,7 @@ class LogIn:
         self.email_entry.place(relx=0.185, rely=0.32)
         self.email_entry.bind('<FocusIn>', lambda event: self._delete_default_text(1))
         self.email_entry.bind('<FocusOut>', lambda event: self._set_default_text(1))
+        ToolTip(self.email_entry, 'Email', bootstyle='secondary-inverse')
 
         # password entry
         self.password_entry = ttk.Entry(self.root, width=25, font=('Ebrima', 10), foreground='gray')
@@ -29,6 +31,7 @@ class LogIn:
         self.password_entry.place(relx=0.185, rely=0.43)
         self.password_entry.bind('<FocusIn>', lambda event: self._delete_default_text(2))
         self.password_entry.bind('<FocusOut>', lambda event: self._set_default_text(2))
+        ToolTip(self.password_entry, 'Password', bootstyle='secondary-inverse')
 
         # checkbutton
         self.check_var = BooleanVar(value=False)
@@ -37,8 +40,8 @@ class LogIn:
         check_button.place(relx=0.5, rely=0.54)
 
         # login button
-        login_button = ttk.Button(self.root, text='Log in', bootstyle='info', width=14, command=self._login)
-        login_button.place(relx=0.29, rely=0.73, anchor='w')
+        self.login_button = ttk.Button(self.root, text='Log in', bootstyle='info', width=14, command=self._login)
+        self.login_button.place(relx=0.29, rely=0.73, anchor='w')
 
     def open(self):
         # Calculate the center position
@@ -91,6 +94,7 @@ class LogIn:
                 # showing the result
                 messagebox.showinfo('Success', 'You\'ve successfully logged in!')
                 self._clean_entries()
+                self.login_button.config(state=DISABLED)
             else:
                 messagebox.showerror('Oops... something went wrong!', 'Invalid email or password. Please try again.')
                 self._clean_entries(2)

@@ -22,7 +22,8 @@ class ChatWindow:
         self.root = ttk.Toplevel(title='Chat')
         self.root.iconbitmap('rsrc/chat.ico')
         self.root.minsize(650, 650)
-        self.root.resizable(False, False)
+        self.root.bind('<Configure>', lambda event: self.resize())
+        # self.root.resizable(False, False)
 
         # Calculate the center position
         x_position = (self.root.winfo_screenwidth() - 650) // 2  # Adjust the width of the window
@@ -47,8 +48,8 @@ class ChatWindow:
         ToolTip(self.participants_label, 'Show all participants', bootstyle='secondary-inverse')
 
         # Textbox to display messages (temporary)
-        self.text_widget = ttk.Text(self.root, state=DISABLED, height=20, font=('Microsoft JhengHei Light', 10, 'bold'),
-                                    foreground='black')
+        self.text_widget = ttk.Text(self.root, state=DISABLED, height=20, width=self.root.winfo_width(),
+                                    font=('Microsoft JhengHei Light', 10, 'bold'), foreground='black')
         self.text_widget.grid(row=1, columnspan=2, padx=4)
         self.text_widget.bind('<Enter>', lambda event: self._scrollbar_appearing())
         self.text_widget.bind('<Leave>', lambda event: self._scrollbar_disappearing())
@@ -64,12 +65,18 @@ class ChatWindow:
         self.msg_entry.bind('<FocusOut>', lambda event: self._set_default_text())
 
         # Enter button
-        send_msg_btn = ttk.Button(self.root, text='Send', command=lambda: self._send_message(), width=10,
+        self.send_msg_btn = ttk.Button(self.root, text='Send', command=lambda: self._send_message(), width=10,
                                   bootstyle='info')
-        send_msg_btn.grid(row=2, column=1, padx=10, pady=5, sticky='w', ipady=4)
+        self.send_msg_btn.grid(row=2, column=1, padx=10, pady=5, sticky='w', ipady=4)
 
     def open(self):
         self.root.mainloop()
+
+    def resize(self):
+        self.participants_label.config(font=('Microsoft JhengHei', int((13*self.root.winfo_height())/650), 'bold'))
+        self.msg_entry.config(width=int((45*self.root.winfo_width())/650))
+        self.send_msg_btn.config(width=int((10*self.root.winfo_width())/650))
+        self.text_widget.config(height=((21*self.root.winfo_height())/650))
 
     def _scrollbar_appearing(self):
         self.scrollbar = ttk.Scrollbar(self.text_widget, bootstyle='secondary-round', command=self.text_widget.yview)
@@ -129,7 +136,6 @@ class ClientChatWindow(ChatWindow):
             self._connected = True
             self._generate_keys()
             self._server_public_key = rsa.PublicKey.load_pkcs1(self.socket.recv(1024))
-            print(self._server_public_key)
             self.socket.send(rsa.PublicKey.save_pkcs1(self._public_key))
             msg = rsa.decrypt(self.socket.recv(1024), self._private_key).decode(FORMAT)
             if msg == 'NICK':

@@ -2,6 +2,7 @@ from tkinter import *
 from ttkbootstrap.constants import *
 import ttkbootstrap as ttk
 from tkinter import messagebox
+from ttkbootstrap.tooltip import ToolTip
 from user import User
 import re
 
@@ -31,6 +32,7 @@ class SignUp:
         self.name_entry.place(relx=0.18, rely=0.28)
         self.name_entry.bind('<FocusIn>', lambda event: self._delete_default_text(1))
         self.name_entry.bind('<FocusOut>', lambda event: self._set_default_text(1))
+        ToolTip(self.name_entry, 'Name', bootstyle='secondary-inverse')
 
         # Email entry
         self.email_entry = ttk.Entry(self.root, width=25, font=('Ebrima', 10), foreground='gray')
@@ -38,6 +40,7 @@ class SignUp:
         self.email_entry.place(relx=0.18, rely=0.38)
         self.email_entry.bind('<FocusIn>', lambda event: self._delete_default_text(2))
         self.email_entry.bind('<FocusOut>', lambda event: self._set_default_text(2))
+        ToolTip(self.email_entry, 'Email', bootstyle='secondary-inverse')
 
         # Password entry
         self.password_entry = ttk.Entry(self.root, width=25, font=('Ebrima', 10), foreground='gray')
@@ -45,6 +48,7 @@ class SignUp:
         self.password_entry.place(relx=0.18, rely=0.48)
         self.password_entry.bind('<FocusIn>', lambda event: self._delete_default_text(3))
         self.password_entry.bind('<FocusOut>', lambda event: self._set_default_text(3))
+        ToolTip(self.password_entry, 'Password', bootstyle='secondary-inverse')
 
         # Password confirmation entry
         self.confirm_password_entry = ttk.Entry(self.root, width=25, font=('Ebrima', 10), foreground='gray')
@@ -52,6 +56,7 @@ class SignUp:
         self.confirm_password_entry.place(relx=0.18, rely=0.58)
         self.confirm_password_entry.bind('<FocusIn>', lambda event: self._delete_default_text(4))
         self.confirm_password_entry.bind('<FocusOut>', lambda event: self._set_default_text(4))
+        ToolTip(self.confirm_password_entry, 'Confirm password', bootstyle='secondary-inverse')
 
         # Show password checkbutton
         self.check_var = BooleanVar(value=False)
@@ -60,8 +65,8 @@ class SignUp:
         show_password_check.place(relx=0.5, rely=0.67)
 
         # Sign up button
-        signup_button = ttk.Button(self.root, text='Sign up', bootstyle='info', width=15, command=self._signup)
-        signup_button.place(relx=0.275, rely=0.825, anchor='w')
+        self.signup_button = ttk.Button(self.root, text='Sign up', bootstyle='info', width=15, command=self._signup)
+        self.signup_button.place(relx=0.275, rely=0.825, anchor='w')
 
     def open(self):
         self.root.mainloop()
@@ -186,3 +191,4 @@ class SignUp:
 
             messagebox.showinfo('Success', 'Registration has completed successfully!')
             self._clean_entries()
+            self.signup_button.config(state=DISABLED)

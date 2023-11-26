@@ -8,5 +8,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="networking" />
     <orderEntry type="module" module-name="additional" />
+    <orderEntry type="module" module-name="some_projects" />
   </component>
 </module>
