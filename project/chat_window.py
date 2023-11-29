@@ -8,7 +8,7 @@ from ttkbootstrap.tooltip import ToolTip
 from datetime import datetime
 from tkinter import messagebox
 
-PORT = 9999
+PORT = 9090
 SERVER = '192.168.95.126'
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'

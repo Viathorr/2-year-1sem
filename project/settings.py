@@ -69,9 +69,11 @@ class Settings:
         if not self.master.user:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
         else:
-            if not SignUp.contains_newline_char(self.name_entry_text.get()):
+            if not SignUp.contains_newline_char(self.name_entry_text.get()) and not SignUp.is_empty_string(self.name_entry_text.get()):
                 self.master.user.change_name(new_name=self.name_entry_text.get())
                 self.master.db.change_user_name(self.name_entry_text.get(), self.master.user.email)
+            elif SignUp.is_empty_string(self.name_entry_text.get()):
+                messagebox.showerror('Error', 'Please enter a non-empty name.')
             else:
                 messagebox.showerror('Error', 'The use of special characters, such as newline, is not allowed in names.'
                                               ' Please enter a name without special characters.')

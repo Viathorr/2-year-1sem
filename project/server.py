@@ -2,7 +2,7 @@ import socket
 import threading
 import rsa
 
-PORT = 9999
+PORT = 9090
 SERVER = socket.gethostbyname(socket.gethostname())
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
