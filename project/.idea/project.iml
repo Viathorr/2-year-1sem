@@ -9,5 +9,6 @@
     <orderEntry type="module" module-name="networking" />
     <orderEntry type="module" module-name="additional" />
     <orderEntry type="module" module-name="some_projects" />
+    <orderEntry type="module" module-name="Design Patterns" />
   </component>
 </module>
