@@ -131,6 +131,7 @@ class ClientChatWindow(ChatWindow):
     def open(self):
         self._connect()
 
+    # move socket usage into separate file/class
     def _connect(self):
         try:
             self.socket.connect(ADDR)
@@ -154,6 +155,7 @@ class ClientChatWindow(ChatWindow):
             curr_time = datetime.now().time()
             time = curr_time.strftime('%H:%M')
             message = f'{self.master.user.name}: {self.msg_entry.get()}\n{time}\n\n'
+            # move socket usage into separate class
             self.socket.send(rsa.encrypt(message.encode(FORMAT), self._server_public_key))
             self.msg_entry.delete(0, END)
 

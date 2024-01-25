@@ -4,7 +4,8 @@ import ttkbootstrap as ttk
 from tkinter import messagebox
 from ttkbootstrap.tooltip import ToolTip
 from user import User
-import re
+from utilities.email_validation import EmailValidation
+from utilities.string_utilities import StringUtilities
 
 
 class SignUp:
@@ -139,32 +140,18 @@ class SignUp:
             self.confirm_password_entry.config(foreground='gray')
             self.confirm_password_entry.insert(0, 'Confirm your password')
 
-    def _is_valid_email(self, email):
-        email_regex = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', re.VERBOSE)
-        return bool(email_regex.match(email))
-
-    @staticmethod
-    def is_empty_string(string):
-        return all(char.isspace() for char in string)
-
-    @staticmethod
-    def contains_newline_char(string):
-        if '\n' in string:
-            return True
-        return False
-
     def _signup(self):
         name = self.name_entry.get()
         email = self.email_entry.get()
-        if name == 'Enter your name' or self.is_empty_string(name):
+        if name == 'Enter your name' or StringUtilities.is_empty_string(name):
             messagebox.showerror('Error', 'Please enter your name.')
             return
-        elif self.contains_newline_char(name):
+        elif StringUtilities.contains_newline_char(name):
             messagebox.showerror('Error', 'The use of special characters, such as newline, is not allowed in names. '
                                           'Please enter a name without special characters.')
             return
 
-        if not self._is_valid_email(email):
+        if not EmailValidation.is_valid_email(email):
             messagebox.showerror('Error', 'Invalid email. Try again.')
             return
 
@@ -177,7 +164,7 @@ class SignUp:
             self._clean_entries(3)
             self._clean_entries(4)
             return
-        elif self.is_empty_string(password):
+        elif StringUtilities.is_empty_string(password):
             messagebox.showerror('Error', 'Please enter valid password.')
             return
         if self.master.db.check_email_existence(email):

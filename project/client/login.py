@@ -81,6 +81,7 @@ class LogIn:
                 self.password_entry.insert(0, 'Enter your password')
                 self.password_entry.config(foreground='gray')
 
+    # TODO: create separate classes for login logic
     def _login(self):
         email = self.email_entry.get()
         password = self.password_entry.get()

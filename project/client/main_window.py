@@ -93,8 +93,7 @@ class MainWindow:
 
     def _close_login_window(self):
         if self.master.user:
-            self.login_btn.config(state=DISABLED)
-            self.signup_btn.config(state=DISABLED)
+            self.change_buttons_state(True)
         self.login_window.root.destroy()
         self.root.deiconify()
 
@@ -106,8 +105,7 @@ class MainWindow:
 
     def _close_signup_window(self):
         if self.master.user:
-            self.login_btn.config(state=DISABLED)
-            self.signup_btn.config(state=DISABLED)
+            self.change_buttons_state(True)
         self.signup_window.root.destroy()
         self.root.deiconify()
 
@@ -119,7 +117,10 @@ class MainWindow:
 
     def _close_settings_window(self):
         if not self.master.user:
-            self.login_btn.config(state=NORMAL)
-            self.signup_btn.config(state=NORMAL)
+            self.change_buttons_state(False)
         self.settings_window.root.destroy()
         self.root.deiconify()
+
+    def change_buttons_state(self, disable: bool):
+        self.login_btn.config(state=NORMAL if not disable else DISABLED)
+        self.signup_btn.config(state=NORMAL if not disable else DISABLED)

@@ -3,7 +3,8 @@ import ttkbootstrap as ttk
 from tkinter import messagebox
 from ttkbootstrap.tooltip import ToolTip
 from ttkbootstrap.constants import *
-from signup import SignUp
+from utilities.string_utilities import StringUtilities
+from user import User
 
 
 class Settings:
@@ -21,7 +22,7 @@ class Settings:
         self.name_entry_text = tk.StringVar(value='None')
         self.email_entry_text = tk.StringVar(value='None')
 
-        if self.master.user:
+        if self.master.user.name:
             self.name_entry_text.set(value=self.master.user.name)
             self.email_entry_text.set(value=self.master.user.email)
 
@@ -66,25 +67,25 @@ class Settings:
         self.root.mainloop()
 
     def _save_changes(self):
-        if not self.master.user:
+        if not self.master.user.name:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
         else:
-            if not SignUp.contains_newline_char(self.name_entry_text.get()) and not SignUp.is_empty_string(self.name_entry_text.get()):
-                self.master.user.change_name(new_name=self.name_entry_text.get())
+            if not StringUtilities.contains_newline_char(self.name_entry_text.get()) and not StringUtilities.is_empty_string(self.name_entry_text.get()):
+                self.master.user.name(new_name=self.name_entry_text.get())
                 self.master.db.change_user_name(self.name_entry_text.get(), self.master.user.email)
-            elif SignUp.is_empty_string(self.name_entry_text.get()):
+            elif StringUtilities.is_empty_string(self.name_entry_text.get()):
                 messagebox.showerror('Error', 'Please enter a non-empty name.')
             else:
                 messagebox.showerror('Error', 'The use of special characters, such as newline, is not allowed in names.'
                                               ' Please enter a name without special characters.')
 
     def _logout(self):
-        if not self.master.user:
+        if not self.master.user.name:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
         else:
             yesno = messagebox.askyesno('Logging out', 'Are you sure you want to log out?')
             if yesno:
-                self.master.user = None
+                self.master.user = User()
                 self.parent.login_btn.config(state=NORMAL)
                 self.parent.signup_btn.config(state=NORMAL)
                 self.name_entry_text.set(value='None')
