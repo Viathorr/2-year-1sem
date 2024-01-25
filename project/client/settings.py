@@ -12,7 +12,7 @@ class Settings:
         self.parent = parent
         self.root = ttk.Toplevel()
         self.root.title('Settings')
-        self.root.iconbitmap('rsrc/chat.ico')
+        self.root.iconbitmap('../rsrc/chat.ico')
         self.root.resizable(False, False)
 
         self.root.columnconfigure(0, weight=1)

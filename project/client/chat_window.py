@@ -20,7 +20,7 @@ class ChatWindow:
         self.parent = parent
 
         self.root = ttk.Toplevel(title='Chat')
-        self.root.iconbitmap('rsrc/chat.ico')
+        self.root.iconbitmap('../rsrc/chat.ico')
         self.root.minsize(650, 650)
         self.root.bind('<Configure>', lambda event: self.resize())
         # self.root.resizable(False, False)
@@ -157,6 +157,7 @@ class ClientChatWindow(ChatWindow):
             self.socket.send(rsa.encrypt(message.encode(FORMAT), self._server_public_key))
             self.msg_entry.delete(0, END)
 
+    # Move this method into separate class
     def _receive(self):
         while True:
             try:
@@ -183,8 +184,9 @@ class ClientChatWindow(ChatWindow):
                 break
 
     def _open_list_of_participants(self):
+        # nothing to change
         participants_list = ttk.Toplevel(title='Participants')
-        participants_list.iconbitmap('rsrc/chat.ico')
+        participants_list.iconbitmap('../rsrc/chat.ico')
 
         x_position = (self.root.winfo_screenwidth() - 350) // 2
         y_position = (self.root.winfo_screenheight() - 400) // 2
@@ -201,6 +203,7 @@ class ClientChatWindow(ChatWindow):
 
         participants_list.mainloop()
 
+    # Move these methods into separate class
     def _generate_keys(self):
         self._public_key, self._private_key = rsa.newkeys(1024)
 

@@ -72,9 +72,9 @@ class Server:
             client.send(rsa.encrypt(message.encode(FORMAT), client_public_key))
 
     def __load_keys(self):
-        with open('keys/server_public_key.pem', 'rb') as p:
+        with open('../keys/server_public_key.pem', 'rb') as p:
             self._public_key = rsa.PublicKey.load_pkcs1(p.read())
-        with open('keys/server_private_key.pem', 'rb') as p:
+        with open('../keys/server_private_key.pem', 'rb') as p:
             self._private_key = rsa.PrivateKey.load_pkcs1(p.read())
 
 

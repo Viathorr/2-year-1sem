@@ -12,7 +12,7 @@ class SignUp:
         self.master = parent.master  # main window's master
         self.root = ttk.Toplevel()
         self.root.title('Sign up')
-        self.root.iconbitmap('rsrc/chat.ico')
+        self.root.iconbitmap('../rsrc/chat.ico')
         self.root.resizable(False, False)
 
         # Calculate the center position

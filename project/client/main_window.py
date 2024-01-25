@@ -2,9 +2,9 @@ from tkinter import messagebox
 from ttkbootstrap.constants import *
 import ttkbootstrap as ttk
 from signup import SignUp
-from login import LogIn
+from client.login import LogIn
 from settings import Settings
-from chat_window import ClientChatWindow
+from client.chat_window import ClientChatWindow
 
 
 class MainWindow:
@@ -14,7 +14,7 @@ class MainWindow:
         # Main Window
         self.root = ttk.Window(themename=theme)
         self.root.title('Chat')
-        self.root.iconbitmap('rsrc/chat.ico')
+        self.root.iconbitmap('../rsrc/chat.ico')
         self.root.resizable(False, False)
 
         # Calculate the center position

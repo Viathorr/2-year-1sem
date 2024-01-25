@@ -1,5 +1,5 @@
 import mysql.connector
-import config
+from client import config
 import bcrypt
 import base64
 
@@ -59,5 +59,3 @@ class DatabaseUserTable:
     def close_connection(self):
         self.connection.commit()
         self.connection.close()
-
-
