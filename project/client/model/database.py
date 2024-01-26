@@ -1,5 +1,5 @@
 import mysql.connector
-from client import config
+from client.config import config
 import bcrypt
 import base64
 

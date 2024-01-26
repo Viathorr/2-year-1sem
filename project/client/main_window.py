@@ -14,7 +14,7 @@ class MainWindow:
         # Main Window
         self.root = ttk.Window(themename=theme)
         self.root.title('Chat')
-        self.root.iconbitmap('../rsrc/chat.ico')
+        self.root.iconbitmap('./rsrc/chat.ico')
         self.root.resizable(False, False)
 
         # Calculate the center position
@@ -65,6 +65,12 @@ class MainWindow:
 
     def open(self):
         self.root.mainloop()
+
+    def close_window(self):
+        self.root.withdraw()
+
+    def reopen_window(self):
+        self.root.deiconify()
 
     def _open_chat_window(self):
         if not self.master.user:
@@ -124,3 +130,19 @@ class MainWindow:
     def change_buttons_state(self, disable: bool):
         self.login_btn.config(state=NORMAL if not disable else DISABLED)
         self.signup_btn.config(state=NORMAL if not disable else DISABLED)
+
+
+# class Mediator:
+#     def __init__(self, main_w):
+#         self._main_window = main_w
+#         self._settings = None
+#
+#     def open_settings(self):
+#         self._main_window.close_window()
+#         self._settings = Settings(self)
+#         self._settings.root.protocol('WM_DELETE_WINDOW', self._close_settings)
+#         self._settings.open()
+#
+#     def _close_settings(self):
+#         self._settings.root.destroy()
+#         self._main_window.reopen_window()

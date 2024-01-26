@@ -1,5 +1,5 @@
 from main_window import MainWindow
-from database import DatabaseUserTable
+from client.model.database import DatabaseUserTable
 
 
 class ChatApp:

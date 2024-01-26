@@ -13,7 +13,7 @@ class Settings:
         self.parent = parent
         self.root = ttk.Toplevel()
         self.root.title('Settings')
-        self.root.iconbitmap('../rsrc/chat.ico')
+        self.root.iconbitmap('./rsrc/chat.ico')
         self.root.resizable(False, False)
 
         self.root.columnconfigure(0, weight=1)
@@ -22,8 +22,8 @@ class Settings:
         self.name_entry_text = tk.StringVar(value='None')
         self.email_entry_text = tk.StringVar(value='None')
 
-        if self.master.user.name:
-            self.name_entry_text.set(value=self.master.user.name)
+        if self.master.user:
+            self.name_entry_text.set(value=self.master.user)
             self.email_entry_text.set(value=self.master.user.email)
 
         # User name
@@ -67,11 +67,11 @@ class Settings:
         self.root.mainloop()
 
     def _save_changes(self):
-        if not self.master.user.name:
+        if not self.master.user:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
         else:
             if not StringUtilities.contains_newline_char(self.name_entry_text.get()) and not StringUtilities.is_empty_string(self.name_entry_text.get()):
-                self.master.user.name(new_name=self.name_entry_text.get())
+                self.master.user(new_name=self.name_entry_text.get())
                 self.master.db.change_user_name(self.name_entry_text.get(), self.master.user.email)
             elif StringUtilities.is_empty_string(self.name_entry_text.get()):
                 messagebox.showerror('Error', 'Please enter a non-empty name.')
@@ -80,12 +80,12 @@ class Settings:
                                               ' Please enter a name without special characters.')
 
     def _logout(self):
-        if not self.master.user.name:
+        if not self.master.user:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
         else:
             yesno = messagebox.askyesno('Logging out', 'Are you sure you want to log out?')
             if yesno:
-                self.master.user = User()
+                self.master.user = None
                 self.parent.login_btn.config(state=NORMAL)
                 self.parent.signup_btn.config(state=NORMAL)
                 self.name_entry_text.set(value='None')

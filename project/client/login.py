@@ -11,7 +11,7 @@ class LogIn:
         self.master = parent.master  # main window's master
         self.root = ttk.Toplevel()
         self.root.title("Log in")
-        self.root.iconbitmap('../rsrc/chat.ico')
+        self.root.iconbitmap('./rsrc/chat.ico')
         self.root.resizable(False, False)
 
         label = ttk.Label(self.root, text='Welcome back', font=('Microsoft JhengHei', 17, 'bold'), bootstyle='dark')

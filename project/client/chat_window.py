@@ -20,7 +20,7 @@ class ChatWindow:
         self.parent = parent
 
         self.root = ttk.Toplevel(title='Chat')
-        self.root.iconbitmap('../rsrc/chat.ico')
+        self.root.iconbitmap('./rsrc/chat.ico')
         self.root.minsize(650, 650)
         self.root.bind('<Configure>', lambda event: self.resize())
         # self.root.resizable(False, False)
