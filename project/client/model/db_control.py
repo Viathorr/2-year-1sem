@@ -20,10 +20,8 @@ class DBControl:
     def login_check(self, email: str, password: str):
         if self._check_email_existence_command.execute(email=email) and self._check_password_matching_command.execute(email=email, password=password):
             name = self._get_name_command.execute(email=email)
-            print(name)
             return name
         else:
-            print('In raise exception section')
             raise Exception('Invalid email or password. Please try again.')
 
     def change_username(self, new_name: str, email: str):
