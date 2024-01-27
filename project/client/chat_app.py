@@ -1,21 +1,22 @@
 from main_window import MainWindow
-from client.model.database import DatabaseUserTable
+from model.db_command import *
+from model.db_control import DBControl
 
 
 class ChatApp:
     def __init__(self):
         self.main_window = MainWindow(self)
-        self.db = DatabaseUserTable()
+        db = DatabaseUserTable()
+        self.db_control = DBControl(CheckPasswordMatchingCommand(db), GetNameByEmailCommand(db),
+                                    CheckEmailExistenceCommand(db), AddUserCommand(db), ChangeUsernameCommand(db))
         self.user = None
 
         self.main_window.root.protocol('WM_DELETE_WINDOW', self._close_window)
-        self.db.connect()
 
     def run(self):
         self.main_window.open()
 
     def _close_window(self):
-        self.db.close_connection()
         self.main_window.root.destroy()
 
     def set_user(self, user):

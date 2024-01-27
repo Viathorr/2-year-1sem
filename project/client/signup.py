@@ -140,7 +140,7 @@ class SignUp:
             self.confirm_password_entry.config(foreground='gray')
             self.confirm_password_entry.insert(0, 'Confirm your password')
 
-    def _signup(self):
+    def _signup(self) -> None:
         name = self.name_entry.get()
         email = self.email_entry.get()
         if name == 'Enter your name' or StringUtilities.is_empty_string(name):
@@ -157,7 +157,6 @@ class SignUp:
 
         password = self.password_entry.get()
         confirm_password = self.confirm_password_entry.get()
-        self.master.db.connect()
 
         if password != confirm_password:
             messagebox.showerror('Error', 'Passwords do not match. Please try again.')
@@ -167,12 +166,12 @@ class SignUp:
         elif StringUtilities.is_empty_string(password):
             messagebox.showerror('Error', 'Please enter valid password.')
             return
-        if self.master.db.check_email_existence(email):
+        if self.master.db_control.email_exists(email):
             messagebox.showwarning('Warning', '''An account with this email already exists.\n'''
                                               '''Please use a different email or proceed to login.''')
             return
         else:
-            self.master.db.add_user(name, email, password)
+            self.master.db_control.add_new_user(name, email, password)
             user = User(name, email)
             self.master.set_user(user)
 

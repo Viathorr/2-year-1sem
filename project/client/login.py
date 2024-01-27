@@ -85,23 +85,36 @@ class LogIn:
     def _login(self):
         email = self.email_entry.get()
         password = self.password_entry.get()
-        self.master.db.connect()
-        if self.master.db.check_email_existence(email):
-            if self.master.db.check_password_matching(email, password):
-                # setting user
-                username = self.master.db.get_name_by_email(email)
-                user = User(username, email)
-                self.master.set_user(user)
-                # showing the result
-                messagebox.showinfo('Success', 'You\'ve successfully logged in!')
-                self._clean_entries()
-                self.login_button.config(state=DISABLED)
-            else:
-                messagebox.showerror('Oops... something went wrong!', 'Invalid email or password. Please try again.')
-                self._clean_entries(2)
-        else:
-            messagebox.showerror('Oops... something went wrong!', 'Invalid email or password. Please try again.')
+
+        try:
+            username = self.master.db_control.login_check(email, password)
+            print(username)
+            user = User(username, email)
+            self.master.set_user(user)
+            # showing the result
+            messagebox.showinfo('Success', 'You\'ve successfully logged in!')
             self._clean_entries()
+            self.login_button.config(state=DISABLED)
+        except Exception as ex:
+            messagebox.showerror('Oops... something went wrong!', str(ex))
+            self._clean_entries()
+
+        # if self.master.db.check_email_existence(email):
+        #     if self.master.db.check_password_matching(email, password):
+        #         # setting user
+        #         username = self.master.db.get_name_by_email(email)
+        #         user = User(username, email)
+        #         self.master.set_user(user)
+        #         # showing the result
+        #         messagebox.showinfo('Success', 'You\'ve successfully logged in!')
+        #         self._clean_entries()
+        #         self.login_button.config(state=DISABLED)
+        #     else:
+        #         messagebox.showerror('Oops... something went wrong!', 'Invalid email or password. Please try again.')
+        #         self._clean_entries(2)
+        # else:
+        #     messagebox.showerror('Oops... something went wrong!', 'Invalid email or password. Please try again.')
+        #     self._clean_entries()
 
     def _clean_entries(self, num=0):
         if not num or num == 1:

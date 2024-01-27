@@ -23,7 +23,7 @@ class Settings:
         self.email_entry_text = tk.StringVar(value='None')
 
         if self.master.user:
-            self.name_entry_text.set(value=self.master.user)
+            self.name_entry_text.set(value=self.master.user.name)
             self.email_entry_text.set(value=self.master.user.email)
 
         # User name
@@ -70,9 +70,10 @@ class Settings:
         if not self.master.user:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
         else:
+            new_name = self.name_entry_text.get()
             if not StringUtilities.contains_newline_char(self.name_entry_text.get()) and not StringUtilities.is_empty_string(self.name_entry_text.get()):
-                self.master.user(new_name=self.name_entry_text.get())
-                self.master.db.change_user_name(self.name_entry_text.get(), self.master.user.email)
+                self.master.user(new_name)
+                self.master.db_control.change_username(new_name, self.master.user.email)
             elif StringUtilities.is_empty_string(self.name_entry_text.get()):
                 messagebox.showerror('Error', 'Please enter a non-empty name.')
             else:
