@@ -1,17 +1,10 @@
-import socket
-import threading
-import rsa
 import ttkbootstrap as ttk
 import tkinter as tk
 from ttkbootstrap.constants import *
 from ttkbootstrap.tooltip import ToolTip
 from datetime import datetime
 from tkinter import messagebox
-
-PORT = 9090
-SERVER = '192.168.95.126'
-ADDR = (SERVER, PORT)
-FORMAT = 'utf-8'
+from client_socket.client_socket import ClientSocket
 
 
 class ChatWindow:
@@ -119,34 +112,11 @@ class ChatWindow:
 class ClientChatWindow(ChatWindow):
     def __init__(self, parent):
         super().__init__(parent)
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self._connected = False
-        self._public_key = None
-        self._private_key = None
-        self._server_public_key = None
-        self._participants = []
-
+        self.socket = ClientSocket(self)
         self.participants_label.bind('<Button-1>', lambda event: self._open_list_of_participants())
 
-    def open(self):
-        self._connect()
-
-    # move socket usage into separate file/class
-    def _connect(self):
-        try:
-            self.socket.connect(ADDR)
-            self._connected = True
-            self._generate_keys()
-            self._server_public_key = rsa.PublicKey.load_pkcs1(self.socket.recv(1024))
-            self.socket.send(rsa.PublicKey.save_pkcs1(self._public_key))
-            msg = rsa.decrypt(self.socket.recv(1024), self._private_key).decode(FORMAT)
-            if msg == 'NICK':
-                self.socket.send(rsa.encrypt(self.master.user.name.encode(FORMAT), self._server_public_key))
-            thread_receive = threading.Thread(target=self._receive)
-            thread_receive.start()
-            self.root.mainloop()
-        except socket.error:
-            raise Exception('Failed to connect to server! Try again.')
+    def connect(self):
+        self.socket.connect()
 
     def _send_message(self):
         if not self.msg_entry.get() or self.msg_entry.get() == "Message":
@@ -155,40 +125,21 @@ class ClientChatWindow(ChatWindow):
             curr_time = datetime.now().time()
             time = curr_time.strftime('%H:%M')
             message = f'{self.master.user.name}: {self.msg_entry.get()}\n{time}\n\n'
-            # move socket usage into separate class
-            self.socket.send(rsa.encrypt(message.encode(FORMAT), self._server_public_key))
+            self.socket.send(message)
             self.msg_entry.delete(0, END)
 
-    # Move this method into separate class
-    def _receive(self):
-        while True:
-            try:
-                msg = rsa.decrypt(self.socket.recv(1024), self._private_key).decode(FORMAT)
-                if msg.startswith('PARTICIPANTS'):
-                    self._participants.clear()
-                    lines = msg.split('\n')
-                    for i in range(1, len(lines)):
-                        nickname = lines[i]
-                        self._participants.append(nickname)
-                    self.num_of_participants.set(f'Participants: {len(self._participants)}')
-                else:
-                    self.text_widget.config(state=NORMAL)
-                    self.text_widget.insert(END, msg)
-                    self.text_widget.see(END)
-                    self.text_widget.config(state=DISABLED)
-            except socket.error:
-                if self.socket.fileno() == -1:
-                    break
-                self.socket.close()
-                self.root.destroy()
-                self.parent.root.deiconify()
-                messagebox.showerror(title='Error', message="Server doesn't answer. Please try again.")
-                break
+    def add_message(self, msg):
+        self.text_widget.config(state=NORMAL)
+        self.text_widget.insert(END, msg)
+        self.text_widget.see(END)
+        self.text_widget.config(state=DISABLED)
+
+    def set_participants_label(self, label):
+        self.num_of_participants.set(label)
 
     def _open_list_of_participants(self):
-        # nothing to change
         participants_list = ttk.Toplevel(title='Participants')
-        participants_list.iconbitmap('../rsrc/chat.ico')
+        participants_list.iconbitmap('./rsrc/chat.ico')
 
         x_position = (self.root.winfo_screenwidth() - 350) // 2
         y_position = (self.root.winfo_screenheight() - 400) // 2
@@ -200,14 +151,17 @@ class ClientChatWindow(ChatWindow):
                              selectborderwidth=1)
         my_list.pack(padx=5, pady=5, fill='both', expand=True)
 
-        for nick in self._participants:
+        for nick in self.socket.participants:
             my_list.insert(END, nick)
 
         participants_list.mainloop()
 
-    # Move these methods into separate class
-    def _generate_keys(self):
-        self._public_key, self._private_key = rsa.newkeys(1024)
+    def show_server_error(self):
+        messagebox.showerror(title='Error', message="Server doesn't answer. Please try again.")
 
-    def close(self):
+    def deiconify_parent_root(self):
         self.socket.close()
+        self.parent.root.deiconify()
+
+    def destroy(self):
+        self.root.destroy()

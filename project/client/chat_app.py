@@ -10,7 +10,6 @@ class ChatApp:
         self.db_control = DBControl(CheckPasswordMatchingCommand(db), GetNameByEmailCommand(db),
                                     CheckEmailExistenceCommand(db), AddUserCommand(db), ChangeUsernameCommand(db))
         self.user = None
-
         self.main_window.root.protocol('WM_DELETE_WINDOW', self._close_window)
 
     def run(self):

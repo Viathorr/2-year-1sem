@@ -80,15 +80,16 @@ class MainWindow:
             self.chat_window = ClientChatWindow(self)
             self.chat_window.root.protocol('WM_DELETE_WINDOW', self._close_chat_window)
             try:
-                self.chat_window.open()
+                self.chat_window.connect()
             except Exception as ex:
                 self.chat_window.root.destroy()
                 self.root.deiconify()
                 messagebox.showerror(title='Error', message=str(ex))
 
     def _close_chat_window(self):
+        print('in close window method')
         self.chat_window.socket.close()
-        self.chat_window.root.destroy()
+        self.chat_window.destroy()
         self.root.deiconify()
 
     def _open_login_window(self):
