@@ -4,7 +4,7 @@ from ttkbootstrap.constants import *
 from ttkbootstrap.tooltip import ToolTip
 from datetime import datetime
 from tkinter import messagebox
-from client_socket.client_socket import ClientSocket
+from client.client_socket.client_socket import ClientSocket
 
 
 class ChatWindow:

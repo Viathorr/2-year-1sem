@@ -171,7 +171,7 @@ class SignUp:
                                               '''Please use a different email or proceed to login.''')
             return
         else:
-            self.master.db_control.add_new_user(name, email, password)
+            self.master.db_control.add_user(name, email, password)
             user = User(name, email)
             self.master.set_user(user)
 

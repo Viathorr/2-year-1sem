@@ -131,19 +131,3 @@ class MainWindow:
     def change_buttons_state(self, disable: bool):
         self.login_btn.config(state=NORMAL if not disable else DISABLED)
         self.signup_btn.config(state=NORMAL if not disable else DISABLED)
-
-
-# class Mediator:
-#     def __init__(self, main_w):
-#         self._main_window = main_w
-#         self._settings = None
-#
-#     def open_settings(self):
-#         self._main_window.close_window()
-#         self._settings = Settings(self)
-#         self._settings.root.protocol('WM_DELETE_WINDOW', self._close_settings)
-#         self._settings.open()
-#
-#     def _close_settings(self):
-#         self._settings.root.destroy()
-#         self._main_window.reopen_window()

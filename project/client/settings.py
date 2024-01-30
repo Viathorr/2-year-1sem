@@ -72,7 +72,7 @@ class Settings:
         else:
             new_name = self.name_entry_text.get()
             if not StringUtilities.contains_newline_char(self.name_entry_text.get()) and not StringUtilities.is_empty_string(self.name_entry_text.get()):
-                self.master.user(new_name)
+                self.master.user.name = new_name
                 self.master.db_control.change_username(new_name, self.master.user.email)
             elif StringUtilities.is_empty_string(self.name_entry_text.get()):
                 messagebox.showerror('Error', 'Please enter a non-empty name.')
