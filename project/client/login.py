@@ -7,7 +7,40 @@ from user import User
 
 
 class LogIn:
-    def __init__(self, parent):
+    """
+    Class for the sign-up window.
+
+    Attributes:
+        master (ChatApp): The application object.
+        root (ttk.Toplevel): Toplevel window with Signup form.
+        email_entry (ttk.Entry): Email field.
+        password_entry (ttk.Entry): Password field.
+        check_var (BooleanVar): The value of show_password checkbox.
+        login_button (ttk.Button): The button to login.
+
+    Methods:
+        open(self):
+            Opens the signup window.
+        _delete_default_text(num: int):
+            Deletes the default text in the entry fields.
+        _set_default_text(num: int):
+            Sets the default text in the entry fields.
+        _show_password():
+            Toggles the visibility of the password field.
+        _clean_entries(num: int = 0):
+            Cleans the entry fields.
+        _login():
+            Handles the login process.
+
+    """
+    def __init__(self, parent) -> None:
+        """
+        Initialize the login window.
+
+        Args:
+            parent (MainWindow): The parent window.
+
+        """
         self.master = parent.master  # main window's master
         self.root = ttk.Toplevel()
         self.root.title("Log in")
@@ -44,6 +77,9 @@ class LogIn:
         self.login_button.place(relx=0.29, rely=0.73, anchor='w')
 
     def open(self):
+        """
+        Open the login window.
+        """
         # Calculate the center position
         x_position = (self.root.winfo_screenwidth() - 450) // 2  # Adjust the width of the window
         y_position = (self.root.winfo_screenheight() - 550) // 2
@@ -51,13 +87,23 @@ class LogIn:
         self.root.geometry(f'450x550+{x_position}+{y_position - 50}')
         self.root.mainloop()
 
-    def _show_password(self):
+    def _show_password(self) -> None:
+        """
+        Toggle the visibility of the password field.
+        """
         if self.check_var.get():
             self.password_entry.config(show='')
         elif self.password_entry.get() != 'Enter your password':
             self.password_entry.config(show='•')
 
-    def _delete_default_text(self, num):
+    def _delete_default_text(self, num: int) -> None:
+        """
+        Delete the default text in the entry fields.
+
+        Args:
+            num (int): The number indicating which entry field to modify.
+
+        """
         if num == 1:
             self.email_entry.config(foreground='black')
             if self.email_entry.get() == 'Enter your email':
@@ -69,7 +115,14 @@ class LogIn:
                 if not self.check_var.get():
                     self.password_entry.config(show='•')
 
-    def _set_default_text(self, num):
+    def _set_default_text(self, num: int) -> None:
+        """
+        Set the default text in the entry fields.
+
+        Args:
+            num (int): The number indicating which entry field to modify.
+
+        """
         if num == 1:
             if self.email_entry.get() == '':
                 self.email_entry.insert(0, 'Enter your email')
@@ -81,7 +134,10 @@ class LogIn:
                 self.password_entry.insert(0, 'Enter your password')
                 self.password_entry.config(foreground='gray')
 
-    def _login(self):
+    def _login(self) -> None:
+        """
+        Handle the login process.
+        """
         email = self.email_entry.get()
         password = self.password_entry.get()
 
@@ -97,7 +153,15 @@ class LogIn:
             messagebox.showerror('Oops... something went wrong!', str(ex))
             self._clean_entries()
 
-    def _clean_entries(self, num=0):
+    def _clean_entries(self, num: int = 0) -> None:
+        """
+        Clean the entry fields.
+
+        Args:
+            num (int, optional): The number indicating which entry field to clean.
+                If not specified, all entry fields will be cleaned.
+
+        """
         if not num or num == 1:
             self.email_entry.delete(0, END)
             self.email_entry.config(foreground='gray')

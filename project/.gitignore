@@ -3,3 +3,4 @@ draft
 keys/server_private_key.pem
 server
 client/.pytest_cache
+client/docs

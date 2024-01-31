@@ -4,11 +4,29 @@ from tkinter import messagebox
 from ttkbootstrap.tooltip import ToolTip
 from ttkbootstrap.constants import *
 from utilities.string_utilities import StringUtilities
-from user import User
 
 
 class Settings:
-    def __init__(self, parent):
+    """
+    Class for the settings window.
+
+    Attributes:
+        master (ChatApp): The application object.
+        parent (MainWindow): Parent window.
+        root (ttk.Toplevel): Toplevel window with Signup form.
+        name_entry_text (tk.StringVal): The value of name entry.
+        email_entry_text (tk.StringVal): The value of email entry.
+
+    Methods:
+        open(self):
+            Opens the settings window.
+        _save_changes():
+            Saves the changes of the username, if there are any.
+        _logout():
+            Handles the logout process.
+
+    """
+    def __init__(self, parent) -> None:
         self.master = parent.master  # main window's master
         self.parent = parent
         self.root = ttk.Toplevel()
@@ -58,7 +76,10 @@ class Settings:
             logout_btn.config(state=DISABLED)
         logout_btn.grid(row=3, column=1, padx=51, pady=10, ipady=4, columnspan=2, sticky='se')
 
-    def open(self):
+    def open(self) -> None:
+        """
+        Open the settings window.
+        """
         # Calculate the center position
         x_position = (self.root.winfo_screenwidth() - 500) // 2  # Adjust the width of the window
         y_position = (self.root.winfo_screenheight() - 350) // 2
@@ -66,7 +87,10 @@ class Settings:
         self.root.geometry(f'500x350+{x_position}+{y_position - 50}')
         self.root.mainloop()
 
-    def _save_changes(self):
+    def _save_changes(self) -> None:
+        """
+        Save the changes of the username, if there are any.
+        """
         if not self.master.user:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
         else:
@@ -80,7 +104,10 @@ class Settings:
                 messagebox.showerror('Error', 'The use of special characters, such as newline, is not allowed in names.'
                                               ' Please enter a name without special characters.')
 
-    def _logout(self):
+    def _logout(self) -> None:
+        """
+        Handle the logout process.
+        """
         if not self.master.user:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
         else:

@@ -8,7 +8,42 @@ from client.client_socket.client_socket import ClientSocket
 
 
 class ChatWindow:
-    def __init__(self, parent):
+    """
+    Class for the sign-up window.
+
+    Attributes:
+        master (ChatApp): The application object.
+        root (ttk.Toplevel): Toplevel window with Signup form.
+        num_of_participants (ttk.StringVar): Value of participants label.
+        participants_label (ttk.Label): Label that shows the amount of participants.
+        text_widget (ttk.Text): Text widget that display all the messages.
+        msg_entry (ttk.Entry): Message entry field to write messages.
+        send_msg_btn (ttk.Button): The button to login.
+
+    Methods:
+        open(self):
+            Opens the signup window.
+        _delete_default_text(num: int):
+            Deletes the default text in the message entry field.
+        _set_default_text(num: int):
+            Sets the default text in the message entry field.
+        _send_message():
+            Sends a message (displays on the text widget).
+        resize():
+            Resizes all window components according to the size of window.
+        _scrollbar_appearing():
+            Handles the appearance of scrollbar everytime the text widget is focused.
+        _scrollbar_disappearing():
+            Handles the disappearance of scrollbar everytime the text widget is out of focus.
+
+    """
+    def __init__(self, parent) -> None:
+        """
+        Initialize the chat window.
+
+        Args:
+            parent (MainWindow): The parent window.
+        """
         self.master = parent.master
         self.parent = parent
 
@@ -63,30 +98,41 @@ class ChatWindow:
                                   bootstyle='info')
         self.send_msg_btn.grid(row=2, column=1, padx=10, pady=5, sticky='w', ipady=4)
 
-    def open(self):
+    def open(self) -> None:
+        """
+        Open the chat window.
+        """
         self.root.mainloop()
 
-    def resize(self):
+    def resize(self) -> None:
+        """
+        Resize all window components according to the size of window.
+        """
         self.participants_label.config(font=('Microsoft JhengHei', int((13*self.root.winfo_height())/650), 'bold'))
         self.msg_entry.config(width=int((45*self.root.winfo_width())/650))
         self.send_msg_btn.config(width=int((10*self.root.winfo_width())/650))
         self.text_widget.config(height=((21*self.root.winfo_height())/650))
 
-    def _scrollbar_appearing(self):
+    def _scrollbar_appearing(self) -> None:
+        """
+        Handle the appearance of scrollbar everytime the text widget is focused.
+        """
         self.scrollbar = ttk.Scrollbar(self.text_widget, bootstyle='secondary-round', command=self.text_widget.yview)
         self.scrollbar.place(relheight=1, relx=0.975)
 
         self.text_widget.config(yscrollcommand=self.scrollbar.set)
 
-    def _scrollbar_disappearing(self):
+    def _scrollbar_disappearing(self) -> None:
+        """
+        Handle the disappearance of scrollbar everytime the text widget is out of focus.
+        """
         self.scrollbar.place_forget()
 
-    def _send_message(self):
-        if not self.msg_entry.get():
-            return
-        elif self.msg_entry.get() == "Message":
-            return
-        else:
+    def _send_message(self) -> None:
+        """
+        Send a message (display on the text widget).
+        """
+        if self.msg_entry.get() and self.msg_entry.get() != "Message":
             curr_time = datetime.now().time()
             time = curr_time.strftime('%H:%M')
             message = f'{self.master.user.name}: {self.msg_entry.get()}\n{time}\n\n'
@@ -98,46 +144,102 @@ class ChatWindow:
             self.root.focus_set()
             self._set_default_text()
 
-    def _set_default_text(self):
+    def _set_default_text(self) -> None:
+        """
+        Set the default text in the entry field.
+        """
         if self.msg_entry.get() == '':
             self.msg_entry.config(foreground='gray')
             self.msg_entry.insert(0, 'Message')
 
-    def _delete_default_text(self):
+    def _delete_default_text(self) -> None:
+        """
+        Delete the default text in the entry field.
+        """
         if self.msg_entry.get() == 'Message':
             self.msg_entry.delete(0, END)
             self.msg_entry.config(foreground='black')
 
 
 class ClientChatWindow(ChatWindow):
-    def __init__(self, parent):
+    """
+    Class for the client chat window.
+
+    Attributes:
+        socket (ClientSocket): The client socket object for communication with the server.
+
+    Methods:
+        connect():
+            Connect to the server.
+        _send_message():
+            Send a message to other participants of the chat.
+        add_message(msg: str):
+            Display a message on the screen.
+        set_participants_label(label: str):
+            Update the label showing the number of participants.
+        _open_list_of_participants():
+            Open the window with a list of participants.
+        show_server_error():
+            Show a server error through a messagebox.
+        deiconify_parent_root():
+            Reopen the parent window.
+        destroy():
+            Destroy the client chat window.
+
+    """
+    def __init__(self, parent) -> None:
+        """
+        Initialize the chat window.
+
+        Args:
+            parent (MainWindow): Parent window.
+        """
         super().__init__(parent)
         self.socket = ClientSocket(self)
         self.participants_label.bind('<Button-1>', lambda event: self._open_list_of_participants())
 
-    def connect(self):
+    def connect(self) -> None:
+        """
+        Connect to server.
+        """
         self.socket.connect()
 
-    def _send_message(self):
-        if not self.msg_entry.get() or self.msg_entry.get() == "Message":
-            return
-        else:
+    def _send_message(self) -> None:
+        """
+        Send a message to other participants of chat.
+        """
+        if self.msg_entry.get() and self.msg_entry.get() != "Message":
             curr_time = datetime.now().time()
             time = curr_time.strftime('%H:%M')
             message = f'{self.master.user.name}: {self.msg_entry.get()}\n{time}\n\n'
             self.socket.send(message)
             self.msg_entry.delete(0, END)
 
-    def add_message(self, msg):
+    def add_message(self, msg: str) -> None:
+        """
+        Display message on the screen.
+
+        Args:
+            msg (str): New message to display on screen.
+        """
         self.text_widget.config(state=NORMAL)
         self.text_widget.insert(END, msg)
         self.text_widget.see(END)
         self.text_widget.config(state=DISABLED)
 
-    def set_participants_label(self, label):
+    def set_participants_label(self, label: str) -> None:
+        """
+        Update the label showing a number of participants.
+
+        Args:
+            label (str): The new label to display.
+        """
         self.num_of_participants.set(label)
 
-    def _open_list_of_participants(self):
+    def _open_list_of_participants(self) -> None:
+        """
+        Open the window with list of participants.
+        """
         participants_list = ttk.Toplevel(title='Participants')
         participants_list.iconbitmap('./rsrc/chat.ico')
 
@@ -156,12 +258,21 @@ class ClientChatWindow(ChatWindow):
 
         participants_list.mainloop()
 
-    def show_server_error(self):
+    def show_server_error(self) -> None:
+        """
+        Show a server error through messagebox.
+        """
         messagebox.showerror(title='Error', message="Server doesn't answer. Please try again.")
 
-    def deiconify_parent_root(self):
+    def deiconify_parent_root(self) -> None:
+        """
+        Reopen parent window.
+        """
         self.socket.close()
         self.parent.root.deiconify()
 
-    def destroy(self):
+    def destroy(self) -> None:
+        """
+        Destroy client chat window.
+        """
         self.root.destroy()

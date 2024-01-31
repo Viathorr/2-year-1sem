@@ -9,7 +9,41 @@ from utilities.string_utilities import StringUtilities
 
 
 class SignUp:
-    def __init__(self, parent):
+    """
+    Class for the sign-up window.
+
+    Attributes:
+        master (ChatApp): The application object.
+        root (ttk.Toplevel): Toplevel window with Signup form.
+        name_entry (ttk.Entry): Name field.
+        email_entry (ttk.Entry): Email field.
+        password_entry (ttk.Entry): Password field.
+        confirm_password_entry (ttk.Entry): Confirm password field.
+        check_var (BooleanVar): The value of show_password checkbox.
+        signup_button (ttk.Button): The button to signup.
+
+    Methods:
+        open(self):
+            Opens the signup window.
+        _delete_default_text(num: int):
+            Deletes the default text in the entry fields.
+        _set_default_text(num: int):
+            Sets the default text in the entry fields.
+        _show_password():
+            Toggles the visibility of the password fields.
+        _clean_entries(num: int = 0):
+            Cleans the entry fields.
+        _signup():
+            Handles the sign-up process.
+
+    """
+    def __init__(self, parent) -> None:
+        """Initialize the sign-up window.
+
+        Args:
+            parent (MainWindow): The parent window.
+
+        """
         self.master = parent.master  # main window's master
         self.root = ttk.Toplevel()
         self.root.title('Sign up')
@@ -69,10 +103,20 @@ class SignUp:
         self.signup_button = ttk.Button(self.root, text='Sign up', bootstyle='info', width=15, command=self._signup)
         self.signup_button.place(relx=0.275, rely=0.825, anchor='w')
 
-    def open(self):
+    def open(self) -> None:
+        """
+        Open the sign-up window.
+        """
         self.root.mainloop()
 
-    def _delete_default_text(self, num):
+    def _delete_default_text(self, num: int) -> None:
+        """
+        Delete the default text in the entry fields.
+
+        Args:
+            num (int): The number indicating which entry field to modify.
+
+        """
         if num == 1:
             self.name_entry.config(foreground='black')
             if self.name_entry.get() == 'Enter your name':
@@ -94,7 +138,14 @@ class SignUp:
                 if not self.check_var.get():
                     self.confirm_password_entry.config(show='•')
 
-    def _set_default_text(self, num):
+    def _set_default_text(self, num: int) -> None:
+        """
+        Set the default text in the entry fields.
+
+        Args:
+            num (int): The number indicating which entry field to modify.
+
+        """
         if num == 1:
             if self.name_entry.get() == '':
                 self._clean_entries(1)
@@ -108,7 +159,10 @@ class SignUp:
             if self.confirm_password_entry.get() == '':
                 self._clean_entries(4)
 
-    def _show_password(self):
+    def _show_password(self) -> None:
+        """
+        Toggle the visibility of the password fields.
+        """
         if self.check_var.get():
             self.confirm_password_entry.config(show='')
             self.password_entry.config(show='')
@@ -118,7 +172,15 @@ class SignUp:
             if self.password_entry.get() != 'Enter your password':
                 self.password_entry.config(show='•')
 
-    def _clean_entries(self, num=0):
+    def _clean_entries(self, num: int = 0) -> None:
+        """
+        Clean the entry fields.
+
+        Args:
+            num (int, optional): The number indicating which entry field to clean.
+                If not specified, all entry fields will be cleaned.
+
+        """
         if not num or num == 1:
             self.name_entry.delete(0, END)
             self.name_entry.config(foreground='gray')
@@ -141,6 +203,9 @@ class SignUp:
             self.confirm_password_entry.insert(0, 'Confirm your password')
 
     def _signup(self) -> None:
+        """
+        Handle the sign-up process.
+        """
         name = self.name_entry.get()
         email = self.email_entry.get()
         if name == 'Enter your name' or StringUtilities.is_empty_string(name):
