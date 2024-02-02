@@ -14,9 +14,12 @@ class MainWindow:
     Attributes:
         master (ChatApp): The application object.
         root (ttk.Window): The main window of the application.
-        login_btn (ttk.Button): Button to open the login window.
-        signup_btn (ttk.Button): Button to open the signup window.
-        settings_window (Settings): Reference to the settings window.
+        _login_btn (ttk.Button): Button to open the login window.
+        _signup_btn (ttk.Button): Button to open the signup window.
+        _chat_window (ClientChatWindow): Reference to the chat window.
+        _login_window (LogIn): Reference to the login form window.
+        _signup_window (SignUp): Reference to the signup form window.
+        _settings_window (Settings): Reference to the settings window.
 
     Methods:
         open():
@@ -64,7 +67,7 @@ class MainWindow:
         x_position = (self.root.winfo_screenwidth() - 550) // 2  # Adjust the width of the window
         y_position = (self.root.winfo_screenheight() - 600) // 2
 
-        self.root.geometry(f'550x600+{x_position}+{y_position-30}')
+        self.root.geometry(f'550x600+{x_position}+{y_position - 30}')
         self.root.minsize(500, 550)
 
         self.root.rowconfigure((0, 4), weight=2)
@@ -86,25 +89,25 @@ class MainWindow:
         open_btn = ttk.Button(text='Open', bootstyle='info', width=17, command=self._open_chat_window)
         open_btn.grid(row=1, column=1, ipady=10)
 
-        self.chat_window = None
+        self._chat_window = None
 
         # Log in button
-        self.login_btn = ttk.Button(text='Log in', bootstyle='info', width=17,
-                                    command=self._open_login_window)
-        self.login_btn.grid(row=2, column=1, ipady=10)
-        self.login_window = None
+        self._login_btn = ttk.Button(text='Log in', bootstyle='info', width=17,
+                                     command=self._open_login_window)
+        self._login_btn.grid(row=2, column=1, ipady=10)
+        self._login_window = None
 
         # Sign up button
-        self.signup_btn = ttk.Button(text='Sign up', bootstyle='info', width=17,
-                                     command=self._open_signup_window)
-        self.signup_btn.grid(row=3, column=1, ipady=10)
-        self.signup_window = None
+        self._signup_btn = ttk.Button(text='Sign up', bootstyle='info', width=17,
+                                      command=self._open_signup_window)
+        self._signup_btn.grid(row=3, column=1, ipady=10)
+        self._signup_window = None
 
         # Settings button
         settings_btn = ttk.Button(text='Settings', bootstyle='dark-outline', width=17, command=self._open_settings)
         settings_btn.grid(row=4, column=1, ipady=3, pady=15, sticky='n')
 
-        self.settings_window = None
+        self._settings_window = None
 
     def open(self) -> None:
         """
@@ -132,12 +135,12 @@ class MainWindow:
             messagebox.showwarning('You must be logged in', "Please log in or sign up first.")
         else:
             self.root.withdraw()
-            self.chat_window = ClientChatWindow(self)
-            self.chat_window.root.protocol('WM_DELETE_WINDOW', self._close_chat_window)
+            self._chat_window = ClientChatWindow(self.master)
+            self._chat_window.root.protocol('WM_DELETE_WINDOW', self._close_chat_window)
             try:
-                self.chat_window.connect()
+                self._chat_window.connect()
             except Exception as ex:
-                self.chat_window.root.destroy()
+                self._chat_window.root.destroy()
                 self.root.deiconify()
                 messagebox.showerror(title='Error', message=str(ex))
 
@@ -146,8 +149,8 @@ class MainWindow:
         Close the chat window.
         """
         print('in close window method')
-        self.chat_window.socket.close()
-        self.chat_window.destroy()
+        self._chat_window.socket.close()
+        self._chat_window.destroy()
         self.root.deiconify()
 
     def _open_login_window(self) -> None:
@@ -155,9 +158,9 @@ class MainWindow:
         Open the login window
         """
         self.root.withdraw()
-        self.login_window = LogIn(self)
-        self.login_window.root.protocol('WM_DELETE_WINDOW', self._close_login_window)
-        self.login_window.open()
+        self._login_window = LogIn(self.master)
+        self._login_window.root.protocol('WM_DELETE_WINDOW', self._close_login_window)
+        self._login_window.open()
 
     def _close_login_window(self) -> None:
         """
@@ -165,7 +168,7 @@ class MainWindow:
         """
         if self.master.user:
             self.change_buttons_state(True)
-        self.login_window.root.destroy()
+        self._login_window.root.destroy()
         self.root.deiconify()
 
     def _open_signup_window(self) -> None:
@@ -173,9 +176,9 @@ class MainWindow:
         Open the signup window
         """
         self.root.withdraw()
-        self.signup_window = SignUp(self)
-        self.signup_window.root.protocol('WM_DELETE_WINDOW', self._close_signup_window)
-        self.signup_window.open()
+        self._signup_window = SignUp(self.master)
+        self._signup_window.root.protocol('WM_DELETE_WINDOW', self._close_signup_window)
+        self._signup_window.open()
 
     def _close_signup_window(self) -> None:
         """
@@ -183,7 +186,7 @@ class MainWindow:
         """
         if self.master.user:
             self.change_buttons_state(True)
-        self.signup_window.root.destroy()
+        self._signup_window.root.destroy()
         self.root.deiconify()
 
     def _open_settings(self) -> None:
@@ -191,17 +194,17 @@ class MainWindow:
         Open the settings window
         """
         self.root.withdraw()
-        self.settings_window = Settings(self)
-        self.settings_window.root.protocol('WM_DELETE_WINDOW', self._close_settings_window)
-        self.settings_window.open()
+        self._settings_window = Settings(self.master)
+        self._settings_window.root.protocol('WM_DELETE_WINDOW', self._close_settings)
+        self._settings_window.open()
 
-    def _close_settings_window(self) -> None:
+    def _close_settings(self) -> None:
         """
         Close the settings window.
         """
         if not self.master.user:
             self.change_buttons_state(False)
-        self.settings_window.root.destroy()
+        self._settings_window.root.destroy()
         self.root.deiconify()
 
     def change_buttons_state(self, disable: bool) -> None:
@@ -211,5 +214,5 @@ class MainWindow:
         Args:
             disable (bool): True to disable buttons, False to enable.
         """
-        self.login_btn.config(state=NORMAL if not disable else DISABLED)
-        self.signup_btn.config(state=NORMAL if not disable else DISABLED)
+        self._login_btn.config(state=NORMAL if not disable else DISABLED)
+        self._signup_btn.config(state=NORMAL if not disable else DISABLED)

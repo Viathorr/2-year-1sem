@@ -1,6 +1,7 @@
 import socket
 import threading
 import rsa
+from typing import List
 
 PORT = 5555
 SERVER = '192.168.95.126'
@@ -13,13 +14,13 @@ class ClientSocket:
     Class representing a client socket for connecting to a server and handling communication.
 
     Attributes:
-        socket (socket.socket): The client socket.
+        _socket (socket.socket): The client socket.
         _parent: Reference to the parent object.
         _connected (bool): Indicates whether the client is connected to the server.
         _public_key (rsa.PublicKey): The client's public key.
         _private_key (rsa.PrivateKey): The client's private key.
         _server_public_key (rsa.PublicKey): The server's public key.
-        participants (list): A list of participants connected to the server.
+        _participants (list): A list of participants connected to the server.
 
     Methods:
         _generate_keys():
@@ -44,13 +45,17 @@ class ClientSocket:
         Args:
             parent: Reference to the parent (gui component) object.
         """
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._parent = parent
         self._connected = False
         self._public_key = None
         self._private_key = None
         self._server_public_key = None
-        self.participants = []
+        self._participants = []
+
+    @property
+    def participants(self) -> List[str]:
+        return self._participants
 
     def _generate_keys(self) -> None:
         """
@@ -63,14 +68,14 @@ class ClientSocket:
         Connects the client socket to the server.
         """
         try:
-            self.socket.connect(ADDR)
+            self._socket.connect(ADDR)
             self._connected = True
             self._generate_keys()
-            self._server_public_key = rsa.PublicKey.load_pkcs1(self.socket.recv(1024))
-            self.socket.send(rsa.PublicKey.save_pkcs1(self._public_key))
-            msg = rsa.decrypt(self.socket.recv(1024), self._private_key).decode(FORMAT)
+            self._server_public_key = rsa.PublicKey.load_pkcs1(self._socket.recv(1024))
+            self._socket.send(rsa.PublicKey.save_pkcs1(self._public_key))
+            msg = rsa.decrypt(self._socket.recv(1024), self._private_key).decode(FORMAT)
             if msg == 'NICK':
-                self.socket.send(rsa.encrypt(self._parent.master.user.name.encode(FORMAT), self._server_public_key))
+                self._socket.send(rsa.encrypt(self._parent._master.user.name.encode(FORMAT), self._server_public_key))
             thread_receive = threading.Thread(target=self._receive)
             thread_receive.start()
             self._parent.open()
@@ -83,18 +88,18 @@ class ClientSocket:
         """
         while True:
             try:
-                msg = rsa.decrypt(self.socket.recv(1024), self._private_key).decode(FORMAT)
+                msg = rsa.decrypt(self._socket.recv(1024), self._private_key).decode(FORMAT)
                 if msg.startswith('PARTICIPANTS'):
-                    self.participants.clear()
+                    self._participants.clear()
                     lines = msg.split('\n')
                     for i in range(1, len(lines)):
                         nickname = lines[i]
-                        self.participants.append(nickname)
-                    self._parent.set_participants_label(f'Participants: {len(self.participants)}')
+                        self._participants.append(nickname)
+                    self._parent.set_participants_label(f'Participants: {len(self._participants)}')
                 else:
                     self._parent.add_message(msg)
             except socket.error:
-                if self.socket.fileno() == -1:
+                if self._socket.fileno() == -1:
                     break
                 self.close()
                 self._parent.deiconify_parent_root()
@@ -109,10 +114,10 @@ class ClientSocket:
         Args:
             message (str): The message to send.
         """
-        self.socket.send(rsa.encrypt(message.encode(FORMAT), self._server_public_key))
+        self._socket.send(rsa.encrypt(message.encode(FORMAT), self._server_public_key))
 
     def close(self) -> None:
         """
         Closes the client socket.
         """
-        self.socket.close()
+        self._socket.close()

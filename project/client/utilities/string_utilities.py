@@ -4,9 +4,6 @@ class StringUtilities:
 
     Provides static methods for checking if a string is empty or contains newline characters.
 
-    Attributes:
-        None
-
     Methods:
         is_empty_string(string: str) -> bool:
             Checks if the given string is empty or consists only of whitespace characters.
@@ -15,7 +12,7 @@ class StringUtilities:
             Checks if the given string contains newline characters.
     """
     @staticmethod
-    def is_empty_string(string):
+    def is_empty_string(string: str) -> bool:
         """
        Check if the given string is empty or consists only of whitespace characters.
 
@@ -28,7 +25,7 @@ class StringUtilities:
         return all(char.isspace() for char in string)
 
     @staticmethod
-    def contains_newline_char(string):
+    def contains_newline_char(string: str) -> bool:
         """
         Check if the given string contains newline characters.
 

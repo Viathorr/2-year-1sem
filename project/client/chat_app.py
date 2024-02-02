@@ -9,41 +9,50 @@ class ChatApp:
     Class representing the Chat Application.
 
     Attributes:
-        main_window (MainWindow): The main window of the application.
+        _main_window (MainWindow): The main window of the application.
         db_control (DBControl): Database control object for managing user data.
-        user (User): Current user logged into the application.
+        _user (User): Current user logged into the application.
 
     Methods:
         run():
             Run the Chat Application.
         _close_window():
             Close the application window.
+        deiconify_main_window():
+            Reopen main window.
         set_user(user: User):
             Set the current user of the application.
 
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initialize the Chat Application.
         """
-        self.main_window = MainWindow(self)
+        self._main_window = MainWindow(self)
         db = DatabaseUserTable()
         self.db_control = DBControl(CheckPasswordMatchingCommand(db), GetNameByEmailCommand(db),
-                                    CheckEmailExistenceCommand(db), AddUserCommand(db), ChangeUsernameCommand(db))
-        self.user = None
-        self.main_window.root.protocol('WM_DELETE_WINDOW', self._close_window)
+                                     CheckEmailExistenceCommand(db), AddUserCommand(db), ChangeUsernameCommand(db))
+        self._user = None
+        self._main_window.root.protocol('WM_DELETE_WINDOW', self._close_window)
 
-    def run(self):
+    @property
+    def user(self) -> None:
+        return self._user
+
+    def run(self) -> None:
         """
         Run the Chat Application.
         """
-        self.main_window.open()
+        self._main_window.open()
 
-    def _close_window(self):
+    def deiconify_main_window(self):
+        self._main_window.root.deiconify()
+
+    def _close_window(self) -> None:
         """
         Close the application window.
         """
-        self.main_window.root.destroy()
+        self._main_window.root.destroy()
 
     def set_user(self, user: User) -> None:
         """
@@ -52,7 +61,7 @@ class ChatApp:
         Args:
             user (User): The user object to set.
         """
-        self.user = user
+        self._user = user
 
 
 if __name__ == "__main__":

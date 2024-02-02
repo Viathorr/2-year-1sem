@@ -9,8 +9,8 @@ class DatabaseUserTable:
     Provides methods to connect to the database, execute queries, and close the connection.
 
     Attributes:
-        connection: The connection to the MySQL database.
-        cursor: The cursor object for executing MySQL queries.
+        _connection: The connection to the MySQL database.
+        _cursor: The cursor object for executing MySQL queries.
 
     Methods:
         connect() -> None:
@@ -29,19 +29,19 @@ class DatabaseUserTable:
         """
         Initialize a new DatabaseUserTable object.
         """
-        self.connection = None
-        self.cursor = None
+        self._connection = None
+        self._cursor = None
 
     def connect(self) -> None:
         """
         Establishes a connection to the MySQL database using the configuration settings.
         """
-        self.connection = mysql.connector.connect(user=config.DB_USER,
-                                                  password=config.DB_PASSWORD,
-                                                  host=config.DB_HOST,
-                                                  port=config.DB_PORT,
-                                                  database=config.DB_NAME)
-        self.cursor = self.connection.cursor()
+        self._connection = mysql.connector.connect(user=config.DB_USER,
+                                                   password=config.DB_PASSWORD,
+                                                   host=config.DB_HOST,
+                                                   port=config.DB_PORT,
+                                                   database=config.DB_NAME)
+        self._cursor = self._connection.cursor()
 
     def execute_query(self, query: str) -> None:
         """
@@ -51,7 +51,7 @@ class DatabaseUserTable:
             query (str): The SQL query to execute.
         """
         self.connect()
-        self.cursor.execute(query)
+        self._cursor.execute(query)
         self._close_connection()
 
     def execute_and_return_result(self, query: str) -> str:
@@ -65,8 +65,8 @@ class DatabaseUserTable:
             str: The result of the query.
         """
         self.connect()
-        self.cursor.execute(query)
-        result = self.cursor.fetchone()[0]
+        self._cursor.execute(query)
+        result = self._cursor.fetchone()[0]
         self._close_connection()
         return result
 
@@ -74,5 +74,5 @@ class DatabaseUserTable:
         """
         Commits any pending transactions and closes the database connection.
         """
-        self.connection.commit()
-        self.connection.close()
+        self._connection.commit()
+        self._connection.close()

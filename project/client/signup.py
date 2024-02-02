@@ -13,14 +13,14 @@ class SignUp:
     Class for the sign-up window.
 
     Attributes:
-        master (ChatApp): The application object.
+        _master (ChatApp): The application object.
         root (ttk.Toplevel): Toplevel window with Signup form.
-        name_entry (ttk.Entry): Name field.
-        email_entry (ttk.Entry): Email field.
-        password_entry (ttk.Entry): Password field.
-        confirm_password_entry (ttk.Entry): Confirm password field.
-        check_var (BooleanVar): The value of show_password checkbox.
-        signup_button (ttk.Button): The button to signup.
+        _name_entry (ttk.Entry): Name field.
+        _email_entry (ttk.Entry): Email field.
+        _password_entry (ttk.Entry): Password field.
+        _confirm_password_entry (ttk.Entry): Confirm password field.
+        _check_var (BooleanVar): The value of show_password checkbox.
+        _signup_button (ttk.Button): The button to signup.
 
     Methods:
         open(self):
@@ -37,14 +37,15 @@ class SignUp:
             Handles the sign-up process.
 
     """
-    def __init__(self, parent) -> None:
-        """Initialize the sign-up window.
+    def __init__(self, master) -> None:
+        """
+        Initialize the sign-up window.
 
         Args:
-            parent (MainWindow): The parent window.
+            master (ChatApp): The application object.
 
         """
-        self.master = parent.master  # main window's master
+        self._master = master  # main window's master
         self.root = ttk.Toplevel()
         self.root.title('Sign up')
         self.root.iconbitmap('./rsrc/chat.ico')
@@ -58,50 +59,50 @@ class SignUp:
 
         # Main label
         label = ttk.Label(self.root, text='Create an account', font=('Microsoft JhengHei', 17, 'bold'),
-                               bootstyle='dark')
+                          bootstyle='dark')
         label.place(relx=0.17, rely=0.13)
 
         # Name entry
-        self.name_entry = ttk.Entry(self.root, width=25, font=('Ebrima', 10), foreground='gray')
-        self.name_entry.insert(0, 'Enter your name')
-        self.name_entry.place(relx=0.18, rely=0.28)
-        self.name_entry.bind('<FocusIn>', lambda event: self._delete_default_text(1))
-        self.name_entry.bind('<FocusOut>', lambda event: self._set_default_text(1))
-        ToolTip(self.name_entry, 'Name', bootstyle='secondary-inverse')
+        self._name_entry = ttk.Entry(self.root, width=25, font=('Ebrima', 10), foreground='gray')
+        self._name_entry.insert(0, 'Enter your name')
+        self._name_entry.place(relx=0.18, rely=0.28)
+        self._name_entry.bind('<FocusIn>', lambda event: self._delete_default_text(1))
+        self._name_entry.bind('<FocusOut>', lambda event: self._set_default_text(1))
+        ToolTip(self._name_entry, 'Name', bootstyle='secondary-inverse')
 
         # Email entry
-        self.email_entry = ttk.Entry(self.root, width=25, font=('Ebrima', 10), foreground='gray')
-        self.email_entry.insert(0, 'Enter your email')
-        self.email_entry.place(relx=0.18, rely=0.38)
-        self.email_entry.bind('<FocusIn>', lambda event: self._delete_default_text(2))
-        self.email_entry.bind('<FocusOut>', lambda event: self._set_default_text(2))
-        ToolTip(self.email_entry, 'Email', bootstyle='secondary-inverse')
+        self._email_entry = ttk.Entry(self.root, width=25, font=('Ebrima', 10), foreground='gray')
+        self._email_entry.insert(0, 'Enter your email')
+        self._email_entry.place(relx=0.18, rely=0.38)
+        self._email_entry.bind('<FocusIn>', lambda event: self._delete_default_text(2))
+        self._email_entry.bind('<FocusOut>', lambda event: self._set_default_text(2))
+        ToolTip(self._email_entry, 'Email', bootstyle='secondary-inverse')
 
         # Password entry
-        self.password_entry = ttk.Entry(self.root, width=25, font=('Ebrima', 10), foreground='gray')
-        self.password_entry.insert(0, 'Enter your password')
-        self.password_entry.place(relx=0.18, rely=0.48)
-        self.password_entry.bind('<FocusIn>', lambda event: self._delete_default_text(3))
-        self.password_entry.bind('<FocusOut>', lambda event: self._set_default_text(3))
-        ToolTip(self.password_entry, 'Password', bootstyle='secondary-inverse')
+        self._password_entry = ttk.Entry(self.root, width=25, font=('Ebrima', 10), foreground='gray')
+        self._password_entry.insert(0, 'Enter your password')
+        self._password_entry.place(relx=0.18, rely=0.48)
+        self._password_entry.bind('<FocusIn>', lambda event: self._delete_default_text(3))
+        self._password_entry.bind('<FocusOut>', lambda event: self._set_default_text(3))
+        ToolTip(self._password_entry, 'Password', bootstyle='secondary-inverse')
 
         # Password confirmation entry
-        self.confirm_password_entry = ttk.Entry(self.root, width=25, font=('Ebrima', 10), foreground='gray')
-        self.confirm_password_entry.insert(0, 'Confirm your password')
-        self.confirm_password_entry.place(relx=0.18, rely=0.58)
-        self.confirm_password_entry.bind('<FocusIn>', lambda event: self._delete_default_text(4))
-        self.confirm_password_entry.bind('<FocusOut>', lambda event: self._set_default_text(4))
-        ToolTip(self.confirm_password_entry, 'Confirm password', bootstyle='secondary-inverse')
+        self._confirm_password_entry = ttk.Entry(self.root, width=25, font=('Ebrima', 10), foreground='gray')
+        self._confirm_password_entry.insert(0, 'Confirm your password')
+        self._confirm_password_entry.place(relx=0.18, rely=0.58)
+        self._confirm_password_entry.bind('<FocusIn>', lambda event: self._delete_default_text(4))
+        self._confirm_password_entry.bind('<FocusOut>', lambda event: self._set_default_text(4))
+        ToolTip(self._confirm_password_entry, 'Confirm password', bootstyle='secondary-inverse')
 
         # Show password checkbutton
-        self.check_var = BooleanVar(value=False)
-        show_password_check = ttk.Checkbutton(self.root, text='Show password', variable=self.check_var,
-                                                   bootstyle='info', command=self._show_password)
+        self._check_var = BooleanVar(value=False)
+        show_password_check = ttk.Checkbutton(self.root, text='Show password', variable=self._check_var,
+                                              bootstyle='info', command=self._show_password)
         show_password_check.place(relx=0.5, rely=0.67)
 
         # Sign up button
-        self.signup_button = ttk.Button(self.root, text='Sign up', bootstyle='info', width=15, command=self._signup)
-        self.signup_button.place(relx=0.275, rely=0.825, anchor='w')
+        self._signup_button = ttk.Button(self.root, text='Sign up', bootstyle='info', width=15, command=self._signup)
+        self._signup_button.place(relx=0.275, rely=0.825, anchor='w')
 
     def open(self) -> None:
         """
@@ -118,25 +119,25 @@ class SignUp:
 
         """
         if num == 1:
-            self.name_entry.config(foreground='black')
-            if self.name_entry.get() == 'Enter your name':
-                self.name_entry.delete(0, END)
+            self._name_entry.config(foreground='black')
+            if self._name_entry.get() == 'Enter your name':
+                self._name_entry.delete(0, END)
         elif num == 2:
-            self.email_entry.config(foreground='black')
-            if self.email_entry.get() == 'Enter your email':
-                self.email_entry.delete(0, END)
+            self._email_entry.config(foreground='black')
+            if self._email_entry.get() == 'Enter your email':
+                self._email_entry.delete(0, END)
         elif num == 3:
-            self.password_entry.config(foreground='black')
-            if self.password_entry.get() == 'Enter your password':
-                self.password_entry.delete(0, END)
-                if not self.check_var.get():
-                    self.password_entry.config(show='•')
+            self._password_entry.config(foreground='black')
+            if self._password_entry.get() == 'Enter your password':
+                self._password_entry.delete(0, END)
+                if not self._check_var.get():
+                    self._password_entry.config(show='•')
         elif num == 4:
-            self.confirm_password_entry.config(foreground='black')
-            if self.confirm_password_entry.get() == 'Confirm your password':
-                self.confirm_password_entry.delete(0, END)
-                if not self.check_var.get():
-                    self.confirm_password_entry.config(show='•')
+            self._confirm_password_entry.config(foreground='black')
+            if self._confirm_password_entry.get() == 'Confirm your password':
+                self._confirm_password_entry.delete(0, END)
+                if not self._check_var.get():
+                    self._confirm_password_entry.config(show='•')
 
     def _set_default_text(self, num: int) -> None:
         """
@@ -147,30 +148,30 @@ class SignUp:
 
         """
         if num == 1:
-            if self.name_entry.get() == '':
+            if self._name_entry.get() == '':
                 self._clean_entries(1)
         elif num == 2:
-            if self.email_entry.get() == '':
+            if self._email_entry.get() == '':
                 self._clean_entries(2)
         elif num == 3:
-            if self.password_entry.get() == '':
+            if self._password_entry.get() == '':
                 self._clean_entries(3)
         elif num == 4:
-            if self.confirm_password_entry.get() == '':
+            if self._confirm_password_entry.get() == '':
                 self._clean_entries(4)
 
     def _show_password(self) -> None:
         """
         Toggle the visibility of the password fields.
         """
-        if self.check_var.get():
-            self.confirm_password_entry.config(show='')
-            self.password_entry.config(show='')
+        if self._check_var.get():
+            self._confirm_password_entry.config(show='')
+            self._password_entry.config(show='')
         else:
-            if self.confirm_password_entry.get() != 'Confirm your password':
-                self.confirm_password_entry.config(show='•')
-            if self.password_entry.get() != 'Enter your password':
-                self.password_entry.config(show='•')
+            if self._confirm_password_entry.get() != 'Confirm your password':
+                self._confirm_password_entry.config(show='•')
+            if self._password_entry.get() != 'Enter your password':
+                self._password_entry.config(show='•')
 
     def _clean_entries(self, num: int = 0) -> None:
         """
@@ -182,32 +183,32 @@ class SignUp:
 
         """
         if not num or num == 1:
-            self.name_entry.delete(0, END)
-            self.name_entry.config(foreground='gray')
-            self.name_entry.insert(0, 'Enter your name')
+            self._name_entry.delete(0, END)
+            self._name_entry.config(foreground='gray')
+            self._name_entry.insert(0, 'Enter your name')
         if not num or num == 2:
-            self.email_entry.delete(0, END)
-            self.email_entry.config(foreground='gray')
-            self.email_entry.insert(0, 'Enter your email')
+            self._email_entry.delete(0, END)
+            self._email_entry.config(foreground='gray')
+            self._email_entry.insert(0, 'Enter your email')
         if not num or num == 3:
-            self.password_entry.delete(0, END)
-            if not self.check_var.get():
-                self.password_entry.config(show='')
-            self.password_entry.config(foreground='gray')
-            self.password_entry.insert(0, 'Enter your password')
+            self._password_entry.delete(0, END)
+            if not self._check_var.get():
+                self._password_entry.config(show='')
+            self._password_entry.config(foreground='gray')
+            self._password_entry.insert(0, 'Enter your password')
         if not num or num == 4:
-            self.confirm_password_entry.delete(0, END)
-            if not self.check_var.get():
-                self.confirm_password_entry.config(show='')
-            self.confirm_password_entry.config(foreground='gray')
-            self.confirm_password_entry.insert(0, 'Confirm your password')
+            self._confirm_password_entry.delete(0, END)
+            if not self._check_var.get():
+                self._confirm_password_entry.config(show='')
+            self._confirm_password_entry.config(foreground='gray')
+            self._confirm_password_entry.insert(0, 'Confirm your password')
 
     def _signup(self) -> None:
         """
         Handle the sign-up process.
         """
-        name = self.name_entry.get()
-        email = self.email_entry.get()
+        name = self._name_entry.get()
+        email = self._email_entry.get()
         if name == 'Enter your name' or StringUtilities.is_empty_string(name):
             messagebox.showerror('Error', 'Please enter your name.')
             return
@@ -220,8 +221,8 @@ class SignUp:
             messagebox.showerror('Error', 'Invalid email. Try again.')
             return
 
-        password = self.password_entry.get()
-        confirm_password = self.confirm_password_entry.get()
+        password = self._password_entry.get()
+        confirm_password = self._confirm_password_entry.get()
 
         if password != confirm_password:
             messagebox.showerror('Error', 'Passwords do not match. Please try again.')
@@ -231,15 +232,15 @@ class SignUp:
         elif StringUtilities.is_empty_string(password):
             messagebox.showerror('Error', 'Please enter valid password.')
             return
-        if self.master.db_control.email_exists(email):
+        if self._master.db_control.email_exists(email):
             messagebox.showwarning('Warning', '''An account with this email already exists.\n'''
                                               '''Please use a different email or proceed to login.''')
             return
         else:
-            self.master.db_control.add_user(name, email, password)
+            self._master.db_control.add_user(name, email, password)
             user = User(name, email)
-            self.master.set_user(user)
+            self._master.set_user(user)
 
             messagebox.showinfo('Success', 'Registration has completed successfully!')
             self._clean_entries()
-            self.signup_button.config(state=DISABLED)
+            self._signup_button.config(state=DISABLED)

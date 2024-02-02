@@ -13,10 +13,10 @@ class Server:
     Class representing a server for handling client connections and communication.
 
     Attributes:
-        server (socket.socket): The server socket.
-        clients (list): A list of clients' sockets.
-        nicknames (list): A list of client nicknames.
-        public_keys (list): A list of client public keys.
+        _server (socket.socket): The server socket.
+        _clients (list): A list of clients' sockets.
+        _nicknames (list): A list of client nicknames.
+        _public_keys (list): A list of client public keys.
         _public_key (rsa.PublicKey): The server's public key.
         _private_key (rsa.PrivateKey): The server's private key.
 
@@ -32,17 +32,23 @@ class Server:
 
         __load_keys():
             Loads the server's public and private keys.
+
+
++ start(): void
+# handle_client(client: socket.socket): void
+# broadcast(message: str): void
+- load_keys(): void
     """
     def __init__(self) -> None:
         """
         Initialize a new Server object.
         """
-        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server.bind(ADDR)
+        self._server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._server.bind(ADDR)
 
-        self.clients = []
-        self.nicknames = []
-        self.public_keys = []
+        self._clients = []
+        self._nicknames = []
+        self._public_keys = []
 
         self._public_key = None
         self._private_key = None
@@ -53,19 +59,19 @@ class Server:
         """
         print('Server is listening...\n')
         self.__load_keys()
-        self.server.listen()
+        self._server.listen()
         while True:
-            client, address = self.server.accept()
-            self.clients.append(client)
+            client, address = self._server.accept()
+            self._clients.append(client)
 
             client.send(rsa.PublicKey.save_pkcs1(self._public_key))
             client_public_key = rsa.PublicKey.load_pkcs1(client.recv(1024))
-            self.public_keys.append(client_public_key)
+            self._public_keys.append(client_public_key)
 
             client.send(rsa.encrypt('NICK'.encode(FORMAT), client_public_key))
             nickname = rsa.decrypt(client.recv(1024), self._private_key).decode(FORMAT)
             print(nickname)
-            self.nicknames.append(nickname)
+            self._nicknames.append(nickname)
 
             thread = threading.Thread(target=self._handle_client, args=(client,))
             thread.start()
@@ -79,7 +85,7 @@ class Server:
         """
         print('New client has connected.')
         info_msg = 'PARTICIPANTS'
-        for nick in self.nicknames:
+        for nick in self._nicknames:
             info_msg += f'\n{nick}'
         self._broadcast(info_msg)
         while True:
@@ -87,16 +93,16 @@ class Server:
                 msg = rsa.decrypt(client.recv(1024), self._private_key).decode(FORMAT)
                 self._broadcast(msg)
             except socket.error:
-                client_nickname = self.nicknames[self.clients.index(client)]
-                client_public_key = self.public_keys[self.clients.index(client)]
+                client_nickname = self._nicknames[self._clients.index(client)]
+                client_public_key = self._public_keys[self._clients.index(client)]
                 msg = f'{client_nickname} disconnected.\n\n'
                 print(msg)
-                self.clients.remove(client)
-                self.nicknames.remove(client_nickname)
-                self.public_keys.remove(client_public_key)
+                self._clients.remove(client)
+                self._nicknames.remove(client_nickname)
+                self._public_keys.remove(client_public_key)
                 self._broadcast(msg)
                 info_msg = 'PARTICIPANTS'
-                for nick in self.nicknames:
+                for nick in self._nicknames:
                     info_msg += f'\n{nick}'
                 self._broadcast(info_msg)
                 break
@@ -109,8 +115,8 @@ class Server:
         Args:
             message (str): The message to broadcast.
         """
-        for client in self.clients:
-            client_public_key = self.public_keys[self.clients.index(client)]
+        for client in self._clients:
+            client_public_key = self._public_keys[self._clients.index(client)]
             client.send(rsa.encrypt(message.encode(FORMAT), client_public_key))
 
     def __load_keys(self) -> None:

@@ -4,21 +4,22 @@ from ttkbootstrap.constants import *
 from ttkbootstrap.tooltip import ToolTip
 from datetime import datetime
 from tkinter import messagebox
+from abc import ABC, abstractmethod
 from client.client_socket.client_socket import ClientSocket
 
 
-class ChatWindow:
+class ChatWindow(ABC):
     """
     Class for the sign-up window.
 
     Attributes:
-        master (ChatApp): The application object.
+        _master (ChatApp): The application object.
         root (ttk.Toplevel): Toplevel window with Signup form.
-        num_of_participants (ttk.StringVar): Value of participants label.
-        participants_label (ttk.Label): Label that shows the amount of participants.
-        text_widget (ttk.Text): Text widget that display all the messages.
-        msg_entry (ttk.Entry): Message entry field to write messages.
-        send_msg_btn (ttk.Button): The button to login.
+        _num_of_participants (ttk.StringVar): Value of participants label.
+        _participants_label (ttk.Label): Label that shows the amount of participants.
+        _text_widget (ttk.Text): Text widget that display all the messages.
+        _msg_entry (ttk.Entry): Message entry field to write messages.
+        _send_msg_btn (ttk.Button): The button to login.
 
     Methods:
         open(self):
@@ -37,20 +38,19 @@ class ChatWindow:
             Handles the disappearance of scrollbar everytime the text widget is out of focus.
 
     """
-    def __init__(self, parent) -> None:
+    def __init__(self, master) -> None:
         """
         Initialize the chat window.
 
         Args:
-            parent (MainWindow): The parent window.
+            master (ChatApp): The application object.
         """
-        self.master = parent.master
-        self.parent = parent
+        self._master = master
 
         self.root = ttk.Toplevel(title='Chat')
         self.root.iconbitmap('./rsrc/chat.ico')
         self.root.minsize(650, 650)
-        self.root.bind('<Configure>', lambda event: self.resize())
+        self.root.bind('<Configure>', lambda event: self._resize())
         # self.root.resizable(False, False)
 
         # Calculate the center position
@@ -69,34 +69,34 @@ class ChatWindow:
         btn_style.configure(style='TButton', font=('Microsoft JhengHei Light', 10, 'bold'))
 
         # Label that represents amount of participants in chat
-        self.num_of_participants = ttk.StringVar(value='Participants: 1')
-        self.participants_label = ttk.Label(self.root, textvariable=self.num_of_participants, cursor='hand2',
-                                            font=('Microsoft JhengHei', 13, 'bold'), bootstyle='info')
-        self.participants_label.grid(row=0, column=0, columnspan=2, pady=7, padx=7, sticky='nw')
-        ToolTip(self.participants_label, 'Show all participants', bootstyle='secondary-inverse')
+        self._num_of_participants = ttk.StringVar(value='Participants: 1')
+        self._participants_label = ttk.Label(self.root, textvariable=self._num_of_participants, cursor='hand2',
+                                             font=('Microsoft JhengHei', 13, 'bold'), bootstyle='info')
+        self._participants_label.grid(row=0, column=0, columnspan=2, pady=7, padx=7, sticky='nw')
+        ToolTip(self._participants_label, 'Show all participants', bootstyle='secondary-inverse')
 
         # Textbox to display messages (temporary)
-        self.text_widget = ttk.Text(self.root, state=DISABLED, height=20, width=self.root.winfo_width(),
-                                    font=('Microsoft JhengHei Light', 10, 'bold'), foreground='black')
-        self.text_widget.grid(row=1, columnspan=2, padx=4)
-        self.text_widget.bind('<Enter>', lambda event: self._scrollbar_appearing())
-        self.text_widget.bind('<Leave>', lambda event: self._scrollbar_disappearing())
+        self._text_widget = ttk.Text(self.root, state=DISABLED, height=20, width=self.root.winfo_width(),
+                                     font=('Microsoft JhengHei Light', 10, 'bold'), foreground='black')
+        self._text_widget.grid(row=1, columnspan=2, padx=4)
+        self._text_widget.bind('<Enter>', lambda event: self._scrollbar_appearing())
+        self._text_widget.bind('<Leave>', lambda event: self._scrollbar_disappearing())
         # Scrollbar for text widget
-        self.scrollbar = None
+        self._scrollbar = None
 
         # Message entry
-        self.msg_entry = ttk.Entry(self.root, width=45, foreground='gray', font=('Microsoft JhengHei Light', 10))
-        self.msg_entry.insert(0, 'Message')
-        self.msg_entry.grid(row=2, column=0, sticky='w', padx=10, pady=14, ipady=5)
-        self.msg_entry.bind('<Return>', lambda event: self._send_message())
-        self.msg_entry.bind('<FocusIn>', lambda event: self._delete_default_text())
-        self.msg_entry.bind('<FocusOut>', lambda event: self._set_default_text())
-        ToolTip(self.msg_entry, 'Message limit: 95 characters', bootstyle='info-inverse')
+        self._msg_entry = ttk.Entry(self.root, width=45, foreground='gray', font=('Microsoft JhengHei Light', 10))
+        self._msg_entry.insert(0, 'Message')
+        self._msg_entry.grid(row=2, column=0, sticky='w', padx=10, pady=14, ipady=5)
+        self._msg_entry.bind('<Return>', lambda event: self._send_message())
+        self._msg_entry.bind('<FocusIn>', lambda event: self._delete_default_text())
+        self._msg_entry.bind('<FocusOut>', lambda event: self._set_default_text())
+        ToolTip(self._msg_entry, 'Message limit: 95 characters', bootstyle='info-inverse')
 
         # Enter button
-        self.send_msg_btn = ttk.Button(self.root, text='Send', command=lambda: self._send_message(), width=10,
-                                  bootstyle='info')
-        self.send_msg_btn.grid(row=2, column=1, padx=10, pady=5, sticky='w', ipady=4)
+        self._send_msg_btn = ttk.Button(self.root, text='Send', command=lambda: self._send_message(), width=10,
+                                        bootstyle='info')
+        self._send_msg_btn.grid(row=2, column=1, padx=10, pady=5, sticky='w', ipady=4)
 
     def open(self) -> None:
         """
@@ -104,43 +104,43 @@ class ChatWindow:
         """
         self.root.mainloop()
 
-    def resize(self) -> None:
+    def _resize(self) -> None:
         """
         Resize all window components according to the size of window.
         """
-        self.participants_label.config(font=('Microsoft JhengHei', int((13*self.root.winfo_height())/650), 'bold'))
-        self.msg_entry.config(width=int((45*self.root.winfo_width())/650))
-        self.send_msg_btn.config(width=int((10*self.root.winfo_width())/650))
-        self.text_widget.config(height=((21*self.root.winfo_height())/650))
+        self._participants_label.config(font=('Microsoft JhengHei', int((13 * self.root.winfo_height()) / 650), 'bold'))
+        self._msg_entry.config(width=int((45 * self.root.winfo_width()) / 650))
+        self._send_msg_btn.config(width=int((10 * self.root.winfo_width()) / 650))
+        self._text_widget.config(height=((21 * self.root.winfo_height()) / 650))
 
     def _scrollbar_appearing(self) -> None:
         """
         Handle the appearance of scrollbar everytime the text widget is focused.
         """
-        self.scrollbar = ttk.Scrollbar(self.text_widget, bootstyle='secondary-round', command=self.text_widget.yview)
-        self.scrollbar.place(relheight=1, relx=0.975)
+        self._scrollbar = ttk.Scrollbar(self._text_widget, bootstyle='secondary-round', command=self._text_widget.yview)
+        self._scrollbar.place(relheight=1, relx=0.975)
 
-        self.text_widget.config(yscrollcommand=self.scrollbar.set)
+        self._text_widget.config(yscrollcommand=self._scrollbar.set)
 
     def _scrollbar_disappearing(self) -> None:
         """
         Handle the disappearance of scrollbar everytime the text widget is out of focus.
         """
-        self.scrollbar.place_forget()
+        self._scrollbar.place_forget()
 
     def _send_message(self) -> None:
         """
         Send a message (display on the text widget).
         """
-        if self.msg_entry.get() and self.msg_entry.get() != "Message":
+        if self._msg_entry.get() and self._msg_entry.get() != "Message":
             curr_time = datetime.now().time()
             time = curr_time.strftime('%H:%M')
-            message = f'{self.master.user.name}: {self.msg_entry.get()}\n{time}\n\n'
-            self.text_widget.config(state=NORMAL)
-            self.text_widget.insert(END, message)
-            self.text_widget.see(END)
-            self.text_widget.config(state=DISABLED)
-            self.msg_entry.delete(0, END)
+            message = f'{self._master.user.name}: {self._msg_entry.get()}\n{time}\n\n'
+            self._text_widget.config(state=NORMAL)
+            self._text_widget.insert(END, message)
+            self._text_widget.see(END)
+            self._text_widget.config(state=DISABLED)
+            self._msg_entry.delete(0, END)
             self.root.focus_set()
             self._set_default_text()
 
@@ -148,17 +148,41 @@ class ChatWindow:
         """
         Set the default text in the entry field.
         """
-        if self.msg_entry.get() == '':
-            self.msg_entry.config(foreground='gray')
-            self.msg_entry.insert(0, 'Message')
+        if self._msg_entry.get() == '':
+            self._msg_entry.config(foreground='gray')
+            self._msg_entry.insert(0, 'Message')
 
     def _delete_default_text(self) -> None:
         """
         Delete the default text in the entry field.
         """
-        if self.msg_entry.get() == 'Message':
-            self.msg_entry.delete(0, END)
-            self.msg_entry.config(foreground='black')
+        if self._msg_entry.get() == 'Message':
+            self._msg_entry.delete(0, END)
+            self._msg_entry.config(foreground='black')
+
+    @abstractmethod
+    def connect(self):
+        pass
+
+    @abstractmethod
+    def add_message(self, msg: str):
+        pass
+
+    @abstractmethod
+    def set_participants_label(self, label: str):
+        pass
+
+    @abstractmethod
+    def show_server_error(self):
+        pass
+
+    @abstractmethod
+    def deiconify_parent_root(self):
+        pass
+
+    @abstractmethod
+    def destroy(self):
+        pass
 
 
 class ClientChatWindow(ChatWindow):
@@ -196,7 +220,7 @@ class ClientChatWindow(ChatWindow):
         """
         super().__init__(parent)
         self.socket = ClientSocket(self)
-        self.participants_label.bind('<Button-1>', lambda event: self._open_list_of_participants())
+        self._participants_label.bind('<Button-1>', lambda event: self._open_list_of_participants())
 
     def connect(self) -> None:
         """
@@ -208,12 +232,12 @@ class ClientChatWindow(ChatWindow):
         """
         Send a message to other participants of chat.
         """
-        if self.msg_entry.get() and self.msg_entry.get() != "Message":
+        if self._msg_entry.get() and self._msg_entry.get() != "Message":
             curr_time = datetime.now().time()
             time = curr_time.strftime('%H:%M')
-            message = f'{self.master.user.name}: {self.msg_entry.get()}\n{time}\n\n'
+            message = f'{self._master.user.name}: {self._msg_entry.get()}\n{time}\n\n'
             self.socket.send(message)
-            self.msg_entry.delete(0, END)
+            self._msg_entry.delete(0, END)
 
     def add_message(self, msg: str) -> None:
         """
@@ -222,10 +246,10 @@ class ClientChatWindow(ChatWindow):
         Args:
             msg (str): New message to display on screen.
         """
-        self.text_widget.config(state=NORMAL)
-        self.text_widget.insert(END, msg)
-        self.text_widget.see(END)
-        self.text_widget.config(state=DISABLED)
+        self._text_widget.config(state=NORMAL)
+        self._text_widget.insert(END, msg)
+        self._text_widget.see(END)
+        self._text_widget.config(state=DISABLED)
 
     def set_participants_label(self, label: str) -> None:
         """
@@ -234,7 +258,7 @@ class ClientChatWindow(ChatWindow):
         Args:
             label (str): The new label to display.
         """
-        self.num_of_participants.set(label)
+        self._num_of_participants.set(label)
 
     def _open_list_of_participants(self) -> None:
         """
@@ -269,7 +293,7 @@ class ClientChatWindow(ChatWindow):
         Reopen parent window.
         """
         self.socket.close()
-        self.parent.root.deiconify()
+        self._master.deiconify_main_window()
 
     def destroy(self) -> None:
         """

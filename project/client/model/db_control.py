@@ -19,14 +19,11 @@ class DBControl:
         add_user(name: str, email: str, password: str):
             Adds a new user to the database.
 
-        login_check(email: str, password: str) -> str:
+        login_check(email: str, password: str):
             Checks if the provided email and password match a user in the database and returns the user's name.
 
         change_username(new_name: str, email: str):
             Changes the username of the user with the given email.
-
-        add_new_user(name: str, email: str, password: str):
-            Adds a new user to the database.
     """
 
     def __init__(self, check_password_matching_command: CheckPasswordMatchingCommand,
