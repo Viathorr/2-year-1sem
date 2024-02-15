@@ -1,7 +1,8 @@
-from main_window import MainWindow
+from client.gui.main_window import MainWindow
 from model.db_command import *
 from model.db_control import DBControl
-from user import User
+from user.user import User
+from gui.mediator import Mediator
 
 
 class ChatApp:
@@ -28,40 +29,16 @@ class ChatApp:
         """
         Initialize the Chat Application.
         """
-        self._main_window = MainWindow(self)
         db = DatabaseUserTable()
-        self.db_control = DBControl(CheckPasswordMatchingCommand(db), GetNameByEmailCommand(db),
-                                     CheckEmailExistenceCommand(db), AddUserCommand(db), ChangeUsernameCommand(db))
-        self._user = None
-        self._main_window.root.protocol('WM_DELETE_WINDOW', self._close_window)
-
-    @property
-    def user(self) -> None:
-        return self._user
+        db_control = DBControl(CheckPasswordMatchingCommand(db), GetNameByEmailCommand(db),
+                               CheckEmailExistenceCommand(db), AddUserCommand(db), ChangeUsernameCommand(db))
+        self._mediator = Mediator(db_control)
 
     def run(self) -> None:
         """
         Run the Chat Application.
         """
-        self._main_window.open()
-
-    def deiconify_main_window(self):
-        self._main_window.root.deiconify()
-
-    def _close_window(self) -> None:
-        """
-        Close the application window.
-        """
-        self._main_window.root.destroy()
-
-    def set_user(self, user: User) -> None:
-        """
-        Set the current user of the application.
-
-        Args:
-            user (User): The user object to set.
-        """
-        self._user = user
+        self._mediator.run()
 
 
 if __name__ == "__main__":

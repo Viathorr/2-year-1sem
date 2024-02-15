@@ -1,10 +1,8 @@
 from tkinter import messagebox
 from ttkbootstrap.constants import *
 import ttkbootstrap as ttk
-from signup import SignUp
-from client.login import LogIn
-from settings import Settings
-from client.chat_window import ClientChatWindow
+from client.gui.chat_window import ClientChatWindow
+from .imediator import IMediator
 
 
 class MainWindow:
@@ -12,7 +10,7 @@ class MainWindow:
     Class representing the main window of the chat application.
 
     Attributes:
-        master (ChatApp): The application object.
+        _mediator (IMediator): The mediator that handles needed events.
         root (ttk.Window): The main window of the application.
         _login_btn (ttk.Button): Button to open the login window.
         _signup_btn (ttk.Button): Button to open the signup window.
@@ -47,21 +45,22 @@ class MainWindow:
         change_buttons_state(disable: bool):
             Changes the state of login and signup buttons based on the user's login status.
     """
-    def __init__(self, parent, theme='minty') -> None:
+    def __init__(self, parent: IMediator, theme='minty') -> None:
         """
         Initialize the main window of the chat application.
 
         Args:
-            parent (ChatApp): The parent application object.
+            parent (IMediator): The parent application object.
             theme (str, optional): The theme of the window. Defaults to 'minty'.
         """
-        self.master = parent  # chat app
+        self._mediator = parent  # mediator class
 
         # Main Window
         self.root = ttk.Window(themename=theme)
         self.root.title('Chat')
         self.root.iconbitmap('./rsrc/chat.ico')
         self.root.resizable(False, False)
+        # self.root.protocol('WM_DELETE_WINDOW', self.destroy_window)
 
         # Calculate the center position
         x_position = (self.root.winfo_screenwidth() - 550) // 2  # Adjust the width of the window
@@ -89,25 +88,19 @@ class MainWindow:
         open_btn = ttk.Button(text='Open', bootstyle='info', width=17, command=self._open_chat_window)
         open_btn.grid(row=1, column=1, ipady=10)
 
-        self._chat_window = None
-
         # Log in button
         self._login_btn = ttk.Button(text='Log in', bootstyle='info', width=17,
-                                     command=self._open_login_window)
+                                     command=self._mediator.open_login_window)
         self._login_btn.grid(row=2, column=1, ipady=10)
-        self._login_window = None
 
         # Sign up button
         self._signup_btn = ttk.Button(text='Sign up', bootstyle='info', width=17,
-                                      command=self._open_signup_window)
+                                      command=self._mediator.open_signup_window)
         self._signup_btn.grid(row=3, column=1, ipady=10)
-        self._signup_window = None
-
         # Settings button
-        settings_btn = ttk.Button(text='Settings', bootstyle='dark-outline', width=17, command=self._open_settings)
+        settings_btn = ttk.Button(text='Settings', bootstyle='dark-outline', width=17,
+                                  command=self._mediator.open_settings)
         settings_btn.grid(row=4, column=1, ipady=3, pady=15, sticky='n')
-
-        self._settings_window = None
 
     def open(self) -> None:
         """
@@ -127,85 +120,21 @@ class MainWindow:
         """
         self.root.deiconify()
 
+    def destroy_window(self) -> None:
+        self.root.destroy()
+
     def _open_chat_window(self) -> None:
         """
         Open the chat window.
         """
-        if not self.master.user:
+        if not self._mediator.user:
             messagebox.showwarning('You must be logged in', "Please log in or sign up first.")
         else:
-            self.root.withdraw()
-            self._chat_window = ClientChatWindow(self.master)
-            self._chat_window.root.protocol('WM_DELETE_WINDOW', self._close_chat_window)
-            try:
-                self._chat_window.connect()
-            except Exception as ex:
-                self._chat_window.root.destroy()
-                self.root.deiconify()
-                messagebox.showerror(title='Error', message=str(ex))
+            self.close_window()
+            self._mediator.open_chat_window()
 
-    def _close_chat_window(self) -> None:
-        """
-        Close the chat window.
-        """
-        print('in close window method')
-        self._chat_window.socket.close()
-        self._chat_window.destroy()
-        self.root.deiconify()
-
-    def _open_login_window(self) -> None:
-        """
-        Open the login window
-        """
-        self.root.withdraw()
-        self._login_window = LogIn(self.master)
-        self._login_window.root.protocol('WM_DELETE_WINDOW', self._close_login_window)
-        self._login_window.open()
-
-    def _close_login_window(self) -> None:
-        """
-        Close the login window
-        """
-        if self.master.user:
-            self.change_buttons_state(True)
-        self._login_window.root.destroy()
-        self.root.deiconify()
-
-    def _open_signup_window(self) -> None:
-        """
-        Open the signup window
-        """
-        self.root.withdraw()
-        self._signup_window = SignUp(self.master)
-        self._signup_window.root.protocol('WM_DELETE_WINDOW', self._close_signup_window)
-        self._signup_window.open()
-
-    def _close_signup_window(self) -> None:
-        """
-        Close the signup window
-        """
-        if self.master.user:
-            self.change_buttons_state(True)
-        self._signup_window.root.destroy()
-        self.root.deiconify()
-
-    def _open_settings(self) -> None:
-        """
-        Open the settings window
-        """
-        self.root.withdraw()
-        self._settings_window = Settings(self.master)
-        self._settings_window.root.protocol('WM_DELETE_WINDOW', self._close_settings)
-        self._settings_window.open()
-
-    def _close_settings(self) -> None:
-        """
-        Close the settings window.
-        """
-        if not self.master.user:
-            self.change_buttons_state(False)
-        self._settings_window.root.destroy()
-        self.root.deiconify()
+    def show_error(self, err: str):
+        messagebox.showerror(title='Error', message=err)
 
     def change_buttons_state(self, disable: bool) -> None:
         """

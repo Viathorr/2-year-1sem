@@ -3,7 +3,8 @@ from ttkbootstrap.constants import *
 import ttkbootstrap as ttk
 from tkinter import messagebox
 from ttkbootstrap.tooltip import ToolTip
-from user import User
+from client.user.user import User
+from .imediator import IMediator
 
 
 class LogIn:
@@ -11,7 +12,7 @@ class LogIn:
     Class for the sign-up window.
 
     Attributes:
-        _master (ChatApp): The application object.
+        _mediator (IMediator): The mediator that handles needed events.
         root (ttk.Toplevel): Toplevel window with Signup form.
         _email_entry (ttk.Entry): Email field.
         _password_entry (ttk.Entry): Password field.
@@ -33,15 +34,15 @@ class LogIn:
             Handles the login process.
 
     """
-    def __init__(self, master) -> None:
+    def __init__(self, mediator: IMediator) -> None:
         """
         Initialize the login window.
 
         Args:
-            master (ChatApp): The application object.
+            mediator (ChatApp): The mediator that handles needed events.
 
         """
-        self._master = master  # main window's master
+        self._mediator = mediator  # main window's master
         self.root = ttk.Toplevel()
         self.root.title("Log in")
         self.root.iconbitmap('./rsrc/chat.ico')
@@ -142,9 +143,9 @@ class LogIn:
         password = self._password_entry.get()
 
         try:
-            username = self._master.db_control.login_check(email, password)
+            username = self._mediator.login_check(email, password)
             user = User(username, email)
-            self._master.set_user(user)
+            self._mediator.set_user(user)
             # showing the result
             messagebox.showinfo('Success', 'You\'ve successfully logged in!')
             self._clean_entries()

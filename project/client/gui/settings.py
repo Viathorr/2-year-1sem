@@ -3,7 +3,8 @@ import ttkbootstrap as ttk
 from tkinter import messagebox
 from ttkbootstrap.tooltip import ToolTip
 from ttkbootstrap.constants import *
-from utilities.string_utilities import StringUtilities
+from client.utilities.string_utilities import StringUtilities
+from .imediator import IMediator
 
 
 class Settings:
@@ -11,7 +12,7 @@ class Settings:
     Class for the settings window.
 
     Attributes:
-        _master (ChatApp): The application object.
+        _mediator (IMediator): The mediator that handles needed events.
         root (ttk.Toplevel): Toplevel window with Signup form.
         _name_entry_text (tk.StringVal): The value of name entry.
         _email_entry_text (tk.StringVal): The value of email entry.
@@ -25,14 +26,14 @@ class Settings:
             Handles the logout process.
 
     """
-    def __init__(self, master) -> None:
+    def __init__(self, mediator) -> None:
         """
         Initialize the settings window.
 
         Args:
-            master (ChatApp): The application object.
+            mediator (IMediator): The mediator that handles needed events.
         """
-        self._master = master
+        self._mediator = mediator
         self.root = ttk.Toplevel()
         self.root.title('Settings')
         self.root.iconbitmap('./rsrc/chat.ico')
@@ -44,9 +45,9 @@ class Settings:
         self._name_entry_text = tk.StringVar(value='None')
         self._email_entry_text = tk.StringVar(value='None')
 
-        if self._master.user:
-            self._name_entry_text.set(value=self._master.user.name)
-            self._email_entry_text.set(value=self._master.user.email)
+        if self._mediator.user:
+            self._name_entry_text.set(value=self._mediator.user.name)
+            self._email_entry_text.set(value=self._mediator.user.email)
 
         # User name
         name_label = ttk.Label(self.root, text='Name', font=('Microsoft JhengHei', 16),
@@ -74,7 +75,7 @@ class Settings:
         save_changes_btn.grid(row=2, column=1, padx=51, pady=20, ipady=7, ipadx=10, columnspan=2, sticky='se')
 
         logout_btn = ttk.Button(self.root, text='Log out', bootstyle='dark-outline', width=10)
-        if self._master.user:
+        if self._mediator.user:
             logout_btn.config(state=NORMAL, command=self._logout)
         else:
             logout_btn.config(state=DISABLED)
@@ -95,13 +96,12 @@ class Settings:
         """
         Save the changes of the username, if there are any.
         """
-        if not self._master.user:
+        if not self._mediator.user:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
         else:
             new_name = self._name_entry_text.get()
             if not StringUtilities.contains_newline_char(self._name_entry_text.get()) and not StringUtilities.is_empty_string(self._name_entry_text.get()):
-                self._master.user.name = new_name
-                self._master.db_control.change_username(new_name, self._master.user.email)
+                self._mediator.save_set_changes(new_name)
             elif StringUtilities.is_empty_string(self._name_entry_text.get()):
                 messagebox.showerror('Error', 'Please enter a non-empty name.')
             else:
@@ -112,11 +112,11 @@ class Settings:
         """
         Handle the logout process.
         """
-        if not self._master.user:
+        if not self._mediator.user:
             messagebox.showerror('You must be logged in', "Please log in or sign up first.")
         else:
             yesno = messagebox.askyesno('Logging out', 'Are you sure you want to log out?')
             if yesno:
-                self._master.set_user(None)
+                self._mediator.set_user(None)
                 self._name_entry_text.set(value='None')
                 self._email_entry_text.set(value='None')

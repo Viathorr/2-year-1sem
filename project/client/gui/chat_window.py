@@ -6,6 +6,7 @@ from datetime import datetime
 from tkinter import messagebox
 from abc import ABC, abstractmethod
 from client.client_socket.client_socket import ClientSocket
+from .imediator import IMediator
 
 
 class ChatWindow(ABC):
@@ -13,7 +14,7 @@ class ChatWindow(ABC):
     Class for the sign-up window.
 
     Attributes:
-        _master (ChatApp): The application object.
+        _mediator (IMediator): The application object.
         root (ttk.Toplevel): Toplevel window with Signup form.
         _num_of_participants (ttk.StringVar): Value of participants label.
         _participants_label (ttk.Label): Label that shows the amount of participants.
@@ -38,14 +39,14 @@ class ChatWindow(ABC):
             Handles the disappearance of scrollbar everytime the text widget is out of focus.
 
     """
-    def __init__(self, master) -> None:
+    def __init__(self, mediator: IMediator) -> None:
         """
         Initialize the chat window.
 
         Args:
-            master (ChatApp): The application object.
+            mediator (IMediator): The application object.
         """
-        self._master = master
+        self._mediator = mediator
 
         self.root = ttk.Toplevel(title='Chat')
         self.root.iconbitmap('./rsrc/chat.ico')
@@ -135,7 +136,7 @@ class ChatWindow(ABC):
         if self._msg_entry.get() and self._msg_entry.get() != "Message":
             curr_time = datetime.now().time()
             time = curr_time.strftime('%H:%M')
-            message = f'{self._master.user.name}: {self._msg_entry.get()}\n{time}\n\n'
+            message = f'{self._mediator.user.name}: {self._msg_entry.get()}\n{time}\n\n'
             self._text_widget.config(state=NORMAL)
             self._text_widget.insert(END, message)
             self._text_widget.see(END)
@@ -161,10 +162,6 @@ class ChatWindow(ABC):
             self._msg_entry.config(foreground='black')
 
     @abstractmethod
-    def connect(self):
-        pass
-
-    @abstractmethod
     def add_message(self, msg: str):
         pass
 
@@ -174,10 +171,6 @@ class ChatWindow(ABC):
 
     @abstractmethod
     def show_server_error(self):
-        pass
-
-    @abstractmethod
-    def deiconify_parent_root(self):
         pass
 
     @abstractmethod
@@ -211,22 +204,15 @@ class ClientChatWindow(ChatWindow):
             Destroy the client chat window.
 
     """
-    def __init__(self, parent) -> None:
+    def __init__(self, mediator: IMediator) -> None:
         """
         Initialize the chat window.
 
         Args:
-            parent (MainWindow): Parent window.
+            mediator (IMediator): Parent window.
         """
-        super().__init__(parent)
-        self.socket = ClientSocket(self)
+        super().__init__(mediator)
         self._participants_label.bind('<Button-1>', lambda event: self._open_list_of_participants())
-
-    def connect(self) -> None:
-        """
-        Connect to server.
-        """
-        self.socket.connect()
 
     def _send_message(self) -> None:
         """
@@ -235,8 +221,8 @@ class ClientChatWindow(ChatWindow):
         if self._msg_entry.get() and self._msg_entry.get() != "Message":
             curr_time = datetime.now().time()
             time = curr_time.strftime('%H:%M')
-            message = f'{self._master.user.name}: {self._msg_entry.get()}\n{time}\n\n'
-            self.socket.send(message)
+            message = f'{self._mediator.user.name}: {self._msg_entry.get()}\n{time}\n\n'
+            self._mediator.send_msg(message)
             self._msg_entry.delete(0, END)
 
     def add_message(self, msg: str) -> None:
@@ -277,7 +263,7 @@ class ClientChatWindow(ChatWindow):
                              selectborderwidth=1)
         my_list.pack(padx=5, pady=5, fill='both', expand=True)
 
-        for nick in self.socket.participants:
+        for nick in self._mediator.participants:
             my_list.insert(END, nick)
 
         participants_list.mainloop()
@@ -287,13 +273,6 @@ class ClientChatWindow(ChatWindow):
         Show a server error through messagebox.
         """
         messagebox.showerror(title='Error', message="Server doesn't answer. Please try again.")
-
-    def deiconify_parent_root(self) -> None:
-        """
-        Reopen parent window.
-        """
-        self.socket.close()
-        self._master.deiconify_main_window()
 
     def destroy(self) -> None:
         """

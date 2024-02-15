@@ -3,9 +3,10 @@ from ttkbootstrap.constants import *
 import ttkbootstrap as ttk
 from tkinter import messagebox
 from ttkbootstrap.tooltip import ToolTip
-from user import User
-from utilities.email_validation import EmailValidation
-from utilities.string_utilities import StringUtilities
+from client.user.user import User
+from client.utilities.email_validation import EmailValidation
+from client.utilities.string_utilities import StringUtilities
+from .imediator import IMediator
 
 
 class SignUp:
@@ -13,7 +14,7 @@ class SignUp:
     Class for the sign-up window.
 
     Attributes:
-        _master (ChatApp): The application object.
+        _mediator (IMediator): The mediator that handles needed events.
         root (ttk.Toplevel): Toplevel window with Signup form.
         _name_entry (ttk.Entry): Name field.
         _email_entry (ttk.Entry): Email field.
@@ -37,15 +38,15 @@ class SignUp:
             Handles the sign-up process.
 
     """
-    def __init__(self, master) -> None:
+    def __init__(self, mediator: IMediator) -> None:
         """
         Initialize the sign-up window.
 
         Args:
-            master (ChatApp): The application object.
+            mediator (IMediator): The mediator that handles needed events.
 
         """
-        self._master = master  # main window's master
+        self._mediator = mediator  # main window's master
         self.root = ttk.Toplevel()
         self.root.title('Sign up')
         self.root.iconbitmap('./rsrc/chat.ico')
@@ -232,14 +233,14 @@ class SignUp:
         elif StringUtilities.is_empty_string(password):
             messagebox.showerror('Error', 'Please enter valid password.')
             return
-        if self._master.db_control.email_exists(email):
+        if self._mediator.check_email(email):
             messagebox.showwarning('Warning', '''An account with this email already exists.\n'''
                                               '''Please use a different email or proceed to login.''')
             return
         else:
-            self._master.db_control.add_user(name, email, password)
+            self._mediator.add_user(name, email, password)
             user = User(name, email)
-            self._master.set_user(user)
+            self._mediator.set_user(user)
 
             messagebox.showinfo('Success', 'Registration has completed successfully!')
             self._clean_entries()

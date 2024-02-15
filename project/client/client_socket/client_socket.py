@@ -2,6 +2,7 @@ import socket
 import threading
 import rsa
 from typing import List
+from client.gui.imediator import IMediator
 
 PORT = 5555
 SERVER = '192.168.95.126'
@@ -38,15 +39,15 @@ class ClientSocket:
         close():
             Closes the client socket.
     """
-    def __init__(self, parent) -> None:
+    def __init__(self, mediator: IMediator) -> None:
         """
         Initialize a new ClientSocket object.
 
         Args:
-            parent: Reference to the parent (gui component) object.
+            mediator(IMediator): Reference to the parent (gui component) object.
         """
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self._parent = parent
+        self._mediator = mediator
         self._connected = False
         self._public_key = None
         self._private_key = None
@@ -75,11 +76,11 @@ class ClientSocket:
             self._socket.send(rsa.PublicKey.save_pkcs1(self._public_key))
             msg = rsa.decrypt(self._socket.recv(1024), self._private_key).decode(FORMAT)
             if msg == 'NICK':
-                self._socket.send(rsa.encrypt(self._parent._master.user.name.encode(FORMAT), self._server_public_key))
+                self._socket.send(rsa.encrypt(self._mediator.user.name.encode(FORMAT), self._server_public_key))
             thread_receive = threading.Thread(target=self._receive)
             thread_receive.start()
-            self._parent.open()
-        except socket.error:
+        except socket.error as err:
+            print(err)
             raise Exception('Failed to connect to server! Try again.')
 
     def _receive(self) -> None:
@@ -95,16 +96,14 @@ class ClientSocket:
                     for i in range(1, len(lines)):
                         nickname = lines[i]
                         self._participants.append(nickname)
-                    self._parent.set_participants_label(f'Participants: {len(self._participants)}')
+                    self._mediator.change_participants_label(f'Participants: {len(self._participants)}')
                 else:
-                    self._parent.add_message(msg)
+                    self._mediator.display_msg(msg)
             except socket.error:
                 if self._socket.fileno() == -1:
                     break
                 self.close()
-                self._parent.deiconify_parent_root()
-                self._parent.show_server_error()
-                self._parent.destroy()
+                self._mediator.handle_server_err()
                 break
 
     def send(self, message) -> None:

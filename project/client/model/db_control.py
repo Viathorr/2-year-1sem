@@ -45,6 +45,12 @@ class DBControl:
         self._add_user_command = add_user_command
         self._change_name_command = change_name_command
 
+        check_password_matching_command = check_password_matching_command
+        get_name_command = get_name_command
+        check_email_existence_command = check_email_existence_command
+        add_user_command = add_user_command
+        change_name_command = change_name_command
+
     def email_exists(self, email: str) -> bool:
         """
         Checks if the given email exists in the database.
