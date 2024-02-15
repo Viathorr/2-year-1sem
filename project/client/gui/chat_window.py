@@ -5,7 +5,6 @@ from ttkbootstrap.tooltip import ToolTip
 from datetime import datetime
 from tkinter import messagebox
 from abc import ABC, abstractmethod
-from client.client_socket.client_socket import ClientSocket
 from .imediator import IMediator
 
 
@@ -182,9 +181,6 @@ class ClientChatWindow(ChatWindow):
     """
     Class for the client chat window.
 
-    Attributes:
-        socket (ClientSocket): The client socket object for communication with the server.
-
     Methods:
         connect():
             Connect to the server.
@@ -198,8 +194,6 @@ class ClientChatWindow(ChatWindow):
             Open the window with a list of participants.
         show_server_error():
             Show a server error through a messagebox.
-        deiconify_parent_root():
-            Reopen the parent window.
         destroy():
             Destroy the client chat window.
 

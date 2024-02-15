@@ -1,7 +1,5 @@
-from client.gui.main_window import MainWindow
 from model.db_command import *
 from model.db_control import DBControl
-from user.user import User
 from gui.mediator import Mediator
 
 
@@ -10,19 +8,11 @@ class ChatApp:
     Class representing the Chat Application.
 
     Attributes:
-        _main_window (MainWindow): The main window of the application.
-        db_control (DBControl): Database control object for managing user data.
-        _user (User): Current user logged into the application.
+        _mediator (Mediator): The mediator that handles all needed events.
 
     Methods:
         run():
             Run the Chat Application.
-        _close_window():
-            Close the application window.
-        deiconify_main_window():
-            Reopen main window.
-        set_user(user: User):
-            Set the current user of the application.
 
     """
     def __init__(self) -> None:

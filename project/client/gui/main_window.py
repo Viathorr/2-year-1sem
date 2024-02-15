@@ -1,7 +1,6 @@
 from tkinter import messagebox
 from ttkbootstrap.constants import *
 import ttkbootstrap as ttk
-from client.gui.chat_window import ClientChatWindow
 from .imediator import IMediator
 
 
@@ -14,10 +13,6 @@ class MainWindow:
         root (ttk.Window): The main window of the application.
         _login_btn (ttk.Button): Button to open the login window.
         _signup_btn (ttk.Button): Button to open the signup window.
-        _chat_window (ClientChatWindow): Reference to the chat window.
-        _login_window (LogIn): Reference to the login form window.
-        _signup_window (SignUp): Reference to the signup form window.
-        _settings_window (Settings): Reference to the settings window.
 
     Methods:
         open():
@@ -26,34 +21,24 @@ class MainWindow:
             Closes the main window.
         reopen_window():
             Reopens the main window after being minimized.
+        destroy_window():
+            Destroys the main window.
         _open_chat_window():
             Opens the chat window if the user is logged in.
-        _close_chat_window():
-            Closes the chat window.
-        _open_login_window():
-            Opens the login window.
-        _close_login_window():
-            Closes the login window.
-        _open_signup_window():
-            Opens the signup window.
-        _close_signup_window():
-            Closes the signup window.
-        _open_settings():
-            Opens the settings window.
-        _close_settings_window():
-            Closes the settings window.
+        show_err(err: str):
+            Takes an error message and displays it.
         change_buttons_state(disable: bool):
             Changes the state of login and signup buttons based on the user's login status.
     """
-    def __init__(self, parent: IMediator, theme='minty') -> None:
+    def __init__(self, mediator: IMediator, theme='minty') -> None:
         """
         Initialize the main window of the chat application.
 
         Args:
-            parent (IMediator): The parent application object.
+            mediator (IMediator): The mediator that handles all needed events.
             theme (str, optional): The theme of the window. Defaults to 'minty'.
         """
-        self._mediator = parent  # mediator class
+        self._mediator = mediator  # mediator class
 
         # Main Window
         self.root = ttk.Window(themename=theme)
@@ -121,6 +106,9 @@ class MainWindow:
         self.root.deiconify()
 
     def destroy_window(self) -> None:
+        """
+        Destroys the main window.
+        """
         self.root.destroy()
 
     def _open_chat_window(self) -> None:
@@ -134,6 +122,12 @@ class MainWindow:
             self._mediator.open_chat_window()
 
     def show_error(self, err: str):
+        """
+        Displays given err message.
+
+        Args:
+            err (str): The err message to display.
+        """
         messagebox.showerror(title='Error', message=err)
 
     def change_buttons_state(self, disable: bool) -> None:

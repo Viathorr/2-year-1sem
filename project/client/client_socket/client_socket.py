@@ -16,7 +16,7 @@ class ClientSocket:
 
     Attributes:
         _socket (socket.socket): The client socket.
-        _parent: Reference to the parent object.
+        _mediator: The mediator that handles all needed events.
         _connected (bool): Indicates whether the client is connected to the server.
         _public_key (rsa.PublicKey): The client's public key.
         _private_key (rsa.PrivateKey): The client's private key.

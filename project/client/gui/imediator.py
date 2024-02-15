@@ -4,7 +4,29 @@ from client.model.db_control import DBControl
 
 
 class IMediator(ABC):
+    """
+    Abstract Mediator class that handles all interactions between different windows.
+
+    Attributes:
+        _db_control (DBControl): Database control object for managing user data.
+        _user (User): Current user logged into the application.
+
+    Methods:
+        _close_window():
+            Close the application window.
+        deiconify_main_window():
+            Reopen main window.
+        set_user(user: User):
+            Set the current user of the application.
+
+    """
     def __init__(self, db_control: DBControl):
+        """
+        Initialize the mediator of the chat application.
+
+        Args:
+            db_control(DBControl): Database control object for managing user data.
+        """
         self._db_control = db_control
         self._user = None
 

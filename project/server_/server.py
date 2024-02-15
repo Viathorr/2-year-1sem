@@ -32,12 +32,6 @@ class Server:
 
         __load_keys():
             Loads the server's public and private keys.
-
-
-+ start(): void
-# handle_client(client: socket.socket): void
-# broadcast(message: str): void
-- load_keys(): void
     """
     def __init__(self) -> None:
         """
