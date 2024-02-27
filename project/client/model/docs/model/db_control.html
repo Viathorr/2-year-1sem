@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>model.db_control API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>model.db_control</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from .db_command import *
+
+
+class DBControl:
+    &#34;&#34;&#34;
+    Class to control database operations through command objects.
+
+    Attributes:
+        check_password_matching_command (CheckPasswordMatchingCommand): Command object to check password matching.
+        get_name_command (GetNameByEmailCommand): Command object to get username by email.
+        check_email_existence_command (CheckEmailExistenceCommand): Command object to check email existence.
+        add_user_command (AddUserCommand): Command object to add a new user.
+        change_name_command (ChangeUsernameCommand): Command object to change user&#39;s username.
+
+    Methods:
+        email_exists(email: str):
+            Checks if the given email exists in the database.
+
+        add_user(name: str, email: str, password: str):
+            Adds a new user to the database.
+
+        login_check(email: str, password: str):
+            Checks if the provided email and password match a user in the database and returns the user&#39;s name.
+
+        change_username(new_name: str, email: str):
+            Changes the username of the user with the given email.
+    &#34;&#34;&#34;
+
+    def __init__(self, check_password_matching_command: CheckPasswordMatchingCommand,
+                 get_name_command: GetNameByEmailCommand, check_email_existence_command: CheckEmailExistenceCommand,
+                 add_user_command: AddUserCommand, change_name_command: ChangeUsernameCommand) -&gt; None:
+        &#34;&#34;&#34;
+        Initialize a new DBControl object.
+
+        Args:
+            check_password_matching_command (CheckPasswordMatchingCommand): Command object to check password matching.
+            get_name_command (GetNameByEmailCommand): Command object to get username by email.
+            check_email_existence_command (CheckEmailExistenceCommand): Command object to check email existence.
+            add_user_command (AddUserCommand): Command object to add a new user.
+            change_name_command (ChangeUsernameCommand): Command object to change user&#39;s username.
+        &#34;&#34;&#34;
+        self._check_password_matching_command = check_password_matching_command
+        self._get_name_command = get_name_command
+        self._check_email_existence_command = check_email_existence_command
+        self._add_user_command = add_user_command
+        self._change_name_command = change_name_command
+
+        check_password_matching_command = check_password_matching_command
+        get_name_command = get_name_command
+        check_email_existence_command = check_email_existence_command
+        add_user_command = add_user_command
+        change_name_command = change_name_command
+
+    def email_exists(self, email: str) -&gt; bool:
+        &#34;&#34;&#34;
+        Checks if the given email exists in the database.
+
+        Args:
+            email (str): The email to check.
+
+        Returns:
+            bool: True if such email exists, False otherwise.
+        &#34;&#34;&#34;
+        return self._check_email_existence_command.execute(email=email)
+
+    def add_user(self, name: str, email: str, password: str) -&gt; None:
+        &#34;&#34;&#34;
+        Adds a new user to the database.
+
+        Args:
+            name (str): The name of the user.
+            email (str): The email of the user.
+            password (str): The password of the user.
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        self._add_user_command.execute(name=name, email=email, password=password)
+
+    def login_check(self, email: str, password: str) -&gt; str:
+        &#34;&#34;&#34;
+        Checks if the provided email and password match a user in the database and returns the user&#39;s name.
+
+        Args:
+            email (str): The email to check.
+            password (str): The password to check.
+
+        Returns:
+            str: The name of the user if login is successful.
+
+        Raises:
+            Exception: If login is unsuccessful.
+        &#34;&#34;&#34;
+        if self.email_exists(email=email) and self._check_password_matching_command.execute(
+                email=email, password=password):
+            name = self._get_name_command.execute(email=email)
+            return name
+        else:
+            raise Exception(&#39;Invalid email or password. Please try again.&#39;)
+
+    def change_username(self, new_name: str, email: str) -&gt; None:
+        &#34;&#34;&#34;
+        Changes the username of the user with the given email.
+
+        Args:
+            new_name (str): The new username.
+            email (str): The email of the user whose username to change.
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        self._change_name_command.execute(name=new_name, email=email)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="model.db_control.DBControl"><code class="flex name class">
+<span>class <span class="ident">DBControl</span></span>
+<span>(</span><span>check_password_matching_command: <a title="model.db_command.CheckPasswordMatchingCommand" href="db_command.html#model.db_command.CheckPasswordMatchingCommand">CheckPasswordMatchingCommand</a>, get_name_command: <a title="model.db_command.GetNameByEmailCommand" href="db_command.html#model.db_command.GetNameByEmailCommand">GetNameByEmailCommand</a>, check_email_existence_command: <a title="model.db_command.CheckEmailExistenceCommand" href="db_command.html#model.db_command.CheckEmailExistenceCommand">CheckEmailExistenceCommand</a>, add_user_command: <a title="model.db_command.AddUserCommand" href="db_command.html#model.db_command.AddUserCommand">AddUserCommand</a>, change_name_command: <a title="model.db_command.ChangeUsernameCommand" href="db_command.html#model.db_command.ChangeUsernameCommand">ChangeUsernameCommand</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class to control database operations through command objects.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>check_password_matching_command</code></strong> :&ensp;<code>CheckPasswordMatchingCommand</code></dt>
+<dd>Command object to check password matching.</dd>
+<dt><strong><code>get_name_command</code></strong> :&ensp;<code>GetNameByEmailCommand</code></dt>
+<dd>Command object to get username by email.</dd>
+<dt><strong><code>check_email_existence_command</code></strong> :&ensp;<code>CheckEmailExistenceCommand</code></dt>
+<dd>Command object to check email existence.</dd>
+<dt><strong><code>add_user_command</code></strong> :&ensp;<code>AddUserCommand</code></dt>
+<dd>Command object to add a new user.</dd>
+<dt><strong><code>change_name_command</code></strong> :&ensp;<code>ChangeUsernameCommand</code></dt>
+<dd>Command object to change user's username.</dd>
+</dl>
+<h2 id="methods">Methods</h2>
+<p>email_exists(email: str):
+Checks if the given email exists in the database.</p>
+<p>add_user(name: str, email: str, password: str):
+Adds a new user to the database.</p>
+<p>login_check(email: str, password: str):
+Checks if the provided email and password match a user in the database and returns the user's name.</p>
+<p>change_username(new_name: str, email: str):
+Changes the username of the user with the given email.</p>
+<p>Initialize a new DBControl object.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>check_password_matching_command</code></strong> :&ensp;<code>CheckPasswordMatchingCommand</code></dt>
+<dd>Command object to check password matching.</dd>
+<dt><strong><code>get_name_command</code></strong> :&ensp;<code>GetNameByEmailCommand</code></dt>
+<dd>Command object to get username by email.</dd>
+<dt><strong><code>check_email_existence_command</code></strong> :&ensp;<code>CheckEmailExistenceCommand</code></dt>
+<dd>Command object to check email existence.</dd>
+<dt><strong><code>add_user_command</code></strong> :&ensp;<code>AddUserCommand</code></dt>
+<dd>Command object to add a new user.</dd>
+<dt><strong><code>change_name_command</code></strong> :&ensp;<code>ChangeUsernameCommand</code></dt>
+<dd>Command object to change user's username.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DBControl:
+    &#34;&#34;&#34;
+    Class to control database operations through command objects.
+
+    Attributes:
+        check_password_matching_command (CheckPasswordMatchingCommand): Command object to check password matching.
+        get_name_command (GetNameByEmailCommand): Command object to get username by email.
+        check_email_existence_command (CheckEmailExistenceCommand): Command object to check email existence.
+        add_user_command (AddUserCommand): Command object to add a new user.
+        change_name_command (ChangeUsernameCommand): Command object to change user&#39;s username.
+
+    Methods:
+        email_exists(email: str):
+            Checks if the given email exists in the database.
+
+        add_user(name: str, email: str, password: str):
+            Adds a new user to the database.
+
+        login_check(email: str, password: str):
+            Checks if the provided email and password match a user in the database and returns the user&#39;s name.
+
+        change_username(new_name: str, email: str):
+            Changes the username of the user with the given email.
+    &#34;&#34;&#34;
+
+    def __init__(self, check_password_matching_command: CheckPasswordMatchingCommand,
+                 get_name_command: GetNameByEmailCommand, check_email_existence_command: CheckEmailExistenceCommand,
+                 add_user_command: AddUserCommand, change_name_command: ChangeUsernameCommand) -&gt; None:
+        &#34;&#34;&#34;
+        Initialize a new DBControl object.
+
+        Args:
+            check_password_matching_command (CheckPasswordMatchingCommand): Command object to check password matching.
+            get_name_command (GetNameByEmailCommand): Command object to get username by email.
+            check_email_existence_command (CheckEmailExistenceCommand): Command object to check email existence.
+            add_user_command (AddUserCommand): Command object to add a new user.
+            change_name_command (ChangeUsernameCommand): Command object to change user&#39;s username.
+        &#34;&#34;&#34;
+        self._check_password_matching_command = check_password_matching_command
+        self._get_name_command = get_name_command
+        self._check_email_existence_command = check_email_existence_command
+        self._add_user_command = add_user_command
+        self._change_name_command = change_name_command
+
+        check_password_matching_command = check_password_matching_command
+        get_name_command = get_name_command
+        check_email_existence_command = check_email_existence_command
+        add_user_command = add_user_command
+        change_name_command = change_name_command
+
+    def email_exists(self, email: str) -&gt; bool:
+        &#34;&#34;&#34;
+        Checks if the given email exists in the database.
+
+        Args:
+            email (str): The email to check.
+
+        Returns:
+            bool: True if such email exists, False otherwise.
+        &#34;&#34;&#34;
+        return self._check_email_existence_command.execute(email=email)
+
+    def add_user(self, name: str, email: str, password: str) -&gt; None:
+        &#34;&#34;&#34;
+        Adds a new user to the database.
+
+        Args:
+            name (str): The name of the user.
+            email (str): The email of the user.
+            password (str): The password of the user.
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        self._add_user_command.execute(name=name, email=email, password=password)
+
+    def login_check(self, email: str, password: str) -&gt; str:
+        &#34;&#34;&#34;
+        Checks if the provided email and password match a user in the database and returns the user&#39;s name.
+
+        Args:
+            email (str): The email to check.
+            password (str): The password to check.
+
+        Returns:
+            str: The name of the user if login is successful.
+
+        Raises:
+            Exception: If login is unsuccessful.
+        &#34;&#34;&#34;
+        if self.email_exists(email=email) and self._check_password_matching_command.execute(
+                email=email, password=password):
+            name = self._get_name_command.execute(email=email)
+            return name
+        else:
+            raise Exception(&#39;Invalid email or password. Please try again.&#39;)
+
+    def change_username(self, new_name: str, email: str) -&gt; None:
+        &#34;&#34;&#34;
+        Changes the username of the user with the given email.
+
+        Args:
+            new_name (str): The new username.
+            email (str): The email of the user whose username to change.
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        self._change_name_command.execute(name=new_name, email=email)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="model.db_control.DBControl.add_user"><code class="name flex">
+<span>def <span class="ident">add_user</span></span>(<span>self, name: str, email: str, password: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adds a new user to the database.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>The name of the user.</dd>
+<dt><strong><code>email</code></strong> :&ensp;<code>str</code></dt>
+<dd>The email of the user.</dd>
+<dt><strong><code>password</code></strong> :&ensp;<code>str</code></dt>
+<dd>The password of the user.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_user(self, name: str, email: str, password: str) -&gt; None:
+    &#34;&#34;&#34;
+    Adds a new user to the database.
+
+    Args:
+        name (str): The name of the user.
+        email (str): The email of the user.
+        password (str): The password of the user.
+
+    Returns:
+        None
+    &#34;&#34;&#34;
+    self._add_user_command.execute(name=name, email=email, password=password)</code></pre>
+</details>
+</dd>
+<dt id="model.db_control.DBControl.change_username"><code class="name flex">
+<span>def <span class="ident">change_username</span></span>(<span>self, new_name: str, email: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Changes the username of the user with the given email.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>new_name</code></strong> :&ensp;<code>str</code></dt>
+<dd>The new username.</dd>
+<dt><strong><code>email</code></strong> :&ensp;<code>str</code></dt>
+<dd>The email of the user whose username to change.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def change_username(self, new_name: str, email: str) -&gt; None:
+    &#34;&#34;&#34;
+    Changes the username of the user with the given email.
+
+    Args:
+        new_name (str): The new username.
+        email (str): The email of the user whose username to change.
+
+    Returns:
+        None
+    &#34;&#34;&#34;
+    self._change_name_command.execute(name=new_name, email=email)</code></pre>
+</details>
+</dd>
+<dt id="model.db_control.DBControl.email_exists"><code class="name flex">
+<span>def <span class="ident">email_exists</span></span>(<span>self, email: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Checks if the given email exists in the database.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>email</code></strong> :&ensp;<code>str</code></dt>
+<dd>The email to check.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if such email exists, False otherwise.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def email_exists(self, email: str) -&gt; bool:
+    &#34;&#34;&#34;
+    Checks if the given email exists in the database.
+
+    Args:
+        email (str): The email to check.
+
+    Returns:
+        bool: True if such email exists, False otherwise.
+    &#34;&#34;&#34;
+    return self._check_email_existence_command.execute(email=email)</code></pre>
+</details>
+</dd>
+<dt id="model.db_control.DBControl.login_check"><code class="name flex">
+<span>def <span class="ident">login_check</span></span>(<span>self, email: str, password: str) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Checks if the provided email and password match a user in the database and returns the user's name.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>email</code></strong> :&ensp;<code>str</code></dt>
+<dd>The email to check.</dd>
+<dt><strong><code>password</code></strong> :&ensp;<code>str</code></dt>
+<dd>The password to check.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>The name of the user if login is successful.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>Exception</code></dt>
+<dd>If login is unsuccessful.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def login_check(self, email: str, password: str) -&gt; str:
+    &#34;&#34;&#34;
+    Checks if the provided email and password match a user in the database and returns the user&#39;s name.
+
+    Args:
+        email (str): The email to check.
+        password (str): The password to check.
+
+    Returns:
+        str: The name of the user if login is successful.
+
+    Raises:
+        Exception: If login is unsuccessful.
+    &#34;&#34;&#34;
+    if self.email_exists(email=email) and self._check_password_matching_command.execute(
+            email=email, password=password):
+        name = self._get_name_command.execute(email=email)
+        return name
+    else:
+        raise Exception(&#39;Invalid email or password. Please try again.&#39;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="model" href="index.html">model</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="model.db_control.DBControl" href="#model.db_control.DBControl">DBControl</a></code></h4>
+<ul class="">
+<li><code><a title="model.db_control.DBControl.add_user" href="#model.db_control.DBControl.add_user">add_user</a></code></li>
+<li><code><a title="model.db_control.DBControl.change_username" href="#model.db_control.DBControl.change_username">change_username</a></code></li>
+<li><code><a title="model.db_control.DBControl.email_exists" href="#model.db_control.DBControl.email_exists">email_exists</a></code></li>
+<li><code><a title="model.db_control.DBControl.login_check" href="#model.db_control.DBControl.login_check">login_check</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
