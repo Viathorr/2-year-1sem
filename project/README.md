@@ -1,4 +1,4 @@
-Project theme: Chat
+# Project theme: Chat
 
 Programming language: Python
 
@@ -15,3 +15,8 @@ GUI elements (approximately):
 - 1 listbox
 - 34 event handlers
 
+## Lab2(part)
+
+### Design Patterns used:
+- ***Mediator*** (Mediator class handles all the communication between GUI components to avoid circular dependencies among classes)
+- ***Command*** (Different commands responsible for certain database operations)
