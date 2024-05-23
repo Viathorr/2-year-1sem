@@ -20,3 +20,8 @@ GUI elements (approximately):
 ### Design Patterns used:
 - ***Mediator*** (Mediator class handles all the communication between GUI components to avoid circular dependencies among classes)
 - ***Command*** (Different commands responsible for certain database operations)
+
+
+## Lab3(b)
+
+#### Using threads in Server class to simultaneously handle a number of clients (I/O bound) 
